@@ -143,7 +143,9 @@ public:
     int constraint_idx = -1;
   };
 
+  void delete_rack_bays();
   bool can_delete_current_selection();
+  void delete_unused_vertex(std::size_t vertex_idx);
   bool delete_selected();
   void calculate_scale(const CoordinateSystem& coordinate_system);
   void clear_selection();

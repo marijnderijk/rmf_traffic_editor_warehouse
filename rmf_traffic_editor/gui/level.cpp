@@ -164,6 +164,39 @@ bool Level::from_yaml(
     }
   }
 
+  if (_data["roi"] && _data["roi"].IsSequence())
+  {
+    const YAML::Node& yf = _data["roi"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
+    {
+      Polygon p;
+      p.from_yaml(*it, Polygon::ROI);
+      polygons.push_back(p);
+    }
+  }
+
+  if(_data["storage_racks"] && _data["storage_racks"].IsSequence())
+  {
+    const YAML::Node& yf = _data["storage_racks"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
+    {
+      Polygon p;
+      p.from_yaml(*it, Polygon::STORAGE_RACK);
+      polygons.push_back(p);
+    }
+  }
+  
+  if(_data["rack_bays"] && _data["rack_bays"].IsSequence())
+  {
+    const YAML::Node& yf = _data["rack_bays"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
+    {
+      Polygon p;
+      p.from_yaml(*it, Polygon::RACK_BAY);
+      polygons.push_back(p);
+    }
+  }
+
   if (_data["elevation"])
     elevation = _data["elevation"].as<double>();
 
@@ -279,6 +312,15 @@ YAML::Node Level::to_yaml(const CoordinateSystem& coordinate_system) const
       case Polygon::HOLE:
         y["holes"].push_back(polygon.to_yaml());
         break;
+      case Polygon::ROI:
+        y["roi"].push_back(polygon.to_yaml());
+        break;
+      case Polygon::STORAGE_RACK:
+        y["storage_racks"].push_back(polygon.to_yaml());
+        break;
+      case Polygon::RACK_BAY:
+        y["rack_bays"].push_back(polygon.to_yaml());
+        break;
       default:
         printf("tried to save an unknown polygon type: %d\n",
           static_cast<int>(polygon.type));
@@ -365,6 +407,30 @@ bool Level::can_delete_current_selection()
   return true;
 }
 
+void Level::delete_unused_vertex(std::size_t vertex_idx)
+{
+  // now go through all edges and polygons to decrement any larger indices
+  for (Edge& edge : edges)
+  {
+    if (edge.start_idx > vertex_idx)
+      edge.start_idx--;
+    if (edge.end_idx > vertex_idx)
+      edge.end_idx--;
+  }
+
+  for (Polygon& polygon : polygons)
+  {
+    for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++)
+    {
+      if (polygon.vertices[i] > vertex_idx)
+        polygon.vertices[i]--;
+    }
+  }
+
+  vertices.erase(vertices.begin() + vertex_idx);
+}
+
+
 bool Level::delete_selected()
 {
   edges.erase(
@@ -439,25 +505,8 @@ bool Level::delete_selected()
       return false;// don't try to delete a vertex used in a shape
 
     // the vertex is not currently being used, so let's erase it
-    vertices.erase(vertices.begin() + selected_vertex_idx);
 
-    // now go through all edges and polygons to decrement any larger indices
-    for (Edge& edge : edges)
-    {
-      if (edge.start_idx > selected_vertex_idx)
-        edge.start_idx--;
-      if (edge.end_idx > selected_vertex_idx)
-        edge.end_idx--;
-    }
-
-    for (Polygon& polygon : polygons)
-    {
-      for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++)
-      {
-        if (polygon.vertices[i] > selected_vertex_idx)
-          polygon.vertices[i]--;
-      }
-    }
+    delete_unused_vertex(selected_vertex_idx);
   }
 
   // if a feature is selected, refuse to delete it if it's in a constraint
@@ -1040,6 +1089,9 @@ void Level::draw_polygons(QGraphicsScene* scene) const
 {
   const QBrush floor_brush(QColor::fromRgbF(0.9, 0.9, 0.9, 0.8));
   const QBrush hole_brush(QColor::fromRgbF(0.3, 0.3, 0.3, 0.5));
+  const QBrush roi_brush(QColor::fromRgbF(1.0, 0.0, 0.0, 0.5));
+  const QBrush storage_rack_brush(QColor::fromRgbF(0.255, 0.42, 1.0, 0.5));
+  const QBrush rack_bay_brush(QColor::fromRgbF(0.9, 0.9, 0.9, 0.8));
 
   // first draw the floor polygons
   for (const auto& polygon : polygons)
@@ -1053,6 +1105,27 @@ void Level::draw_polygons(QGraphicsScene* scene) const
   {
     if (polygon.type == Polygon::HOLE)
       draw_polygon(scene, hole_brush, polygon);
+  }
+
+  // now draw the ROIs
+  for (const auto& polygon : polygons)
+  {
+    if (polygon.type == Polygon::ROI)
+      draw_polygon(scene, roi_brush, polygon);
+  }
+
+  // now draw the storage racks
+  for (const auto& polygon : polygons)
+  {
+    if (polygon.type == Polygon::STORAGE_RACK)
+      draw_polygon(scene, storage_rack_brush, polygon);
+  }
+
+  // now draw the rack bays on top of the storage racks
+  for (const auto& polygon : polygons)
+  {
+    if (polygon.type == Polygon::RACK_BAY)
+      draw_polygon(scene, rack_bay_brush, polygon);
   }
 
 #if 0
