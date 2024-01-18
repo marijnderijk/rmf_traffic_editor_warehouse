@@ -126,6 +126,37 @@ void Polygon::create_required_parameters()
       std::string("blue_linoleum"));
     create_param_if_needed("ceiling_scale", Param::DOUBLE, 1.0);
   }
+
+  if (type == STORAGE_RACK)
+  {
+    create_param_if_needed("name", Param::STRING, std::string("rack"));
+    create_param_if_needed("num_bays", Param::INT, 4); // number of bays (lenghtwise)
+    create_param_if_needed("bay_rows", Param::INT, 2); // number of rows
+    create_param_if_needed("units_per_bay", Param::INT, 4); // number of units per bay
+    // now we want to create a height parameter for each unit
+    int units_per_bay = params["units_per_bay"].to_qstring().toInt();
+    for (int i = 0; i < units_per_bay; i++)
+    {
+      char param_name[64];
+      sprintf(param_name, "bay_height_%d", i);
+      create_param_if_needed(param_name, Param::DOUBLE, 0.5);
+    }
+  }
+ 
+  if (type == RACK_BAY)
+  {
+    create_param_if_needed("name", Param::STRING, std::string("bay"));
+    create_param_if_needed("parent_rack", Param::STRING, std::string(""));
+    create_param_if_needed("num_units", Param::INT, 4);
+    int units_per_bay = params["num_units"].to_qstring().toInt();
+    for (int i = 0; i < units_per_bay; i++)
+    {
+      char param_name[64];
+      sprintf(param_name, "unit_height_%d", i);
+      create_param_if_needed(param_name, Param::DOUBLE, 0.5);
+    }
+  }
+
 }
 
 template<typename T>

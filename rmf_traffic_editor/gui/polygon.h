@@ -42,7 +42,9 @@ public:
     FLOOR,
     ZONE,
     ROI,
-    HOLE
+    HOLE,
+    STORAGE_RACK,
+    RACK_BAY,
   } type = UNDEFINED;
 
   Polygon();

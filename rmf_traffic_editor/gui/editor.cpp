@@ -401,6 +401,10 @@ Editor::Editor()
     "Add floor polygon (F)");
   create_tool_button(TOOL_ADD_HOLE, ":icons/hole.svg", "Add hole polygon");
   create_tool_button(TOOL_ADD_ROI, ":icons/roi.svg", "Add region of interest");
+  create_tool_button(
+    TOOL_ADD_STORAGE_RACK,
+    ":icons/storage_rack.svg",
+    "Add storage rack");
   create_tool_button(TOOL_EDIT_POLYGON, "", "Edit Polygon (E)");
   create_tool_button(TOOL_ADD_HUMAN_LANE, "", "Add Human Lane with width");
 
@@ -926,6 +930,7 @@ void Editor::mouse_event(const MouseType t, QMouseEvent* e)
     case TOOL_ROTATE:       mouse_rotate(t, e, p); break;
     case TOOL_ADD_FLOOR:    mouse_add_floor(t, e, p); break;
     case TOOL_ADD_HOLE:     mouse_add_hole(t, e, p); break;
+    case TOOL_ADD_STORAGE_RACK: mouse_add_storage_rack(t, e, p); break;
     case TOOL_EDIT_POLYGON: mouse_edit_polygon(t, e, p); break;
     case TOOL_ADD_FEATURE:  mouse_add_feature(t, e, p); break;
     case TOOL_ADD_CONSTRAINT: mouse_add_constraint(t, e, p); break;
@@ -2523,6 +2528,12 @@ void Editor::mouse_add_roi(
   mouse_add_polygon(t, e, p, Polygon::ROI);
 }
 
+void Editor::mouse_add_storage_rack(
+  const MouseType t, QMouseEvent* e, const QPointF& p)
+{
+  mouse_add_polygon(t, e, p, Polygon::STORAGE_RACK);
+}
+
 void Editor::mouse_edit_polygon(
   const MouseType t, QMouseEvent* e, const QPointF& p)
 {
@@ -2746,6 +2757,7 @@ void Editor::set_mode(const EditorModeId _mode, const QString& mode_string)
   set_tool_visibility(TOOL_ADD_HOLE, mode == MODE_BUILDING);
   set_tool_visibility(TOOL_ADD_CORRESPONDENCE_POINT, mode == MODE_BUILDING);
   set_tool_visibility(TOOL_ADD_FIDUCIAL, mode == MODE_BUILDING);
+  set_tool_visibility(TOOL_ADD_STORAGE_RACK, mode == MODE_BUILDING);
 
   // traffic tools
   set_tool_visibility(TOOL_ADD_LANE, mode == MODE_TRAFFIC);
