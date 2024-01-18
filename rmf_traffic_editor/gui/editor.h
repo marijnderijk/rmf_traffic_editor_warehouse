@@ -122,6 +122,7 @@ private:
     TOOL_ADD_CONSTRAINT,
     TOOL_ADD_FIDUCIAL,
     TOOL_ADD_ROI,
+    TOOL_ADD_STORAGE_RACK,
     TOOL_ADD_HOLE,
     TOOL_ADD_HUMAN_LANE,
   } tool_id = TOOL_SELECT;
@@ -341,6 +342,8 @@ private:
   void mouse_add_floor(const MouseType t, QMouseEvent* e, const QPointF& p);
   void mouse_add_hole(const MouseType t, QMouseEvent* e, const QPointF& p);
   void mouse_add_roi(const MouseType t, QMouseEvent* e, const QPointF& p);
+  void mouse_add_storage_rack(const MouseType t, QMouseEvent* e,
+    const QPointF& p);
   void mouse_edit_polygon(const MouseType t, QMouseEvent* e, const QPointF& p);
 
   void mouse_add_human_lane(const MouseType t, QMouseEvent* e,
