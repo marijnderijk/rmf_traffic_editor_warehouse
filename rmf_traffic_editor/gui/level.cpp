@@ -406,9 +406,38 @@ bool Level::can_delete_current_selection()
 
   return true;
 }
-
-void Level::delete_unused_vertex(std::size_t vertex_idx)
+/**
+ * Delete a vertex if it is not used in any edges or polygons.
+ * @param selected_vertex_idx
+ * @return true if the vertex was deleted, false otherwise
+ */
+bool Level::delete_vertex_if_unused(const int vertex_idx)
 {
+  // Vertices take a lot more care, because we have to check if a vertex
+  // is used in an edge or a polygon before deleting it, and update all
+  // higher-index vertex indices in the edges and polygon vertex lists.
+
+  // first, we make sure that this vertex is not used in any edges or polygons
+    bool vertex_used = false;
+    for (const auto& edge : edges)
+    {
+      if (edge.start_idx == vertex_idx ||
+        edge.end_idx == vertex_idx)
+        vertex_used = true;
+    }
+    for (const auto& polygon : polygons)
+    {
+      for (const int& polygon_vertex_idx : polygon.vertices)
+      {
+        if (polygon_vertex_idx == vertex_idx)
+          vertex_used = true;
+      }
+    }
+    if (vertex_used)
+      return false;// don't try to delete a vertex used in a shape
+
+  // the vertex is not currently being used, so let's erase it
+
   // now go through all edges and polygons to decrement any larger indices
   for (Edge& edge : edges)
   {
@@ -426,8 +455,10 @@ void Level::delete_unused_vertex(std::size_t vertex_idx)
         polygon.vertices[i]--;
     }
   }
-
+  
+  // now erase the vertex
   vertices.erase(vertices.begin() + vertex_idx);
+  return true;
 }
 
 
@@ -468,12 +499,6 @@ bool Level::delete_selected()
       [](const Constraint& constraint) { return constraint.selected(); }),
     constraints.end());
 
-  // Vertices take a lot more care, because we have to check if a vertex
-  // is used in an edge or a polygon before deleting it, and update all
-  // higher-index vertex indices in the edges and polygon vertex lists.
-  // Since this is a potentially expensive operation, first we'll spin
-  // through the vertex list and see if any vertices are selected, and
-  // only then make a copy of the vertex list.
   int selected_vertex_idx = -1;
   for (int i = 0; i < static_cast<int>(vertices.size()); i++)
   {
@@ -483,30 +508,10 @@ bool Level::delete_selected()
       break;  // just grab the index of the first selected vertex
     }
   }
+
   if (selected_vertex_idx >= 0)
   {
-    // See if this vertex is used in any edges/polygons.
-    bool vertex_used = false;
-    for (const auto& edge : edges)
-    {
-      if (edge.start_idx == selected_vertex_idx ||
-        edge.end_idx == selected_vertex_idx)
-        vertex_used = true;
-    }
-    for (const auto& polygon : polygons)
-    {
-      for (const int& vertex_idx : polygon.vertices)
-      {
-        if (vertex_idx == selected_vertex_idx)
-          vertex_used = true;
-      }
-    }
-    if (vertex_used)
-      return false;// don't try to delete a vertex used in a shape
-
-    // the vertex is not currently being used, so let's erase it
-
-    delete_unused_vertex(selected_vertex_idx);
+      delete_vertex_if_unused(selected_vertex_idx);
   }
 
   // if a feature is selected, refuse to delete it if it's in a constraint
