@@ -123,6 +123,7 @@ private:
     TOOL_ADD_FIDUCIAL,
     TOOL_ADD_ROI,
     TOOL_ADD_STORAGE_RACK,
+    TOOL_UPDATE_STORAGE_RACKS,
     TOOL_ADD_HOLE,
     TOOL_ADD_HUMAN_LANE,
   } tool_id = TOOL_SELECT;
@@ -345,6 +346,7 @@ private:
   void mouse_add_storage_rack(const MouseType t, QMouseEvent* e,
     const QPointF& p);
   void mouse_edit_polygon(const MouseType t, QMouseEvent* e, const QPointF& p);
+  void update_storage_racks();
 
   void mouse_add_human_lane(const MouseType t, QMouseEvent* e,
     const QPointF& p);
