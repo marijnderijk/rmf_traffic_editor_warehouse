@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 
 #ifndef POLYGON_H
 #define POLYGON_H
@@ -27,17 +27,14 @@
 
 #include "param.h"
 
-
-class Polygon
-{
+class Polygon {
 public:
   std::vector<int> vertices;
   bool selected = false;
 
   std::map<std::string, Param> params;
 
-  enum Type
-  {
+  enum Type {
     UNDEFINED = 0,
     FLOOR,
     ZONE,
@@ -50,25 +47,23 @@ public:
   Polygon();
   ~Polygon();
 
-  void from_yaml(const YAML::Node& data, const Type polygon_type);
+  void from_yaml(const YAML::Node &data, const Type polygon_type);
   YAML::Node to_yaml() const;
 
   void remove_vertex(const int vertex_idx);
 
-  struct EdgeDragPolygon
-  {
+  struct EdgeDragPolygon {
     QPolygonF polygon;
     int movable_vertex = -1;
   };
 
-  void set_param(const std::string& name, const std::string& value);
+  void set_param(const std::string &name, const std::string &value);
   void create_required_parameters();
 
-  template<typename T>
-  void create_param_if_needed(
-    const std::string& name,
-    const Param::Type& param_type,
-    const T& param_value);
+  template <typename T>
+  void create_param_if_needed(const std::string &name,
+                              const Param::Type &param_type,
+                              const T &param_value);
 };
 
 #endif

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
-*/
+ */
 
 #include <algorithm>
 #include <cmath>
@@ -33,29 +33,20 @@
 using std::string;
 using std::vector;
 
+Level::Level() {}
 
-Level::Level()
-{
-}
+Level::~Level() {}
 
-Level::~Level()
-{
-}
-
-bool Level::from_yaml(
-  const std::string& _name,
-  const YAML::Node& _data,
-  const CoordinateSystem& coordinate_system)
-{
+bool Level::from_yaml(const std::string &_name, const YAML::Node &_data,
+                      const CoordinateSystem &coordinate_system) {
   printf("parsing level [%s]\n", _name.c_str());
   name = _name;
 
   if (!_data.IsMap())
     throw std::runtime_error("level " + name + " YAML invalid");
 
-  if (_data["drawing"] && _data["drawing"].IsMap())
-  {
-    const YAML::Node& drawing_data = _data["drawing"];
+  if (_data["drawing"] && _data["drawing"].IsMap()) {
+    const YAML::Node &drawing_data = _data["drawing"];
     if (!drawing_data["filename"])
       throw std::runtime_error("level " + name + " drawing invalid");
     drawing_filename = drawing_data["filename"].as<string>();
@@ -63,17 +54,13 @@ bool Level::from_yaml(
     if (!load_drawing())
       return false;
     */
-  }
-  else if (_data["x_meters"] && _data["y_meters"])
-  {
+  } else if (_data["x_meters"] && _data["y_meters"]) {
     x_meters = _data["x_meters"].as<double>();
     y_meters = _data["y_meters"].as<double>();
     drawing_meters_per_pixel = coordinate_system.default_scale();
     drawing_width = x_meters / drawing_meters_per_pixel;
     drawing_height = y_meters / drawing_meters_per_pixel;
-  }
-  else
-  {
+  } else {
     x_meters = 100.0;
     y_meters = 100.0;
     drawing_meters_per_pixel = coordinate_system.default_scale();
@@ -81,44 +68,36 @@ bool Level::from_yaml(
     drawing_height = y_meters / drawing_meters_per_pixel;
   }
 
-  if (_data["vertices"] && _data["vertices"].IsSequence())
-  {
-    const YAML::Node& pts = _data["vertices"];
-    for (YAML::const_iterator it = pts.begin(); it != pts.end(); ++it)
-    {
+  if (_data["vertices"] && _data["vertices"].IsSequence()) {
+    const YAML::Node &pts = _data["vertices"];
+    for (YAML::const_iterator it = pts.begin(); it != pts.end(); ++it) {
       Vertex v;
       v.from_yaml(*it, coordinate_system);
       vertices.push_back(v);
     }
   }
 
-  if (_data["fiducials"] && _data["fiducials"].IsSequence())
-  {
-    const YAML::Node& fy = _data["fiducials"];
-    for (YAML::const_iterator it = fy.begin(); it != fy.end(); ++it)
-    {
+  if (_data["fiducials"] && _data["fiducials"].IsSequence()) {
+    const YAML::Node &fy = _data["fiducials"];
+    for (YAML::const_iterator it = fy.begin(); it != fy.end(); ++it) {
       Fiducial f;
       f.from_yaml(*it);
       fiducials.push_back(f);
     }
   }
 
-  if (_data["features"] && _data["features"].IsSequence())
-  {
-    const YAML::Node& fy = _data["features"];
-    for (YAML::const_iterator it = fy.begin(); it != fy.end(); ++it)
-    {
+  if (_data["features"] && _data["features"].IsSequence()) {
+    const YAML::Node &fy = _data["features"];
+    for (YAML::const_iterator it = fy.begin(); it != fy.end(); ++it) {
       Feature f;
       f.from_yaml(*it);
       floorplan_features.push_back(f);
     }
   }
 
-  if (_data["constraints"] && _data["constraints"].IsSequence())
-  {
-    const YAML::Node& c_data = _data["constraints"];
-    for (YAML::const_iterator it = c_data.begin(); it != c_data.end(); ++it)
-    {
+  if (_data["constraints"] && _data["constraints"].IsSequence()) {
+    const YAML::Node &c_data = _data["constraints"];
+    for (YAML::const_iterator it = c_data.begin(); it != c_data.end(); ++it) {
       Constraint c;
       c.from_yaml(*it);
       constraints.push_back(c);
@@ -131,66 +110,54 @@ bool Level::from_yaml(
   load_yaml_edge_sequence(_data, "doors", Edge::DOOR);
   load_yaml_edge_sequence(_data, "human_lanes", Edge::HUMAN_LANE);
 
-  if (_data["models"] && _data["models"].IsSequence())
-  {
-    const YAML::Node& ys = _data["models"];
-    for (YAML::const_iterator it = ys.begin(); it != ys.end(); ++it)
-    {
+  if (_data["models"] && _data["models"].IsSequence()) {
+    const YAML::Node &ys = _data["models"];
+    for (YAML::const_iterator it = ys.begin(); it != ys.end(); ++it) {
       Model m;
       m.from_yaml(*it, this->name, coordinate_system);
       models.push_back(m);
     }
   }
 
-  if (_data["floors"] && _data["floors"].IsSequence())
-  {
-    const YAML::Node& yf = _data["floors"];
-    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
-    {
+  if (_data["floors"] && _data["floors"].IsSequence()) {
+    const YAML::Node &yf = _data["floors"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
       Polygon p;
       p.from_yaml(*it, Polygon::FLOOR);
       polygons.push_back(p);
     }
   }
 
-  if (_data["holes"] && _data["holes"].IsSequence())
-  {
-    const YAML::Node& yf = _data["holes"];
-    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
-    {
+  if (_data["holes"] && _data["holes"].IsSequence()) {
+    const YAML::Node &yf = _data["holes"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
       Polygon p;
       p.from_yaml(*it, Polygon::HOLE);
       polygons.push_back(p);
     }
   }
 
-  if (_data["roi"] && _data["roi"].IsSequence())
-  {
-    const YAML::Node& yf = _data["roi"];
-    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
-    {
+  if (_data["roi"] && _data["roi"].IsSequence()) {
+    const YAML::Node &yf = _data["roi"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
       Polygon p;
       p.from_yaml(*it, Polygon::ROI);
       polygons.push_back(p);
     }
   }
 
-  if(_data["storage_racks"] && _data["storage_racks"].IsSequence())
-  {
-    const YAML::Node& yf = _data["storage_racks"];
-    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
-    {
+  if (_data["storage_racks"] && _data["storage_racks"].IsSequence()) {
+    const YAML::Node &yf = _data["storage_racks"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
       Polygon p;
       p.from_yaml(*it, Polygon::STORAGE_RACK);
       polygons.push_back(p);
     }
   }
-  
-  if(_data["rack_bays"] && _data["rack_bays"].IsSequence())
-  {
-    const YAML::Node& yf = _data["rack_bays"];
-    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it)
-    {
+
+  if (_data["rack_bays"] && _data["rack_bays"].IsSequence()) {
+    const YAML::Node &yf = _data["rack_bays"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
       Polygon p;
       p.from_yaml(*it, Polygon::RACK_BAY);
       polygons.push_back(p);
@@ -200,11 +167,9 @@ bool Level::from_yaml(
   if (_data["elevation"])
     elevation = _data["elevation"].as<double>();
 
-  if (_data["layers"] && _data["layers"].IsMap())
-  {
-    const YAML::Node& yl = _data["layers"];
-    for (YAML::const_iterator it = yl.begin(); it != yl.end(); ++it)
-    {
+  if (_data["layers"] && _data["layers"].IsMap()) {
+    const YAML::Node &yl = _data["layers"];
+    for (YAML::const_iterator it = yl.begin(); it != yl.end(); ++it) {
       Layer layer;
       layer.from_yaml(it->first.as<string>(), it->second, coordinate_system);
       layers.push_back(layer);
@@ -214,25 +179,20 @@ bool Level::from_yaml(
   return true;
 }
 
-bool Level::load_drawing()
-{
+bool Level::load_drawing() {
   if (drawing_filename.empty())
-    return true;// nothing to load
+    return true; // nothing to load
 
-  printf("  level %s drawing: %s\n",
-    name.c_str(),
-    drawing_filename.c_str());
+  printf("  level %s drawing: %s\n", name.c_str(), drawing_filename.c_str());
 
   QString qfilename = QString::fromStdString(drawing_filename);
 
   QImageReader image_reader(qfilename);
   image_reader.setAutoTransform(true);
   QImage image = image_reader.read();
-  if (image.isNull())
-  {
-    qWarning("unable to read %s: %s",
-      qUtf8Printable(qfilename),
-      qUtf8Printable(image_reader.errorString()));
+  if (image.isNull()) {
+    qWarning("unable to read %s: %s", qUtf8Printable(qfilename),
+             qUtf8Printable(image_reader.errorString()));
     return false;
   }
   image = image.convertToFormat(QImage::Format_Grayscale8);
@@ -242,122 +202,108 @@ bool Level::load_drawing()
   return true;
 }
 
-YAML::Node Level::to_yaml(const CoordinateSystem& coordinate_system) const
-{
+YAML::Node Level::to_yaml(const CoordinateSystem &coordinate_system) const {
   YAML::Node y;
-  if (!drawing_filename.empty())
-  {
+  if (!drawing_filename.empty()) {
     YAML::Node drawing_node;
     drawing_node["filename"] = drawing_filename;
     y["drawing"] = drawing_node;
-  }
-  else
-  {
+  } else {
     y["x_meters"] = x_meters;
     y["y_meters"] = y_meters;
   }
   y["elevation"] = elevation;
 
-  for (const auto& v : vertices)
+  for (const auto &v : vertices)
     y["vertices"].push_back(v.to_yaml(coordinate_system));
 
-  for (const auto& feature : floorplan_features)
+  for (const auto &feature : floorplan_features)
     y["features"].push_back(feature.to_yaml());
 
-  for (const auto& constraint : constraints)
+  for (const auto &constraint : constraints)
     y["constraints"].push_back(constraint.to_yaml());
 
-  for (const auto& f : fiducials)
+  for (const auto &f : fiducials)
     y["fiducials"].push_back(f.to_yaml());
 
-  for (const auto& edge : edges)
-  {
+  for (const auto &edge : edges) {
     YAML::Node n(edge.to_yaml());
     std::string dict_name = "unknown";
-    switch (edge.type)
-    {
-      case Edge::LANE:
-        dict_name = "lanes";
-        break;
-      case Edge::WALL:
-        dict_name = "walls";
-        break;
-      case Edge::MEAS:
-        dict_name = "measurements";
-        break;
-      case Edge::DOOR:
-        dict_name = "doors";
-        break;
-      case Edge::HUMAN_LANE:
-        dict_name = "human_lanes";
-        break;
-      default:
-        printf("tried to save unknown edge type: %d\n",
-          static_cast<int>(edge.type));
-        break;
+    switch (edge.type) {
+    case Edge::LANE:
+      dict_name = "lanes";
+      break;
+    case Edge::WALL:
+      dict_name = "walls";
+      break;
+    case Edge::MEAS:
+      dict_name = "measurements";
+      break;
+    case Edge::DOOR:
+      dict_name = "doors";
+      break;
+    case Edge::HUMAN_LANE:
+      dict_name = "human_lanes";
+      break;
+    default:
+      printf("tried to save unknown edge type: %d\n",
+             static_cast<int>(edge.type));
+      break;
     }
     y[dict_name].push_back(n);
   }
 
-  for (const auto& model : models)
+  for (const auto &model : models)
     y["models"].push_back(model.to_yaml(coordinate_system));
 
-  for (const auto& polygon : polygons)
-  {
-    switch (polygon.type)
-    {
-      case Polygon::FLOOR:
-        y["floors"].push_back(polygon.to_yaml());
-        break;
-      case Polygon::HOLE:
-        y["holes"].push_back(polygon.to_yaml());
-        break;
-      case Polygon::ROI:
-        y["roi"].push_back(polygon.to_yaml());
-        break;
-      case Polygon::STORAGE_RACK:
-        y["storage_racks"].push_back(polygon.to_yaml());
-        break;
-      case Polygon::RACK_BAY:
-        y["rack_bays"].push_back(polygon.to_yaml());
-        break;
-      default:
-        printf("tried to save an unknown polygon type: %d\n",
-          static_cast<int>(polygon.type));
-        break;
+  for (const auto &polygon : polygons) {
+    switch (polygon.type) {
+    case Polygon::FLOOR:
+      y["floors"].push_back(polygon.to_yaml());
+      break;
+    case Polygon::HOLE:
+      y["holes"].push_back(polygon.to_yaml());
+      break;
+    case Polygon::ROI:
+      y["roi"].push_back(polygon.to_yaml());
+      break;
+    case Polygon::STORAGE_RACK:
+      y["storage_racks"].push_back(polygon.to_yaml());
+      break;
+    case Polygon::RACK_BAY:
+      y["rack_bays"].push_back(polygon.to_yaml());
+      break;
+    default:
+      printf("tried to save an unknown polygon type: %d\n",
+             static_cast<int>(polygon.type));
+      break;
     }
   }
 
   y["layers"] = YAML::Node(YAML::NodeType::Map);
-  for (const auto& layer : layers)
+  for (const auto &layer : layers)
     y["layers"][layer.name] = layer.to_yaml(coordinate_system);
 
   return y;
 }
 
-bool Level::can_delete_current_selection()
-{
+bool Level::can_delete_current_selection() {
   // if a feature is selected, refuse to delete it if it's in a constraint
-  for (const Feature& feature : floorplan_features)
-  {
+  for (const Feature &feature : floorplan_features) {
     if (!feature.selected())
       continue;
-    for (const Constraint& constraint : constraints)
-    {
+    for (const Constraint &constraint : constraints) {
       if (constraint.includes_id(feature.id()))
         return false;
     }
   }
 
-  for (const Layer& layer : layers)
-  {
-    for (const Feature& feature : layer.features)
-    {
+  for (const Layer &layer : layers) {
+    for (const Feature &feature : layer.features) {
       if (!feature.selected())
         continue;
 
-      for (const Constraint& constraint : constraints)
-      {
+      for (const Constraint &constraint : constraints) {
         if (constraint.includes_id(feature.id()))
           return false;
       }
@@ -365,12 +311,10 @@ bool Level::can_delete_current_selection()
   }
 
   int selected_vertex_idx = -1;
-  for (int i = 0; i < static_cast<int>(vertices.size()); i++)
-  {
-    if (vertices[i].selected)
-    {
+  for (int i = 0; i < static_cast<int>(vertices.size()); i++) {
+    if (vertices[i].selected) {
       selected_vertex_idx = i;
-      break;  // just grab the index of the first selected vertex
+      break; // just grab the index of the first selected vertex
     }
   }
 
@@ -378,28 +322,24 @@ bool Level::can_delete_current_selection()
     return true;
 
   bool vertex_used = false;
-  for (const auto& edge : edges)
-  {
+  for (const auto &edge : edges) {
     if (edge.start_idx == selected_vertex_idx ||
-      edge.end_idx == selected_vertex_idx)
+        edge.end_idx == selected_vertex_idx)
       vertex_used = true;
   }
-  for (const auto& polygon : polygons)
-  {
-    for (const int& vertex_idx : polygon.vertices)
-    {
+  for (const auto &polygon : polygons) {
+    for (const int &vertex_idx : polygon.vertices) {
       if (vertex_idx == selected_vertex_idx)
         vertex_used = true;
     }
   }
   if (vertex_used)
-    return false;// don't try to delete a vertex used in a shape
+    return false; // don't try to delete a vertex used in a shape
 
   /// check if this is a lift_cabin waypoint
   const auto v = vertices[selected_vertex_idx];
   auto it = v.params.find("lift_cabin");
-  if ((it != v.params.end()))
-  {
+  if ((it != v.params.end())) {
     printf("This waypoint is used by a lift cabin!!");
     return false;
   }
@@ -411,117 +351,92 @@ bool Level::can_delete_current_selection()
  * @param selected_vertex_idx
  * @return true if the vertex was deleted, false otherwise
  */
-bool Level::delete_vertex_if_unused(const int vertex_idx)
-{
+bool Level::delete_vertex_if_unused(const int vertex_idx) {
   // Vertices take a lot more care, because we have to check if a vertex
   // is used in an edge or a polygon before deleting it, and update all
   // higher-index vertex indices in the edges and polygon vertex lists.
 
   // first, we make sure that this vertex is not used in any edges or polygons
-    bool vertex_used = false;
-    for (const auto& edge : edges)
-    {
-      if (edge.start_idx == vertex_idx ||
-        edge.end_idx == vertex_idx)
+  bool vertex_used = false;
+  for (const auto &edge : edges) {
+    if (edge.start_idx == vertex_idx || edge.end_idx == vertex_idx)
+      vertex_used = true;
+  }
+  for (const auto &polygon : polygons) {
+    for (const int &polygon_vertex_idx : polygon.vertices) {
+      if (polygon_vertex_idx == vertex_idx)
         vertex_used = true;
     }
-    for (const auto& polygon : polygons)
-    {
-      for (const int& polygon_vertex_idx : polygon.vertices)
-      {
-        if (polygon_vertex_idx == vertex_idx)
-          vertex_used = true;
-      }
-    }
-    if (vertex_used)
-      return false;// don't try to delete a vertex used in a shape
+  }
+  if (vertex_used)
+    return false; // don't try to delete a vertex used in a shape
 
   // the vertex is not currently being used, so let's erase it
 
   // now go through all edges and polygons to decrement any larger indices
-  for (Edge& edge : edges)
-  {
+  for (Edge &edge : edges) {
     if (edge.start_idx > vertex_idx)
       edge.start_idx--;
     if (edge.end_idx > vertex_idx)
       edge.end_idx--;
   }
 
-  for (Polygon& polygon : polygons)
-  {
-    for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++)
-    {
+  for (Polygon &polygon : polygons) {
+    for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++) {
       if (polygon.vertices[i] > vertex_idx)
         polygon.vertices[i]--;
     }
   }
-  
+
   // now erase the vertex
   vertices.erase(vertices.begin() + vertex_idx);
   return true;
 }
 
+bool Level::delete_selected() {
+  edges.erase(std::remove_if(edges.begin(), edges.end(),
+                             [](const Edge &edge) { return edge.selected; }),
+              edges.end());
 
-bool Level::delete_selected()
-{
-  edges.erase(
-    std::remove_if(
-      edges.begin(),
-      edges.end(),
-      [](const Edge& edge) { return edge.selected; }),
-    edges.end());
+  models.erase(std::remove_if(models.begin(), models.end(),
+                              [](const auto &model) { return model.selected; }),
+               models.end());
 
-  models.erase(
-    std::remove_if(
-      models.begin(),
-      models.end(),
-      [](const auto& model) { return model.selected; }),
-    models.end());
-
-  fiducials.erase(
-    std::remove_if(
-      fiducials.begin(),
-      fiducials.end(),
-      [](const Fiducial& fiducial) { return fiducial.selected; }),
-    fiducials.end());
+  fiducials.erase(std::remove_if(fiducials.begin(), fiducials.end(),
+                                 [](const Fiducial &fiducial) {
+                                   return fiducial.selected;
+                                 }),
+                  fiducials.end());
 
   polygons.erase(
-    std::remove_if(
-      polygons.begin(),
-      polygons.end(),
-      [](const Polygon& polygon) { return polygon.selected; }),
-    polygons.end());
+      std::remove_if(polygons.begin(), polygons.end(),
+                     [](const Polygon &polygon) { return polygon.selected; }),
+      polygons.end());
 
-  constraints.erase(
-    std::remove_if(
-      constraints.begin(),
-      constraints.end(),
-      [](const Constraint& constraint) { return constraint.selected(); }),
-    constraints.end());
+  constraints.erase(std::remove_if(constraints.begin(), constraints.end(),
+                                   [](const Constraint &constraint) {
+                                     return constraint.selected();
+                                   }),
+                    constraints.end());
 
   int selected_vertex_idx = -1;
-  for (int i = 0; i < static_cast<int>(vertices.size()); i++)
-  {
-    if (vertices[i].selected)
-    {
+  for (int i = 0; i < static_cast<int>(vertices.size()); i++) {
+    if (vertices[i].selected) {
       selected_vertex_idx = i;
-      break;  // just grab the index of the first selected vertex
+      break; // just grab the index of the first selected vertex
     }
   }
 
-  if (selected_vertex_idx >= 0)
-  {
-      delete_vertex_if_unused(selected_vertex_idx);
+  if (selected_vertex_idx >= 0) {
+    delete_vertex_if_unused(selected_vertex_idx);
   }
 
   // if a feature is selected, refuse to delete it if it's in a constraint
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
     if (!floorplan_features[i].selected())
       continue;
 
-    for (std::size_t j = 0; j < constraints.size(); j++)
-    {
+    for (std::size_t j = 0; j < constraints.size(); j++) {
       if (constraints[j].includes_id(floorplan_features[i].id()))
         return false;
     }
@@ -530,16 +445,13 @@ bool Level::delete_selected()
     return true;
   }
 
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
-    Layer& layer = layers[layer_idx];
-    for (std::size_t i = 0; i < layer.features.size(); i++)
-    {
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
+    Layer &layer = layers[layer_idx];
+    for (std::size_t i = 0; i < layer.features.size(); i++) {
       if (!layer.features[i].selected())
         continue;
 
-      for (std::size_t j = 0; j < constraints.size(); j++)
-      {
+      for (std::size_t j = 0; j < constraints.size(); j++) {
         if (constraints[j].includes_id(layer.features[i].id()))
           return false;
       }
@@ -552,63 +464,49 @@ bool Level::delete_selected()
   return true;
 }
 
-void Level::get_selected_items(
-  std::vector<Level::SelectedItem>& items)
-{
-  for (std::size_t i = 0; i < edges.size(); i++)
-  {
-    if (edges[i].selected)
-    {
+void Level::get_selected_items(std::vector<Level::SelectedItem> &items) {
+  for (std::size_t i = 0; i < edges.size(); i++) {
+    if (edges[i].selected) {
       Level::SelectedItem item;
       item.edge_idx = i;
       items.push_back(item);
     }
   }
 
-  for (std::size_t i = 0; i < models.size(); i++)
-  {
-    if (models[i].selected)
-    {
+  for (std::size_t i = 0; i < models.size(); i++) {
+    if (models[i].selected) {
       Level::SelectedItem item;
       item.model_idx = i;
       items.push_back(item);
     }
   }
 
-  for (std::size_t i = 0; i < vertices.size(); i++)
-  {
-    if (vertices[i].selected)
-    {
+  for (std::size_t i = 0; i < vertices.size(); i++) {
+    if (vertices[i].selected) {
       Level::SelectedItem item;
       item.vertex_idx = i;
       items.push_back(item);
     }
   }
 
-  for (std::size_t i = 0; i < fiducials.size(); i++)
-  {
-    if (fiducials[i].selected)
-    {
+  for (std::size_t i = 0; i < fiducials.size(); i++) {
+    if (fiducials[i].selected) {
       Level::SelectedItem item;
       item.fiducial_idx = i;
       items.push_back(item);
     }
   }
 
-  for (std::size_t i = 0; i < polygons.size(); i++)
-  {
-    if (polygons[i].selected)
-    {
+  for (std::size_t i = 0; i < polygons.size(); i++) {
+    if (polygons[i].selected) {
       Level::SelectedItem item;
       item.polygon_idx = i;
       items.push_back(item);
     }
   }
 
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
-    if (floorplan_features[i].selected())
-    {
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
+    if (floorplan_features[i].selected()) {
       Level::SelectedItem item;
       item.feature_idx = i;
       item.feature_layer_idx = 0;
@@ -616,12 +514,9 @@ void Level::get_selected_items(
     }
   }
 
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
-    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++)
-    {
-      if (layers[layer_idx].features[i].selected())
-      {
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
+    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++) {
+      if (layers[layer_idx].features[i].selected()) {
         Level::SelectedItem item;
         item.feature_idx = i;
         item.feature_layer_idx = layer_idx + 1;
@@ -630,10 +525,8 @@ void Level::get_selected_items(
     }
   }
 
-  for (std::size_t i = 0; i < constraints.size(); i++)
-  {
-    if (constraints[i].selected())
-    {
+  for (std::size_t i = 0; i < constraints.size(); i++) {
+    if (constraints[i].selected()) {
       Level::SelectedItem item;
       item.constraint_idx = i;
       items.push_back(item);
@@ -641,68 +534,57 @@ void Level::get_selected_items(
   }
 }
 
-void Level::calculate_scale(const CoordinateSystem& coordinate_system)
-{
+void Level::calculate_scale(const CoordinateSystem &coordinate_system) {
   // for now, just calculate the mean of the scale estimates
   double scale_sum = 0.0;
   int scale_count = 0;
 
-  for (auto& edge : edges)
-  {
-    if (edge.type == Edge::MEAS)
-    {
+  for (auto &edge : edges) {
+    if (edge.type == Edge::MEAS) {
       scale_count++;
       const double dx = vertices[edge.start_idx].x - vertices[edge.end_idx].x;
       const double dy = vertices[edge.start_idx].y - vertices[edge.end_idx].y;
-      const double distance_pixels = std::sqrt(dx*dx + dy*dy);
+      const double distance_pixels = std::sqrt(dx * dx + dy * dy);
       // todo: a clean, strongly-typed parameter API for edges
       const double distance_meters =
-        edge.params[std::string("distance")].value_double;
+          edge.params[std::string("distance")].value_double;
       scale_sum += distance_meters / distance_pixels;
     }
   }
 
-  if (scale_count > 0)
-  {
+  if (scale_count > 0) {
     drawing_meters_per_pixel = scale_sum / static_cast<double>(scale_count);
     printf("used %d measurements to estimate meters/pixel as %.5f\n",
-      scale_count, drawing_meters_per_pixel);
-  }
-  else
+           scale_count, drawing_meters_per_pixel);
+  } else
     drawing_meters_per_pixel = coordinate_system.default_scale();
 
-  if (drawing_width && drawing_height && drawing_meters_per_pixel > 0.0)
-  {
+  if (drawing_width && drawing_height && drawing_meters_per_pixel > 0.0) {
     x_meters = drawing_width * drawing_meters_per_pixel;
     y_meters = drawing_height * drawing_meters_per_pixel;
   }
 }
 
 // todo: migrate this to the TrafficMap class eventually
-void Level::draw_lane(
-  QGraphicsScene* scene,
-  const Edge& edge,
-  const RenderingOptions& opts,
-  const vector<Graph>& graphs) const
-{
+void Level::draw_lane(QGraphicsScene *scene, const Edge &edge,
+                      const RenderingOptions &opts,
+                      const vector<Graph> &graphs) const {
   const int graph_idx = edge.get_graph_idx();
   if (graph_idx >= 0 &&
-    graph_idx < static_cast<int>(opts.show_building_lanes.size()) &&
-    !opts.show_building_lanes[graph_idx])
-    return;// don't render this lane
+      graph_idx < static_cast<int>(opts.show_building_lanes.size()) &&
+      !opts.show_building_lanes[graph_idx])
+    return; // don't render this lane
 
-  const auto& v_start = vertices[edge.start_idx];
-  const auto& v_end = vertices[edge.end_idx];
+  const auto &v_start = vertices[edge.start_idx];
+  const auto &v_end = vertices[edge.end_idx];
   const double dx = v_end.x - v_start.x;
   const double dy = v_end.y - v_start.y;
-  const double len = std::sqrt(dx*dx + dy*dy);
+  const double len = std::sqrt(dx * dx + dy * dy);
 
   // see if there is a default width for this graph_idx
   double graph_default_width = -1.0;
-  for (const auto& graph : graphs)
-  {
-    if (graph.idx == graph_idx)
-    {
+  for (const auto &graph : graphs) {
+    if (graph.idx == graph_idx) {
       graph_default_width = graph.default_lane_width;
       break;
     }
@@ -720,19 +602,16 @@ void Level::draw_lane(
 
   // only draw arrows if it's a unidirectional lane. We used to draw
   // arrows in both directions for bidirectional, but it was messy.
-  if (!edge.is_bidirectional())
-  {
-    const QPen arrow_pen(
-      QBrush(QColor::fromRgbF(0.0, 0.0, 0.0, 0.5)),
-      lane_pen_width / 8);
+  if (!edge.is_bidirectional()) {
+    const QPen arrow_pen(QBrush(QColor::fromRgbF(0.0, 0.0, 0.0, 0.5)),
+                         lane_pen_width / 8);
 
     // dimensions for the direction indicators along this path
-    const double arrow_w = lane_pen_width / 2.5;  // width of arrowheads
-    const double arrow_l = lane_pen_width / 2.5;  // length of arrowheads
+    const double arrow_w = lane_pen_width / 2.5; // width of arrowheads
+    const double arrow_l = lane_pen_width / 2.5; // length of arrowheads
     const double arrow_spacing = lane_pen_width * 4.0;
 
-    for (double d = 0.0; d < len; d += arrow_spacing)
-    {
+    for (double d = 0.0; d < len; d += arrow_spacing) {
       // first calculate the center vertex of this arrowhead
       const double cx = v_start.x + d * norm_x;
       const double cy = v_start.y + d * norm_y;
@@ -752,16 +631,30 @@ void Level::draw_lane(
   }
 
   QColor color;
-  switch (edge.get_graph_idx())
-  {
-    case 0: color.setRgbF(0.0, 0.5, 0.0); break;
-    case 1: color.setRgbF(0.0, 0.0, 0.5); break;
-    case 2: color.setRgbF(0.0, 0.5, 0.5); break;
-    case 3: color.setRgbF(0.5, 0.5, 0.0); break;
-    case 4: color.setRgbF(0.5, 0.0, 0.5); break;
-    case 5: color.setRgbF(0.8, 0.0, 0.0); break;
-    case 9: color.setRgbF(0.3, 0.3, 0.3); break;
-    default: break;  // will render as dark grey
+  switch (edge.get_graph_idx()) {
+  case 0:
+    color.setRgbF(0.0, 0.5, 0.0);
+    break;
+  case 1:
+    color.setRgbF(0.0, 0.0, 0.5);
+    break;
+  case 2:
+    color.setRgbF(0.0, 0.5, 0.5);
+    break;
+  case 3:
+    color.setRgbF(0.5, 0.5, 0.0);
+    break;
+  case 4:
+    color.setRgbF(0.5, 0.0, 0.5);
+    break;
+  case 5:
+    color.setRgbF(0.8, 0.0, 0.0);
+    break;
+  case 9:
+    color.setRgbF(0.3, 0.3, 0.3);
+    break;
+  default:
+    break; // will render as dark grey
   }
 
   // always draw lane as red if it's selected
@@ -771,16 +664,14 @@ void Level::draw_lane(
   // always draw lanes somewhat transparent
   color.setAlphaF(0.5);
 
-  QGraphicsLineItem* lane_item = scene->addLine(
-    v_start.x, v_start.y,
-    v_end.x, v_end.y,
-    QPen(QBrush(color), lane_pen_width, Qt::SolidLine, Qt::RoundCap));
+  QGraphicsLineItem *lane_item = scene->addLine(
+      v_start.x, v_start.y, v_end.x, v_end.y,
+      QPen(QBrush(color), lane_pen_width, Qt::SolidLine, Qt::RoundCap));
   lane_item->setZValue(edge.get_graph_idx() + 1.0);
 
   // draw the orientation icon, if specified
   auto orientation_it = edge.params.find("orientation");
-  if (orientation_it != edge.params.end())
-  {
+  if (orientation_it != edge.params.end()) {
     // draw robot-outline box midway down this lane
     const double mx = (v_start.x + v_end.x) / 2.0;
     const double my = (v_start.y + v_end.y) / 2.0;
@@ -825,64 +716,52 @@ void Level::draw_lane(
     pp.moveTo(QPointF(mx, my));
 
     QPen orientation_pen(Qt::white, 5.0);
-    if (orientation_it->second.value_string == "forward")
-    {
+    if (orientation_it->second.value_string == "forward") {
       const double hix = mx + 1.0 * cos(yaw) / drawing_meters_per_pixel;
       const double hiy = my + 1.0 * sin(yaw) / drawing_meters_per_pixel;
       pp.lineTo(QPointF(hix, hiy));
-      QGraphicsPathItem* pi = scene->addPath(pp, orientation_pen);
+      QGraphicsPathItem *pi = scene->addPath(pp, orientation_pen);
       pi->setZValue(edge.get_graph_idx() + 1.1);
-    }
-    else if (orientation_it->second.value_string == "backward")
-    {
+    } else if (orientation_it->second.value_string == "backward") {
       const double hix = mx - 1.0 * cos(yaw) / drawing_meters_per_pixel;
       const double hiy = my - 1.0 * sin(yaw) / drawing_meters_per_pixel;
       pp.lineTo(QPointF(hix, hiy));
-      QGraphicsPathItem* pi = scene->addPath(pp, orientation_pen);
+      QGraphicsPathItem *pi = scene->addPath(pp, orientation_pen);
       pi->setZValue(edge.get_graph_idx() + 1.1);
     }
   }
 }
 
-void Level::draw_wall(QGraphicsScene* scene, const Edge& edge) const
-{
-  const auto& v_start = vertices[edge.start_idx];
-  const auto& v_end = vertices[edge.end_idx];
+void Level::draw_wall(QGraphicsScene *scene, const Edge &edge) const {
+  const auto &v_start = vertices[edge.start_idx];
+  const auto &v_end = vertices[edge.end_idx];
 
   const double r = edge.selected ? 0.5 : 0.0;
   const double b = edge.selected ? 0.0 : 0.5;
 
-  scene->addLine(
-    v_start.x, v_start.y,
-    v_end.x, v_end.y,
-    QPen(
-      QBrush(QColor::fromRgbF(r, 0.0, b, 0.5)),
-      0.2 / drawing_meters_per_pixel,
-      Qt::SolidLine, Qt::RoundCap));
+  scene->addLine(v_start.x, v_start.y, v_end.x, v_end.y,
+                 QPen(QBrush(QColor::fromRgbF(r, 0.0, b, 0.5)),
+                      0.2 / drawing_meters_per_pixel, Qt::SolidLine,
+                      Qt::RoundCap));
 }
 
-void Level::draw_meas(QGraphicsScene* scene, const Edge& edge) const
-{
-  const auto& v_start = vertices[edge.start_idx];
-  const auto& v_end = vertices[edge.end_idx];
+void Level::draw_meas(QGraphicsScene *scene, const Edge &edge) const {
+  const auto &v_start = vertices[edge.start_idx];
+  const auto &v_end = vertices[edge.end_idx];
   const double b = edge.selected ? 0.0 : 0.5;
 
-  scene->addLine(
-    v_start.x, v_start.y,
-    v_end.x, v_end.y,
-    QPen(
-      QBrush(QColor::fromRgbF(0.5, 0, b, 0.5)),
-      0.5 / drawing_meters_per_pixel,
-      Qt::SolidLine, Qt::RoundCap));
+  scene->addLine(v_start.x, v_start.y, v_end.x, v_end.y,
+                 QPen(QBrush(QColor::fromRgbF(0.5, 0, b, 0.5)),
+                      0.5 / drawing_meters_per_pixel, Qt::SolidLine,
+                      Qt::RoundCap));
 }
 
-void Level::draw_door(QGraphicsScene* scene, const Edge& edge) const
-{
-  const auto& v_start = vertices[edge.start_idx];
-  const auto& v_end = vertices[edge.end_idx];
+void Level::draw_door(QGraphicsScene *scene, const Edge &edge) const {
+  const auto &v_start = vertices[edge.start_idx];
+  const auto &v_end = vertices[edge.end_idx];
   const double g = edge.selected ? 1.0 : 0.0;
-  const double door_thickness = 0.2;  // meters
-  const double door_motion_thickness = 0.05;  // meters
+  const double door_thickness = 0.2;         // meters
+  const double door_motion_thickness = 0.05; // meters
 
   auto door_axis_it = edge.params.find("motion_axis");
   std::string door_axis("start");
@@ -912,125 +791,86 @@ void Level::draw_door(QGraphicsScene* scene, const Edge& edge) const
   const double door_angle = std::atan2(door_dy, door_dx);
 
   auto door_type_it = edge.params.find("type");
-  if (door_type_it != edge.params.end())
-  {
+  if (door_type_it != edge.params.end()) {
     const double DEG2RAD = M_PI / 180.0;
 
-    const std::string& door_type = door_type_it->second.value_string;
-    if (door_type == "hinged")
-    {
+    const std::string &door_type = door_type_it->second.value_string;
+    if (door_type == "hinged") {
       const double hinge_x = door_axis == "start" ? v_start.x : v_end.x;
       const double hinge_y = door_axis == "start" ? v_start.y : v_end.y;
       const double angle_offset = door_axis == "start" ? 0.0 : M_PI;
 
-      add_door_swing_path(
-        door_motion_path,
-        hinge_x,
-        hinge_y,
-        door_length,
-        door_angle + angle_offset,
-        door_angle + angle_offset + DEG2RAD * motion_dir * motion_degrees);
-    }
-    else if (door_type == "double_hinged")
-    {
+      add_door_swing_path(door_motion_path, hinge_x, hinge_y, door_length,
+                          door_angle + angle_offset,
+                          door_angle + angle_offset +
+                              DEG2RAD * motion_dir * motion_degrees);
+    } else if (door_type == "double_hinged") {
       // right door
       add_door_swing_path(
-        door_motion_path,
-        v_start.x,
-        v_start.y,
-        (right_left_ratio / (1 + right_left_ratio)) * door_length,
-        door_angle,
-        door_angle + DEG2RAD * motion_dir * motion_degrees);
+          door_motion_path, v_start.x, v_start.y,
+          (right_left_ratio / (1 + right_left_ratio)) * door_length, door_angle,
+          door_angle + DEG2RAD * motion_dir * motion_degrees);
 
       // left door
       add_door_swing_path(
-        door_motion_path,
-        v_end.x,
-        v_end.y,
-        (1 / (1 + right_left_ratio)) * door_length,
-        door_angle + M_PI,
-        door_angle + M_PI - DEG2RAD * motion_dir * motion_degrees);
-    }
-    else if (door_type == "sliding")
-    {
-      add_door_slide_path(
-        door_motion_path,
-        v_start.x,
-        v_start.y,
-        door_length,
-        door_angle);
-    }
-    else if (door_type == "double_sliding")
-    {
+          door_motion_path, v_end.x, v_end.y,
+          (1 / (1 + right_left_ratio)) * door_length, door_angle + M_PI,
+          door_angle + M_PI - DEG2RAD * motion_dir * motion_degrees);
+    } else if (door_type == "sliding") {
+      add_door_slide_path(door_motion_path, v_start.x, v_start.y, door_length,
+                          door_angle);
+    } else if (door_type == "double_sliding") {
       // right door
-      add_door_slide_path(
-        door_motion_path,
-        v_start.x,
-        v_start.y,
-        (right_left_ratio / (1 + right_left_ratio)) * door_length,
-        door_angle);
+      add_door_slide_path(door_motion_path, v_start.x, v_start.y,
+                          (right_left_ratio / (1 + right_left_ratio)) *
+                              door_length,
+                          door_angle);
 
       // left door
-      add_door_slide_path(
-        door_motion_path,
-        v_end.x,
-        v_end.y,
-        (1 / (1 + right_left_ratio)) * door_length,
-        door_angle + M_PI);
-    }
-    else
-    {
+      add_door_slide_path(door_motion_path, v_end.x, v_end.y,
+                          (1 / (1 + right_left_ratio)) * door_length,
+                          door_angle + M_PI);
+    } else {
       printf("tried to draw unknown door type: [%s]\n", door_type.c_str());
     }
   }
   scene->addPath(
-    door_motion_path,
-    QPen(Qt::black, door_motion_thickness / drawing_meters_per_pixel));
+      door_motion_path,
+      QPen(Qt::black, door_motion_thickness / drawing_meters_per_pixel));
 
   // add the doorjamb last, so it sits on top of the Z stack of the travel arc
-  scene->addLine(
-    v_start.x, v_start.y,
-    v_end.x, v_end.y,
-    QPen(
-      QBrush(QColor::fromRgbF(1.0, g, 0.0, 0.5)),
-      door_thickness / drawing_meters_per_pixel,
-      Qt::SolidLine, Qt::RoundCap));
+  scene->addLine(v_start.x, v_start.y, v_end.x, v_end.y,
+                 QPen(QBrush(QColor::fromRgbF(1.0, g, 0.0, 0.5)),
+                      door_thickness / drawing_meters_per_pixel, Qt::SolidLine,
+                      Qt::RoundCap));
 }
 
-void Level::add_door_slide_path(
-  QPainterPath& path,
-  double hinge_x,
-  double hinge_y,
-  double door_length,
-  double door_angle) const
-{
+void Level::add_door_slide_path(QPainterPath &path, double hinge_x,
+                                double hinge_y, double door_length,
+                                double door_angle) const {
   // first draw the door as a thin line
   path.moveTo(hinge_x, hinge_y);
-  path.lineTo(
-    hinge_x + door_length * std::cos(door_angle),
-    hinge_y + door_length * std::sin(door_angle));
+  path.lineTo(hinge_x + door_length * std::cos(door_angle),
+              hinge_y + door_length * std::sin(door_angle));
 
   // now draw a box around where it slides (in the wall, usually)
-  const double th = door_angle;  // makes expressions below single-line...
+  const double th = door_angle; // makes expressions below single-line...
   const double pi_2 = M_PI / 2.0;
-  const double s = 0.15 / drawing_meters_per_pixel;  // sliding panel thickness
+  const double s = 0.15 / drawing_meters_per_pixel; // sliding panel thickness
 
-  const QPointF p1(
-    hinge_x - s * std::cos(th + pi_2),
-    hinge_y - s * std::sin(th + pi_2));
+  const QPointF p1(hinge_x - s * std::cos(th + pi_2),
+                   hinge_y - s * std::sin(th + pi_2));
 
   const QPointF p2(
-    hinge_x - s * std::cos(th + pi_2) - door_length * std::cos(th),
-    hinge_y - s * std::sin(th + pi_2) - door_length * std::sin(th));
+      hinge_x - s * std::cos(th + pi_2) - door_length * std::cos(th),
+      hinge_y - s * std::sin(th + pi_2) - door_length * std::sin(th));
 
   const QPointF p3(
-    hinge_x + s * std::cos(th + pi_2) - door_length * std::cos(th),
-    hinge_y + s * std::sin(th + pi_2) - door_length * std::sin(th));
+      hinge_x + s * std::cos(th + pi_2) - door_length * std::cos(th),
+      hinge_y + s * std::sin(th + pi_2) - door_length * std::sin(th));
 
-  const QPointF p4(
-    hinge_x + s * std::cos(th + pi_2),
-    hinge_y + s * std::sin(th + pi_2));
-
+  const QPointF p4(hinge_x + s * std::cos(th + pi_2),
+                   hinge_y + s * std::sin(th + pi_2));
 
   path.moveTo(p1);
   path.lineTo(p2);
@@ -1039,59 +879,44 @@ void Level::add_door_slide_path(
   path.lineTo(p1);
 }
 
-void Level::add_door_swing_path(
-  QPainterPath& path,
-  double hinge_x,
-  double hinge_y,
-  double door_length,
-  double start_angle,
-  double end_angle) const
-{
+void Level::add_door_swing_path(QPainterPath &path, double hinge_x,
+                                double hinge_y, double door_length,
+                                double start_angle, double end_angle) const {
   path.moveTo(hinge_x, hinge_y);
-  path.lineTo(
-    hinge_x + door_length * std::cos(start_angle),
-    hinge_y + door_length * std::sin(start_angle));
+  path.lineTo(hinge_x + door_length * std::cos(start_angle),
+              hinge_y + door_length * std::sin(start_angle));
 
   const int NUM_MOTION_STEPS = 10;
-  const double angle_inc = (end_angle - start_angle) / (NUM_MOTION_STEPS-1);
-  for (int i = 0; i < NUM_MOTION_STEPS; i++)
-  {
+  const double angle_inc = (end_angle - start_angle) / (NUM_MOTION_STEPS - 1);
+  for (int i = 0; i < NUM_MOTION_STEPS; i++) {
     // compute door opening angle at this motion step
     const double a = start_angle + i * angle_inc;
 
-    path.lineTo(
-      hinge_x + door_length * std::cos(a),
-      hinge_y + door_length * std::sin(a));
+    path.lineTo(hinge_x + door_length * std::cos(a),
+                hinge_y + door_length * std::sin(a));
   }
 
   path.lineTo(hinge_x, hinge_y);
 }
 
-void Level::draw_polygon(
-  QGraphicsScene* scene,
-  const QBrush& brush,
-  const Polygon& polygon) const
-{
+void Level::draw_polygon(QGraphicsScene *scene, const QBrush &brush,
+                         const Polygon &polygon) const {
   QBrush selected_brush(QColor::fromRgbF(1.0, 0.0, 0.0, 0.5));
 
   QVector<QPointF> polygon_vertices;
-  for (const auto& vertex_idx: polygon.vertices)
-  {
-    const Vertex& v = vertices[vertex_idx];
+  for (const auto &vertex_idx : polygon.vertices) {
+    const Vertex &v = vertices[vertex_idx];
     polygon_vertices.append(QPointF(v.x, v.y));
   }
 
   QPen pen(Qt::black);
   pen.setWidthF(0.05 / drawing_meters_per_pixel);
 
-  scene->addPolygon(
-    QPolygonF(polygon_vertices),
-    pen,
-    polygon.selected ? selected_brush : brush);
+  scene->addPolygon(QPolygonF(polygon_vertices), pen,
+                    polygon.selected ? selected_brush : brush);
 }
 
-void Level::draw_polygons(QGraphicsScene* scene) const
-{
+void Level::draw_polygons(QGraphicsScene *scene) const {
   const QBrush floor_brush(QColor::fromRgbF(0.9, 0.9, 0.9, 0.8));
   const QBrush hole_brush(QColor::fromRgbF(0.3, 0.3, 0.3, 0.5));
   const QBrush roi_brush(QColor::fromRgbF(1.0, 0.0, 0.0, 0.5));
@@ -1099,36 +924,34 @@ void Level::draw_polygons(QGraphicsScene* scene) const
   const QBrush rack_bay_brush(QColor::fromRgbF(0.9, 0.9, 0.9, 0.8));
 
   // first draw the floor polygons
-  for (const auto& polygon : polygons)
-  {
+  for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::FLOOR)
       draw_polygon(scene, floor_brush, polygon);
   }
 
   // now draw the holes
-  for (const auto& polygon : polygons)
-  {
+  for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::HOLE)
       draw_polygon(scene, hole_brush, polygon);
   }
 
   // now draw the ROIs
-  for (const auto& polygon : polygons)
-  {
+  for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::ROI)
       draw_polygon(scene, roi_brush, polygon);
   }
 
   // now draw the storage racks
-  for (const auto& polygon : polygons)
-  {
+  // and make them a true rectangle with the make_rectangle_parallel function
+  std::size_t rack_index = 0;
+  for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::STORAGE_RACK)
       draw_polygon(scene, storage_rack_brush, polygon);
+    rack_index++;
   }
 
   // now draw the rack bays on top of the storage racks
-  for (const auto& polygon : polygons)
-  {
+  for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::RACK_BAY)
       draw_polygon(scene, rack_bay_brush, polygon);
   }
@@ -1151,62 +974,52 @@ void Level::draw_polygons(QGraphicsScene* scene) const
 #endif
 }
 
-void Level::clear_selection()
-{
-  for (auto& vertex : vertices)
+void Level::clear_selection() {
+  for (auto &vertex : vertices)
     vertex.selected = false;
 
-  for (auto& edge : edges)
+  for (auto &edge : edges)
     edge.selected = false;
 
-  for (auto& model : models)
+  for (auto &model : models)
     model.selected = false;
 
-  for (auto& polygon : polygons)
+  for (auto &polygon : polygons)
     polygon.selected = false;
 
-  for (auto& fiducial : fiducials)
+  for (auto &fiducial : fiducials)
     fiducial.selected = false;
 
-  for (auto& feature : floorplan_features)
+  for (auto &feature : floorplan_features)
     feature.setSelected(false);
 
-  for (auto& layer : layers)
+  for (auto &layer : layers)
     layer.clear_selection();
 
-  for (auto& constraint : constraints)
+  for (auto &constraint : constraints)
     constraint.setSelected(false);
 }
 
-void Level::draw(
-  QGraphicsScene* scene,
-  vector<EditorModel>& editor_models,
-  const RenderingOptions& rendering_options,
-  const vector<Graph>& graphs,
-  const CoordinateSystem& coordinate_system)
-{
+void Level::draw(QGraphicsScene *scene, vector<EditorModel> &editor_models,
+                 const RenderingOptions &rendering_options,
+                 const vector<Graph> &graphs,
+                 const CoordinateSystem &coordinate_system) {
   printf("Level::draw()\n");
   vertex_radius = 0.1;
 
-  if (!coordinate_system.is_global())
-  {
+  if (!coordinate_system.is_global()) {
     // If we're using an image-defined coordinate system, we should
     // adjust the SceneRect to match the reference image, so the
     // scrollbar range makes sense for this level.
-    if (drawing_filename.size() && _drawing_visible)
-    {
+    if (drawing_filename.size() && _drawing_visible) {
       const double extra_scroll_area_width = 1.0 * drawing_width;
       const double extra_scroll_area_height = 1.0 * drawing_height;
       scene->setSceneRect(
-        QRectF(
-          -extra_scroll_area_width,
-          -extra_scroll_area_height,
-          drawing_width + 2 * extra_scroll_area_width,
-          drawing_height + 2 * extra_scroll_area_height));
+          QRectF(-extra_scroll_area_width, -extra_scroll_area_height,
+                 drawing_width + 2 * extra_scroll_area_width,
+                 drawing_height + 2 * extra_scroll_area_height));
       scene->addPixmap(floorplan_pixmap);
-    }
-    else
-    {
+    } else {
       const double w = x_meters / drawing_meters_per_pixel;
       const double h = y_meters / drawing_meters_per_pixel;
       scene->setSceneRect(QRectF(0, 0, w, h));
@@ -1216,89 +1029,73 @@ void Level::draw(
 
   draw_polygons(scene);
 
-  for (auto& layer : layers)
+  for (auto &layer : layers)
     layer.draw(scene, drawing_meters_per_pixel, coordinate_system);
 
-  if (rendering_options.show_models)
-  {
-    for (Model& model : models)
+  if (rendering_options.show_models) {
+    for (Model &model : models)
       model.draw(scene, editor_models, drawing_meters_per_pixel);
   }
 
-  for (const auto& edge : edges)
-  {
-    switch (edge.type)
-    {
-      case Edge::LANE:
-        draw_lane(scene, edge, rendering_options, graphs);
-        break;
-      case Edge::WALL:
-        draw_wall(scene, edge);
-        break;
-      case Edge::MEAS:
-        draw_meas(scene, edge);
-        break;
-      case Edge::DOOR:
-        draw_door(scene, edge);
-        break;
-      case Edge::HUMAN_LANE:
-        draw_lane(scene, edge, rendering_options, graphs);
-        break;
-      default:
-        printf("tried to draw unknown edge type: %d\n",
-          static_cast<int>(edge.type));
-        break;
+  for (const auto &edge : edges) {
+    switch (edge.type) {
+    case Edge::LANE:
+      draw_lane(scene, edge, rendering_options, graphs);
+      break;
+    case Edge::WALL:
+      draw_wall(scene, edge);
+      break;
+    case Edge::MEAS:
+      draw_meas(scene, edge);
+      break;
+    case Edge::DOOR:
+      draw_door(scene, edge);
+      break;
+    case Edge::HUMAN_LANE:
+      draw_lane(scene, edge, rendering_options, graphs);
+      break;
+    default:
+      printf("tried to draw unknown edge type: %d\n",
+             static_cast<int>(edge.type));
+      break;
     }
   }
 
   QFont vertex_name_font("Helvetica");
   double vertex_name_font_size =
-    vertex_radius / drawing_meters_per_pixel * 1.5 * 10.0;
+      vertex_radius / drawing_meters_per_pixel * 1.5 * 10.0;
   if (vertex_name_font_size < 1.0)
     vertex_name_font_size = 1.0;
   vertex_name_font.setPointSizeF(vertex_name_font_size);
 
-  for (const auto& v : vertices)
-    v.draw(
-      scene,
-      vertex_radius / drawing_meters_per_pixel,
-      drawing_meters_per_pixel,
-      vertex_name_font,
-      coordinate_system);
+  for (const auto &v : vertices)
+    v.draw(scene, vertex_radius / drawing_meters_per_pixel,
+           drawing_meters_per_pixel, vertex_name_font, coordinate_system);
 
-  for (const auto& f : fiducials)
+  for (const auto &f : fiducials)
     f.draw(scene, drawing_meters_per_pixel);
 
   Transform level_scale;
   level_scale.setScale(drawing_meters_per_pixel);
-  for (auto& feature : floorplan_features)
-  {
-    feature.draw(
-      scene,
-      QColor::fromRgbF(0, 0, 0, 0.5),
-      level_scale,
-      drawing_meters_per_pixel);
+  for (auto &feature : floorplan_features) {
+    feature.draw(scene, QColor::fromRgbF(0, 0, 0, 0.5), level_scale,
+                 drawing_meters_per_pixel);
   }
 
   for (std::size_t i = 0; i < constraints.size(); i++)
     draw_constraint(scene, constraints[i], i);
 }
 
-void Level::clear_scene()
-{
-  for (auto& model : models)
+void Level::clear_scene() {
+  for (auto &model : models)
     model.clear_scene();
 }
 
-QUuid Level::add_feature(const int layer_idx, const double x, const double y)
-{
-  if (layer_idx == 0)
-  {
+QUuid Level::add_feature(const int layer_idx, const double x, const double y) {
+  if (layer_idx == 0) {
     floorplan_features.push_back(Feature(x, y));
     return floorplan_features.rbegin()->id();
-  }
-  else
-  {
+  } else {
     if (layer_idx - 1 >= static_cast<int>(layers.size()))
       return NULL;
 
@@ -1306,14 +1103,11 @@ QUuid Level::add_feature(const int layer_idx, const double x, const double y)
   }
 }
 
-void Level::remove_feature(const int layer_idx, QUuid feature_id)
-{
-  if (layer_idx == 0)
-  {
+void Level::remove_feature(const int layer_idx, QUuid feature_id) {
+  if (layer_idx == 0) {
     int index_to_remove = -1;
 
-    for (std::size_t i = 0; i < floorplan_features.size(); i++)
-    {
+    for (std::size_t i = 0; i < floorplan_features.size(); i++) {
       if (feature_id == floorplan_features[i].id())
         index_to_remove = i;
     }
@@ -1322,9 +1116,7 @@ void Level::remove_feature(const int layer_idx, QUuid feature_id)
       return;
 
     floorplan_features.erase(floorplan_features.begin() + index_to_remove);
-  }
-  else
-  {
+  } else {
     if (layer_idx - 1 >= static_cast<int>(layers.size()))
       return;
 
@@ -1332,8 +1124,7 @@ void Level::remove_feature(const int layer_idx, QUuid feature_id)
   }
 }
 
-bool Level::export_features(const std::string& /*filename*/) const
-{
+bool Level::export_features(const std::string & /*filename*/) const {
   return true;
 #if 0
   // TODO (MQ): revisit all of this...
@@ -1451,29 +1242,24 @@ bool Level::export_features(const std::string& /*filename*/) const
 #endif
 }
 
-void Level::load_yaml_edge_sequence(
-  const YAML::Node& data,
-  const char* sequence_name,
-  const Edge::Type type)
-{
+void Level::load_yaml_edge_sequence(const YAML::Node &data,
+                                    const char *sequence_name,
+                                    const Edge::Type type) {
   if (!data[sequence_name] || !data[sequence_name].IsSequence())
     return;
 
-  const YAML::Node& yl = data[sequence_name];
-  for (YAML::const_iterator it = yl.begin(); it != yl.end(); ++it)
-  {
+  const YAML::Node &yl = data[sequence_name];
+  for (YAML::const_iterator it = yl.begin(); it != yl.end(); ++it) {
     Edge e;
     e.from_yaml(*it, type);
     edges.push_back(e);
   }
 }
 
-double Level::point_to_line_segment_distance(
-  const double x, const double y,
-  const double x0, const double y0,
-  const double x1, const double y1,
-  double& x_proj, double& y_proj)
-{
+double Level::point_to_line_segment_distance(const double x, const double y,
+                                             const double x0, const double y0,
+                                             const double x1, const double y1,
+                                             double &x_proj, double &y_proj) {
   // this portion figures out which edge is closest to (x, y) by repeatedly
   // testing the distance from the click to each edge in the polygon, using
   // geometry similar to that explained in:
@@ -1481,14 +1267,12 @@ double Level::point_to_line_segment_distance(
 
   const double dx = x1 - x0;
   const double dy = y1 - y0;
-  const double segment_length_squared = dx*dx + dy*dy;
+  const double segment_length_squared = dx * dx + dy * dy;
 
   const double dx0 = x - x0;
   const double dy0 = y - y0;
-  const double dot = dx0*dx + dy0*dy;
-  const double t = std::max(
-    0.0,
-    std::min(1.0, dot / segment_length_squared));
+  const double dot = dx0 * dx + dy0 * dy;
+  const double t = std::max(0.0, std::min(1.0, dot / segment_length_squared));
 
   x_proj = x0 + t * dx;
   y_proj = y0 + t * dy;
@@ -1499,8 +1283,8 @@ double Level::point_to_line_segment_distance(
   const double dist = std::sqrt(dx_proj * dx_proj + dy_proj * dy_proj);
 
   /*
-  printf("   p=(%.1f, %.1f) p0=(%.1f, %.1f) p1=(%.1f, %.1f) t=%.3f proj=(%.1f, %.1f) dist=%.3f\n",
-      x, y, x0, y0, x1, y1, t, x_proj, y_proj, dist);
+  printf("   p=(%.1f, %.1f) p0=(%.1f, %.1f) p1=(%.1f, %.1f) t=%.3f proj=(%.1f,
+  %.1f) dist=%.3f\n", x, y, x0, y0, x1, y1, t, x_proj, y_proj, dist);
   */
 
   return dist;
@@ -1510,11 +1294,9 @@ double Level::point_to_line_segment_distance(
  * This function returns the index of the polygon vertex that will be
  * 'split' by the newly created edge
  */
-Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(
-  const Polygon* polygon,
-  const double x,
-  const double y)
-{
+Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(const Polygon *polygon,
+                                                        const double x,
+                                                        const double y) {
   Polygon::EdgeDragPolygon edp;
 
   if (polygon == nullptr || polygon->vertices.empty())
@@ -1526,10 +1308,9 @@ Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(
   int min_idx = 0;
   double min_dist = 1.0e9;
 
-  for (std::size_t v0_idx = 0; v0_idx < polygon->vertices.size(); v0_idx++)
-  {
+  for (std::size_t v0_idx = 0; v0_idx < polygon->vertices.size(); v0_idx++) {
     const std::size_t v1_idx =
-      v0_idx < polygon->vertices.size() - 1 ? v0_idx + 1 : 0;
+        v0_idx < polygon->vertices.size() - 1 ? v0_idx + 1 : 0;
     const std::size_t v0 = polygon->vertices[v0_idx];
     const std::size_t v1 = polygon->vertices[v1_idx];
 
@@ -1539,11 +1320,10 @@ Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(
     const double y1 = vertices[v1].y;
 
     double x_proj = 0, y_proj = 0;
-    const double dist = point_to_line_segment_distance(
-      x, y, x0, y0, x1, y1, x_proj, y_proj);
+    const double dist =
+        point_to_line_segment_distance(x, y, x0, y0, x1, y1, x_proj, y_proj);
 
-    if (dist < min_dist)
-    {
+    if (dist < min_dist) {
       min_idx = v0;
       min_dist = dist;
 
@@ -1555,14 +1335,12 @@ Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(
 
   // create the mouse motion polygon and insert a new edge
   QVector<QPointF> polygon_vertices;
-  for (std::size_t i = 0; i < polygon->vertices.size(); i++)
-  {
+  for (std::size_t i = 0; i < polygon->vertices.size(); i++) {
     const int v_idx = polygon->vertices[i];
-    const Vertex& v = vertices[v_idx];
+    const Vertex &v = vertices[v_idx];
     polygon_vertices.append(QPointF(v.x, v.y));
-    if (v_idx == min_idx)
-    {
-      polygon_vertices.append(QPointF(x, y));  // current mouse location
+    if (v_idx == min_idx) {
+      polygon_vertices.append(QPointF(x, y)); // current mouse location
       edp.movable_vertex = i + 1;
     }
   }
@@ -1571,39 +1349,29 @@ Polygon::EdgeDragPolygon Level::polygon_edge_drag_press(
   return edp;
 }
 
-void Level::add_vertex(const double x, const double y)
-{
+void Level::add_vertex(const double x, const double y) {
   vertices.push_back(Vertex(x, y));
 }
 
-std::size_t Level::get_vertex_by_id(QUuid vertex_id)
-{
-  for (std::size_t i = 0; i < vertices.size(); i++)
-  {
-    if (vertices[i].uuid == vertex_id)
-    {
+std::size_t Level::get_vertex_by_id(QUuid vertex_id) {
+  for (std::size_t i = 0; i < vertices.size(); i++) {
+    if (vertices[i].uuid == vertex_id) {
       return i;
     }
   }
-  return vertices.size()+1;
+  return vertices.size() + 1;
 }
 
-bool Level::are_layer_names_unique()
-{
+bool Level::are_layer_names_unique() {
   // Just do the trivial n^2 approach for now, if we ever have a zillion
   // layers, we can do something more sophisticated.
 
-  for (std::size_t i = 0; i < layers.size(); i++)
-  {
-    for (std::size_t j = i + 1; j < layers.size(); j++)
-    {
-      if (layers[i].name == layers[j].name)
-      {
+  for (std::size_t i = 0; i < layers.size(); i++) {
+    for (std::size_t j = i + 1; j < layers.size(); j++) {
+      if (layers[i].name == layers[j].name) {
         printf("layer %d (%s) is the same as layer %d (%s)\n",
-          static_cast<int>(i),
-          layers[i].name.c_str(),
-          static_cast<int>(j),
-          layers[j].name.c_str());
+               static_cast<int>(i), layers[i].name.c_str(), static_cast<int>(j),
+               layers[j].name.c_str());
 
         return false;
       }
@@ -1613,17 +1381,13 @@ bool Level::are_layer_names_unique()
   return true;
 }
 
-const Feature* Level::find_feature(const QUuid& id) const
-{
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
+const Feature *Level::find_feature(const QUuid &id) const {
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
     if (floorplan_features[i].id() == id)
       return &floorplan_features[i];
   }
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
-    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++)
-    {
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
+    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++) {
       if (layers[layer_idx].features[i].id() == id)
         return &layers[layer_idx].features[i];
     }
@@ -1631,31 +1395,27 @@ const Feature* Level::find_feature(const QUuid& id) const
   return nullptr;
 }
 
-const Feature* Level::find_feature(const double x, const double y) const
-{
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
+const Feature *Level::find_feature(const double x, const double y) const {
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
     if (!layers[layer_idx].visible)
       continue;
 
-    const Feature* layer_feature =
-      layers[layer_idx].find_feature(x, y, drawing_meters_per_pixel);
+    const Feature *layer_feature =
+        layers[layer_idx].find_feature(x, y, drawing_meters_per_pixel);
 
     if (layer_feature)
       return layer_feature;
   }
 
   double min_dist = 1e9;
-  const Feature* min_feature = nullptr;
+  const Feature *min_feature = nullptr;
 
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
-    const Feature& f = floorplan_features[i];
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
+    const Feature &f = floorplan_features[i];
     const double dx = x - f.x();
     const double dy = y - f.y();
     const double dist = sqrt(dx * dx + dy * dy);
-    if (dist < min_dist)
-    {
+    if (dist < min_dist) {
       min_dist = dist;
       min_feature = &floorplan_features[i];
     }
@@ -1666,25 +1426,20 @@ const Feature* Level::find_feature(const double x, const double y) const
   return nullptr;
 }
 
-void Level::add_constraint(const QUuid& a, const QUuid& b)
-{
-  printf("Level::add_constraint(%s, %s)\n",
-    a.toString().toStdString().c_str(),
-    b.toString().toStdString().c_str());
+void Level::add_constraint(const QUuid &a, const QUuid &b) {
+  printf("Level::add_constraint(%s, %s)\n", a.toString().toStdString().c_str(),
+         b.toString().toStdString().c_str());
   if (a == b)
     return;
   constraints.push_back(Constraint(a, b));
 }
 
-void Level::remove_constraint(const QUuid& a, const QUuid& b)
-{
+void Level::remove_constraint(const QUuid &a, const QUuid &b) {
   const Constraint c(a, b);
   int index_to_remove = -1;
 
-  for (std::size_t i = 0; i < constraints.size(); i++)
-  {
-    if (constraints[i] == c)
-    {
+  for (std::size_t i = 0; i < constraints.size(); i++) {
+    if (constraints[i] == c) {
       index_to_remove = static_cast<int>(i);
       break;
     }
@@ -1696,24 +1451,18 @@ void Level::remove_constraint(const QUuid& a, const QUuid& b)
   constraints.erase(constraints.begin() + index_to_remove);
 }
 
-bool Level::get_feature_point(const QUuid& id, QPointF& point) const
-{
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
-    if (floorplan_features[i].id() == id)
-    {
+bool Level::get_feature_point(const QUuid &id, QPointF &point) const {
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
+    if (floorplan_features[i].id() == id) {
       point = floorplan_features[i].qpoint();
       return true;
     }
   }
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
-    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++)
-    {
-      const Layer& layer = layers[layer_idx];
-      if (layer.features[i].id() == id)
-      {
-        const Feature& feature = layers[layer_idx].features[i];
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
+    for (std::size_t i = 0; i < layers[layer_idx].features.size(); i++) {
+      const Layer &layer = layers[layer_idx];
+      if (layer.features[i].id() == id) {
+        const Feature &feature = layers[layer_idx].features[i];
         point = layer.transform.forwards(feature.qpoint());
         point /= drawing_meters_per_pixel;
         return true;
@@ -1723,16 +1472,12 @@ bool Level::get_feature_point(const QUuid& id, QPointF& point) const
   return false;
 }
 
-void Level::draw_constraint(
-  QGraphicsScene* scene,
-  const Constraint& constraint,
-  int constraint_idx) const
-{
-  const std::vector<QUuid>& feature_ids = constraint.ids();
-  if (feature_ids.size() != 2)
-  {
+void Level::draw_constraint(QGraphicsScene *scene, const Constraint &constraint,
+                            int constraint_idx) const {
+  const std::vector<QUuid> &feature_ids = constraint.ids();
+  if (feature_ids.size() != 2) {
     printf("WOAH! tried to draw a constraint with only %d ID's!\n",
-      static_cast<int>(feature_ids.size()));
+           static_cast<int>(feature_ids.size()));
     return;
   }
 
@@ -1740,69 +1485,197 @@ void Level::draw_constraint(
   const QColor selected_color = QColor::fromRgbF(1.0, 0.0, 0.0, 0.5);
 
   const double pen_width = 0.1 / drawing_meters_per_pixel;
-  QPen pen(
-    QBrush(constraint.selected() ? selected_color : color),
-    pen_width,
-    Qt::SolidLine,
-    Qt::RoundCap);
+  QPen pen(QBrush(constraint.selected() ? selected_color : color), pen_width,
+           Qt::SolidLine, Qt::RoundCap);
 
   QPointF p1, p2;
-  if (!get_feature_point(feature_ids[0], p1))
-  {
+  if (!get_feature_point(feature_ids[0], p1)) {
     printf("woah! couldn't find constraint feature ID %s\n",
-      feature_ids[0].toString().toStdString().c_str());
+           feature_ids[0].toString().toStdString().c_str());
     return;
   }
 
-  if (!get_feature_point(feature_ids[1], p2))
-  {
+  if (!get_feature_point(feature_ids[1], p2)) {
     printf("woah! couldn't find constraint feature ID %s\n",
-      feature_ids[1].toString().toStdString().c_str());
+           feature_ids[1].toString().toStdString().c_str());
     return;
   }
 
-  QGraphicsLineItem* line = scene->addLine(
-    p1.x(),
-    p1.y(),
-    p2.x(),
-    p2.y(),
-    pen);
+  QGraphicsLineItem *line = scene->addLine(p1.x(), p1.y(), p2.x(), p2.y(), pen);
   line->setZValue(199.0);
   line->setData(0, "constraint");
   line->setData(1, constraint_idx);
 }
 
-class TransformResidual
-{
-public:
-  TransformResidual(
-    double level_x,
-    double level_y,
-    double level_meters_per_pixel,
-    double layer_x,
-    double layer_y)
-  : _level_x(level_x),
-    _level_y(level_y),
-    _level_meters_per_pixel(level_meters_per_pixel),
-    _layer_x(layer_x),
-    _layer_y(layer_y)
-  {
+// this function will squre up the rack bay vertices,
+// check if rack parameters have been changed, and update the rack bays
+void Level::update_storage_racks() {
+  // loop through all the polygons
+  for (std::size_t polygon_index = 0; polygon_index < polygons.size();
+       polygon_index++) {
+    // get the polygon
+    Polygon &polygon = polygons[polygon_index];
+
+    // check if the polygon is a storage rack
+    if (polygon.type == Polygon::STORAGE_RACK) {
+      make_rectangle_parallel(polygon_index);
+    }
+  }
+}
+
+void Level::delete_rack_bays(std::string storage_rack_name) {
+  // this function will delete the rack bays belonging to a certain storage rack
+
+  // first, make a list of rack bays, and their vertices (except if the vertices
+  // belong to a storage rack)
+  std::vector<std::size_t> rack_bay_vertices; // to throw away
+
+  unsigned int polygon_index = 0;
+  for (const auto &polygon : polygons) {
+    if (polygon.type == Polygon::RACK_BAY) {
+      // get the parent rack name of the rack bay from the params
+      auto it = polygon.params.find(storage_rack_name);
+      if (it ==
+          polygon.params.end()) // iterator returns this if name is not found
+      {
+        continue;
+      }
+      for (const int &vertex_idx : polygon.vertices) {
+        rack_bay_vertices.push_back(vertex_idx);
+      }
+      polygons.erase(polygons.begin() +
+                     polygon_index); // delete the rack bay polygon
+      polygon_index++;
+    }
   }
 
-  template<typename T>
-  bool operator()(
-    const T* const yaw,
-    const T* const scale,
-    const T* const translation,
-    T* residual) const
-  {
-    const T qx =
-      (( cos(yaw[0]) * _layer_x + sin(yaw[0]) * _layer_y) * scale[0]
-      + translation[0]) / _level_meters_per_pixel;
+  // delete vertices belonging to rack bays (except if they belong to other
+  // geometry)
+  for (std::size_t i = 0; i < rack_bay_vertices.size(); i++) {
+    delete_vertex_if_unused(rack_bay_vertices[i]);
+  }
+}
+
+// take a polygon index, and make sure the indices are a polygon
+void Level::make_rectangle_parallel(std::size_t polygon_index) {
+  // get the polygon if it exists
+  if (polygon_index >= polygons.size()) {
+    printf("Polygon index %d is out of range\n",
+           static_cast<int>(polygon_index));
+    return;
+  }
+
+  // get a reference to the polygon
+  Polygon &polygon = polygons[polygon_index];
+
+  // get the indices of the vertices
+  if (polygon.vertices.size() != 4) {
+    printf("Polygon %d has %d vertices, not 4\n",
+           static_cast<int>(polygon_index),
+           static_cast<int>(polygon.vertices.size()));
+    return;
+  }
+
+  Vertex &v0 = vertices[polygon.vertices[0]];
+  Vertex &v1 = vertices[polygon.vertices[1]];
+  Vertex &v2 = vertices[polygon.vertices[2]];
+  Vertex &v3 = vertices[polygon.vertices[3]];
+
+  // Calculate the centeoui of the rectangle
+  double center_x = (v0.x + v1.x + v2.x + v3.x) / 4.0;
+  double center_y = (v0.y + v1.y + v2.y + v3.y) / 4.0;
+
+  // Function to calculate the angle of a vertex with respect to the center
+  auto angle_with_center = [&](const Vertex &vertex) {
+    return std::atan2(vertex.y - center_y, vertex.x - center_x);
+  };
+
+  // Create a vector of vertices sorted by their angles
+  std::vector<Vertex *> sorted_vertices = {&v0, &v1, &v2, &v3};
+  std::sort(sorted_vertices.begin(), sorted_vertices.end(),
+            [&](Vertex *a, Vertex *b) {
+              return angle_with_center(*a) < angle_with_center(*b);
+            });
+
+  // Reassign the sorted vertices to v0, v1, v2, v3
+  v0 = *sorted_vertices[0];
+  v1 = *sorted_vertices[1];
+  v2 = *sorted_vertices[2];
+  v3 = *sorted_vertices[3];
+  // Now, v0 is the bottom-left, v1 is the bottom-right,
+  // v2 is the top-right, and v3 is the top-left vertex
+
+  // calculate the angle of the non-perfect rectangle
+  double angle = std::atan2(v1.y - v0.y, v1.x - v0.x);
+
+  // see if the angle is close to 0, 90, 180, or 270 degrees
+  double angle_degrees = angle * 180.0 / M_PI;
+  double angle_0 = std::abs(angle_degrees - 0.0);
+  double angle_90 = std::abs(angle_degrees - 90.0);
+  double angle_180 = std::abs(angle_degrees - 180.0);
+  double angle_270 = std::abs(angle_degrees - 270.0);
+
+  // if the angle is close to 0, 90, 180, or 270 degrees, make it perfect
+  if (angle_0 < 5.0) {
+    // make the rectangle parallel to the x-axis
+    printf("Angle of rectangle is %.2f degrees, close to 0\n", angle_degrees);
+    v1.y = v0.y;
+    v2.x = v1.x;
+    v3.y = v2.y;
+    v3.x = v0.x;
+    return;
+  } else if (angle_90 < 5.0) {
+    // make the rectangle parallel to the y-axis
+    printf("Angle of rectangle is %.2f degrees, close to 90\n", angle_degrees);
+    v1.x = v0.x;
+    v2.y = v1.y;
+    v3.x = v2.x;
+    v3.y = v0.y;
+    return;
+  } else if (angle_180 < 5.0) {
+    // make the rectangle parallel to the x-axis
+    printf("Angle of rectangle is %.2f degrees, close to 180\n", angle_degrees);
+    v1.y = v0.y;
+    v2.x = v1.x;
+    v3.y = v2.y;
+    v3.x = v0.x;
+    return;
+  } else if (angle_270 < 5.0) {
+    // make the rectangle parallel to the y-axis
+    printf("Angle of rectangle is %.2f degrees, close to 270\n", angle_degrees);
+    v1.x = v0.x;
+    v2.y = v1.y;
+    v3.x = v2.x;
+    v3.y = v0.y;
+    return;
+  } else {
+    printf(
+        "Angle of rectangle is %.2f degrees, not close to 0, 90, 180, or 270\n",
+        angle_degrees);
+    return;
+  }
+}
+
+class TransformResidual {
+public:
+  TransformResidual(double level_x, double level_y,
+                    double level_meters_per_pixel, double layer_x,
+                    double layer_y)
+      : _level_x(level_x), _level_y(level_y),
+        _level_meters_per_pixel(level_meters_per_pixel), _layer_x(layer_x),
+        _layer_y(layer_y) {}
+
+  template <typename T>
+  bool operator()(const T *const yaw, const T *const scale,
+                  const T *const translation, T *residual) const {
+    const T qx = ((cos(yaw[0]) * _layer_x + sin(yaw[0]) * _layer_y) * scale[0] +
+                  translation[0]) /
+                 _level_meters_per_pixel;
 
     const T qy =
-      ((-sin(yaw[0]) * _layer_x + cos(yaw[0]) * _layer_y) * scale[0]
-      + translation[1]) / _level_meters_per_pixel;
+        ((-sin(yaw[0]) * _layer_x + cos(yaw[0]) * _layer_y) * scale[0] +
+         translation[1]) /
+        _level_meters_per_pixel;
 
     residual[0] = _level_x - qx;
     residual[1] = _level_y - qy;
@@ -1816,24 +1689,19 @@ private:
   double _layer_x, _layer_y;
 };
 
-void Level::optimize_layer_transforms()
-{
+void Level::optimize_layer_transforms() {
   printf("level %s optimizing layer transforms...\n", name.c_str());
 
-  for (std::size_t i = 0; i < layers.size(); i++)
-  {
+  for (std::size_t i = 0; i < layers.size(); i++) {
     ceres::Problem problem;
 
     double yaw = layers[i].transform.yaw();
     double scale = layers[i].transform.scale();
-    double translation[2] = {
-      layers[i].transform.translation().x(),
-      layers[i].transform.translation().y()
-    };
+    double translation[2] = {layers[i].transform.translation().x(),
+                             layers[i].transform.translation().y()};
 
-    for (const Constraint& constraint : constraints)
-    {
-      const std::vector<QUuid>& feature_ids = constraint.ids();
+    for (const Constraint &constraint : constraints) {
+      const std::vector<QUuid> &feature_ids = constraint.ids();
       if (feature_ids.size() != 2)
         continue;
 
@@ -1841,64 +1709,47 @@ void Level::optimize_layer_transforms()
 
       // find the level point
       bool found_level_point = false;
-      for (const Feature& feature : floorplan_features)
-      {
-        if (feature_ids[0] == feature.id())
-        {
+      for (const Feature &feature : floorplan_features) {
+        if (feature_ids[0] == feature.id()) {
           level_point = feature.qpoint();
           found_level_point = true;
           break;
-        }
-        else if (feature_ids[1] == feature.id())
-        {
+        } else if (feature_ids[1] == feature.id()) {
           level_point = feature.qpoint();
           found_level_point = true;
           break;
         }
       }
-      if (!found_level_point)
-      {
+      if (!found_level_point) {
         printf("WOAH couldn't find level point in constraint! Ignoring it\n");
         continue;
       }
 
       // find the layer point
       bool found_layer_point = false;
-      for (const Feature& feature : layers[i].features)
-      {
-        if (feature_ids[0] == feature.id())
-        {
+      for (const Feature &feature : layers[i].features) {
+        if (feature_ids[0] == feature.id()) {
           layer_point = feature.qpoint();
           found_layer_point = true;
           break;
-        }
-        else if (feature_ids[1] == feature.id())
-        {
+        } else if (feature_ids[1] == feature.id()) {
           layer_point = feature.qpoint();
           found_layer_point = true;
           break;
         }
       }
-      if (!found_layer_point)
-      {
+      if (!found_layer_point) {
         printf("WOAH couldn't find layer point in constraint! Ignoring...\n");
         continue;
       }
 
-      TransformResidual* tr = new TransformResidual(
-        level_point.x(),
-        level_point.y(),
-        drawing_meters_per_pixel,
-        layer_point.x(),
-        layer_point.y());
+      TransformResidual *tr = new TransformResidual(
+          level_point.x(), level_point.y(), drawing_meters_per_pixel,
+          layer_point.x(), layer_point.y());
 
       problem.AddResidualBlock(
-        new ceres::AutoDiffCostFunction<TransformResidual, 2, 1, 1, 2>(tr),
-        nullptr,
-        &yaw,
-        &scale,
-        &translation[0]);
-
+          new ceres::AutoDiffCostFunction<TransformResidual, 2, 1, 1, 2>(tr),
+          nullptr, &yaw, &scale, &translation[0]);
     }
 
     problem.SetParameterLowerBound(&scale, 0, 0.01);
@@ -1916,18 +1767,14 @@ void Level::optimize_layer_transforms()
 
     layers[i].transform.setYaw(yaw);
     layers[i].transform.setScale(scale);
-    layers[i].transform.setTranslation(
-      QPointF(translation[0], translation[1]));
+    layers[i].transform.setTranslation(QPointF(translation[0], translation[1]));
   }
 }
 
-void Level::mouse_select_press(
-  const double x,
-  const double y,
-  QGraphicsItem* graphics_item,
-  const RenderingOptions& rendering_options,
-  const Qt::KeyboardModifiers& modifiers)
-{
+void Level::mouse_select_press(const double x, const double y,
+                               QGraphicsItem *graphics_item,
+                               const RenderingOptions &rendering_options,
+                               const Qt::KeyboardModifiers &modifiers) {
   printf("Level::mouse_select_press(%.3f, %.3f)\n", x, y);
 
   if (!(modifiers & Qt::ShiftModifier))
@@ -1938,89 +1785,73 @@ void Level::mouse_select_press(
   const double vertex_dist_thresh = vertex_radius / drawing_meters_per_pixel;
 
   const double feature_dist_thresh =
-    Feature::radius_meters / drawing_meters_per_pixel;
+      Feature::radius_meters / drawing_meters_per_pixel;
 
   // todo: use QGraphics stuff to see if we clicked a model pixmap...
   const double model_dist_thresh = 0.5 / drawing_meters_per_pixel;
 
-  if (rendering_options.show_models &&
-    ni.model_idx >= 0 &&
-    ni.model_dist < model_dist_thresh)
+  if (rendering_options.show_models && ni.model_idx >= 0 &&
+      ni.model_dist < model_dist_thresh)
     models[ni.model_idx].selected = true;
   else if (ni.vertex_idx >= 0 && ni.vertex_dist < vertex_dist_thresh)
     vertices[ni.vertex_idx].selected = true;
-  else if (ni.feature_idx >= 0 && ni.feature_dist < feature_dist_thresh)
-  {
-    //levels[level_idx].feature_sets[
+  else if (ni.feature_idx >= 0 && ni.feature_dist < feature_dist_thresh) {
+    // levels[level_idx].feature_sets[
     printf("feature_layer_idx = %d, feature_idx = %d, feature_dist = %.3f\n",
-      ni.feature_layer_idx,
-      ni.feature_idx,
-      ni.feature_dist);
+           ni.feature_layer_idx, ni.feature_idx, ni.feature_dist);
 
-    if (ni.feature_layer_idx == 0)
-    {
+    if (ni.feature_layer_idx == 0) {
       floorplan_features[ni.feature_idx].setSelected(true);
+    } else {
+      layers[ni.feature_layer_idx - 1].features[ni.feature_idx].setSelected(
+          true);
     }
-    else
-    {
-      layers[ni.feature_layer_idx-1].
-      features[ni.feature_idx].setSelected(true);
-    }
-  }
-  else if (ni.fiducial_idx >= 0 && ni.fiducial_dist < 10.0)
+  } else if (ni.fiducial_idx >= 0 && ni.fiducial_dist < 10.0)
     fiducials[ni.fiducial_idx].selected = true;
-  else
-  {
+  else {
     // use the QGraphics stuff to see if it's an edge segment or polygon
-    if (graphics_item)
-    {
-      switch (graphics_item->type())
-      {
-        case QGraphicsLineItem::Type:
-          set_selected_line_item(
-            qgraphicsitem_cast<QGraphicsLineItem*>(graphics_item),
+    if (graphics_item) {
+      switch (graphics_item->type()) {
+      case QGraphicsLineItem::Type:
+        set_selected_line_item(
+            qgraphicsitem_cast<QGraphicsLineItem *>(graphics_item),
             rendering_options);
-          break;
+        break;
 
-        case QGraphicsPolygonItem::Type:
-          set_selected_containing_polygon(x, y);
-          break;
+      case QGraphicsPolygonItem::Type:
+        set_selected_containing_polygon(x, y);
+        break;
 
-        default:
-          printf("clicked unhandled type: %d\n",
-            static_cast<int>(graphics_item->type()));
-          break;
+      default:
+        printf("clicked unhandled type: %d\n",
+               static_cast<int>(graphics_item->type()));
+        break;
       }
     }
   }
 }
 
-Level::NearestItem Level::nearest_items(const double x, const double y)
-{
+Level::NearestItem Level::nearest_items(const double x, const double y) {
   NearestItem ni;
 
-  for (std::size_t i = 0; i < vertices.size(); i++)
-  {
-    const Vertex& p = vertices[i];
+  for (std::size_t i = 0; i < vertices.size(); i++) {
+    const Vertex &p = vertices[i];
     const double dx = x - p.x;
     const double dy = y - p.y;
-    const double dist = sqrt(dx*dx + dy*dy);
-    if (dist < ni.vertex_dist)
-    {
+    const double dist = sqrt(dx * dx + dy * dy);
+    if (dist < ni.vertex_dist) {
       ni.vertex_dist = dist;
       ni.vertex_idx = i;
     }
   }
 
   // search the floorplan features
-  for (std::size_t i = 0; i < floorplan_features.size(); i++)
-  {
-    const Feature& f = floorplan_features[i];
+  for (std::size_t i = 0; i < floorplan_features.size(); i++) {
+    const Feature &f = floorplan_features[i];
     const double dx = x - f.x();
     const double dy = y - f.y();
-    const double dist = sqrt(dx*dx + dy*dy);
-    if (dist < ni.feature_dist)
-    {
+    const double dist = sqrt(dx * dx + dy * dy);
+    if (dist < ni.feature_dist) {
       ni.feature_layer_idx = 0;
       ni.feature_dist = dist;
       ni.feature_idx = i;
@@ -2028,12 +1859,10 @@ Level::NearestItem Level::nearest_items(const double x, const double y)
   }
 
   // now search all "other" layer features
-  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++)
-  {
-    const Layer& layer = layers[layer_idx];
-    for (std::size_t i = 0; i < layer.features.size(); i++)
-    {
-      const Feature& f = layer.features[i];
+  for (std::size_t layer_idx = 0; layer_idx < layers.size(); layer_idx++) {
+    const Layer &layer = layers[layer_idx];
+    for (std::size_t i = 0; i < layer.features.size(); i++) {
+      const Feature &f = layer.features[i];
 
       // transform this point into parent level's pixel space
       QPointF p(layer.transform.forwards(f.qpoint()));
@@ -2041,9 +1870,8 @@ Level::NearestItem Level::nearest_items(const double x, const double y)
 
       const double dx = x - p.x();
       const double dy = y - p.y();
-      const double dist = sqrt(dx*dx + dy*dy);
-      if (dist < ni.feature_dist)
-      {
+      const double dist = sqrt(dx * dx + dy * dy);
+      if (dist < ni.feature_dist) {
         ni.feature_layer_idx = layer_idx + 1;
         ni.feature_dist = dist;
         ni.feature_idx = i;
@@ -2051,27 +1879,23 @@ Level::NearestItem Level::nearest_items(const double x, const double y)
     }
   }
 
-  for (std::size_t i = 0; i < fiducials.size(); i++)
-  {
-    const Fiducial& f = fiducials[i];
+  for (std::size_t i = 0; i < fiducials.size(); i++) {
+    const Fiducial &f = fiducials[i];
     const double dx = x - f.x;
     const double dy = y - f.y;
-    const double dist = sqrt(dx*dx + dy*dy);
-    if (dist < ni.fiducial_dist)
-    {
+    const double dist = sqrt(dx * dx + dy * dy);
+    if (dist < ni.fiducial_dist) {
       ni.fiducial_dist = dist;
       ni.fiducial_idx = i;
     }
   }
 
-  for (std::size_t i = 0; i < models.size(); i++)
-  {
-    const Model& m = models[i];
+  for (std::size_t i = 0; i < models.size(); i++) {
+    const Model &m = models[i];
     const double dx = x - m.state.x;
     const double dy = y - m.state.y;
-    const double dist = sqrt(dx*dx + dy*dy);  // no need for sqrt each time
-    if (dist < ni.model_dist)
-    {
+    const double dist = sqrt(dx * dx + dy * dy); // no need for sqrt each time
+    if (dist < ni.model_dist) {
       ni.model_dist = dist;
       ni.model_idx = i;
     }
@@ -2081,53 +1905,39 @@ Level::NearestItem Level::nearest_items(const double x, const double y)
 }
 
 int Level::nearest_item_index_if_within_distance(
-  const double x,
-  const double y,
-  const double distance_threshold,
-  const ItemType item_type)
-{
+    const double x, const double y, const double distance_threshold,
+    const ItemType item_type) {
   double min_dist = 1e100;
   int min_index = -1;
-  if (item_type == VERTEX)
-  {
-    for (std::size_t i = 0; i < vertices.size(); i++)
-    {
-      const Vertex& p = vertices[i];
+  if (item_type == VERTEX) {
+    for (std::size_t i = 0; i < vertices.size(); i++) {
+      const Vertex &p = vertices[i];
       const double dx = x - p.x;
       const double dy = y - p.y;
-      const double dist2 = dx*dx + dy*dy;  // no need for sqrt each time
-      if (dist2 < min_dist)
-      {
+      const double dist2 = dx * dx + dy * dy; // no need for sqrt each time
+      if (dist2 < min_dist) {
         min_dist = dist2;
         min_index = i;
       }
     }
-  }
-  else if (item_type == FIDUCIAL)
-  {
-    for (std::size_t i = 0; i < fiducials.size(); i++)
-    {
-      const Fiducial& f = fiducials[i];
+  } else if (item_type == FIDUCIAL) {
+    for (std::size_t i = 0; i < fiducials.size(); i++) {
+      const Fiducial &f = fiducials[i];
       const double dx = x - f.x;
       const double dy = y - f.y;
-      const double dist2 = dx*dx + dy*dy;
-      if (dist2 < min_dist)
-      {
+      const double dist2 = dx * dx + dy * dy;
+      if (dist2 < min_dist) {
         min_dist = dist2;
         min_index = i;
       }
     }
-  }
-  else if (item_type == MODEL)
-  {
-    for (std::size_t i = 0; i < models.size(); i++)
-    {
-      const Model& m = models[i];
+  } else if (item_type == MODEL) {
+    for (std::size_t i = 0; i < models.size(); i++) {
+      const Model &m = models[i];
       const double dx = x - m.state.x;
       const double dy = y - m.state.y;
-      const double dist2 = dx*dx + dy*dy;  // no need for sqrt each time
-      if (dist2 < min_dist)
-      {
+      const double dist2 = dx * dx + dy * dy; // no need for sqrt each time
+      if (dist2 < min_dist) {
         min_dist = dist2;
         min_index = i;
       }
@@ -2138,10 +1948,8 @@ int Level::nearest_item_index_if_within_distance(
   return -1;
 }
 
-void Level::set_selected_line_item(
-  QGraphicsLineItem* line_item,
-  const RenderingOptions& rendering_options)
-{
+void Level::set_selected_line_item(QGraphicsLineItem *line_item,
+                                   const RenderingOptions &rendering_options) {
   clear_selection();
   if (line_item == nullptr)
     return;
@@ -2153,50 +1961,44 @@ void Level::set_selected_line_item(
   const double y2 = line_item->line().y2();
 
   double min_edge_dist = 1e9;
-  Edge* min_edge = nullptr;
+  Edge *min_edge = nullptr;
   // find if any of our lanes match those vertices
-  for (auto& edge : edges)
-  {
+  for (auto &edge : edges) {
     if ((edge.type == Edge::LANE) &&
-      (edge.get_graph_idx() != rendering_options.active_traffic_map_idx))
+        (edge.get_graph_idx() != rendering_options.active_traffic_map_idx))
       continue;
 
-    const auto& v_start = vertices[edge.start_idx];
-    const auto& v_end = vertices[edge.end_idx];
+    const auto &v_start = vertices[edge.start_idx];
+    const auto &v_end = vertices[edge.end_idx];
 
     // calculate distances
     const double dx1 = v_start.x - x1;
     const double dy1 = v_start.y - y1;
     const double dx2 = v_end.x - x2;
     const double dy2 = v_end.y - y2;
-    const double v1_dist = std::sqrt(dx1*dx1 + dy1*dy1);
-    const double v2_dist = std::sqrt(dx2*dx2 + dy2*dy2);
+    const double v1_dist = std::sqrt(dx1 * dx1 + dy1 * dy1);
+    const double v2_dist = std::sqrt(dx2 * dx2 + dy2 * dy2);
 
     const double max_dist = (v1_dist > v2_dist ? v1_dist : v2_dist);
-    if (max_dist < min_edge_dist)
-    {
+    if (max_dist < min_edge_dist) {
       min_edge_dist = max_dist;
       min_edge = &edge;
     }
   }
 
-  const double thresh = 10.0;  // should be really tiny if it matches
-  if (min_edge_dist < thresh && min_edge != nullptr)
-  {
+  const double thresh = 10.0; // should be really tiny if it matches
+  if (min_edge_dist < thresh && min_edge != nullptr) {
     min_edge->selected = true;
     return;
   }
 
   // see if the constraint index is stored in the QGraphicsItem
-  if (line_item->data(0).toString() == "constraint")
-  {
-    if (line_item->data(1).isValid())
-    {
+  if (line_item->data(0).toString() == "constraint") {
+    if (line_item->data(1).isValid()) {
       const int constraint_idx = line_item->data(1).toInt();
       printf("constraint index: %d\n", constraint_idx);
       if (constraint_idx >= 0 &&
-        constraint_idx < static_cast<int>(constraints.size()))
-      {
+          constraint_idx < static_cast<int>(constraints.size())) {
         constraints[constraint_idx].setSelected(true);
       }
       return;
@@ -2204,62 +2006,57 @@ void Level::set_selected_line_item(
   }
 }
 
-void Level::set_selected_containing_polygon(
-  const double x,
-  const double y)
-{
-  // holes are "higher" in our Z-stack (to make them clickable), so first
-  // we need to make a list of all polygons that contain this point.
-  vector<Polygon*> containing_polygons;
-  for (std::size_t i = 0; i < polygons.size(); i++)
-  {
-    Polygon& polygon = polygons[i];
+void Level::set_selected_containing_polygon(const double x, const double y) {
+  // holes and ROI's are "higher" in our Z-stack (to make them clickable), so
+  // first we need to make a list of all polygons that contain this point.
+  vector<Polygon *> containing_polygons;
+  for (std::size_t i = 0; i < polygons.size(); i++) {
+    Polygon &polygon = polygons[i];
     QVector<QPointF> polygon_vertices;
-    for (const auto& vertex_idx: polygon.vertices)
-    {
-      const Vertex& v = vertices[vertex_idx];
+    for (const auto &vertex_idx : polygon.vertices) {
+      const Vertex &v = vertices[vertex_idx];
       polygon_vertices.append(QPointF(v.x, v.y));
     }
     QPolygonF qpolygon(polygon_vertices);
     if (qpolygon.containsPoint(QPoint(x, y), Qt::OddEvenFill))
       containing_polygons.push_back(&polygons[i]);
   }
+  // Define the order of polygon types in the Z-stack
+  const std::vector<Polygon::Type> priority_order = {
+      Polygon::RACK_BAY, Polygon::STORAGE_RACK, Polygon::ROI, Polygon::HOLE};
 
-  // first search for holes
-  for (Polygon* p : containing_polygons)
-  {
-    if (p->type == Polygon::HOLE)
-    {
-      p->selected = true;
-      return;
+  // Search for the highest priority polygon type
+  for (const auto &priority_type : priority_order) {
+    for (Polygon *p : containing_polygons) {
+      if (p->type == priority_type) {
+        p->selected = true;
+        return; // Select the first matching polygon and exit the function
+      }
     }
   }
 
-  // if we get here, just return the first thing.
-  for (Polygon* p : containing_polygons)
-  {
-    p->selected = true;
-    return;
+  // If we haven't found any holes, ROI, or storage racks, just select the first
+  // polygon
+  if (!containing_polygons.empty()) {
+    containing_polygons[0]->selected = true;
   }
 }
 
-void Level::compute_layer_transforms()
-{
+void Level::compute_layer_transforms() {
   printf("Level::compute_layer_transforms()\n");
   for (std::size_t i = 0; i < layers.size(); i++)
     compute_layer_transform(i);
 }
 
-void Level::compute_layer_transform(const std::size_t layer_idx)
-{
+void Level::compute_layer_transform(const std::size_t layer_idx) {
   printf("Level::compute_layer_transform(%d)\n", static_cast<int>(layer_idx));
   if (layer_idx >= layers.size())
     return;
-  Layer& layer = layers[layer_idx];
+  Layer &layer = layers[layer_idx];
 
   layer.transform_strings.clear();
 
-  const double ff_rmf_scale = 0.05;  // standard 5cm grid cell size
+  const double ff_rmf_scale = 0.05; // standard 5cm grid cell size
   Transform ff_rmf;
   ff_rmf.setScale(ff_rmf_scale / layer.transform.scale());
 
@@ -2267,63 +2064,50 @@ void Level::compute_layer_transform(const std::size_t layer_idx)
 
   ff_rmf.setYaw(-(fmod(layer.transform.yaw() + M_PI, 2 * M_PI) - M_PI));
 
-  const double tx =
-    -(layer.transform.translation().x() -
-    ff_map_height / ff_rmf.scale() * sin(ff_rmf.yaw())) *
-    ff_rmf.scale();
+  const double tx = -(layer.transform.translation().x() -
+                      ff_map_height / ff_rmf.scale() * sin(ff_rmf.yaw())) *
+                    ff_rmf.scale();
 
-  const double ty =
-    (layer.transform.translation().y() +
-    ff_map_height / ff_rmf.scale() * cos(ff_rmf.yaw())) *
-    ff_rmf.scale();
+  const double ty = (layer.transform.translation().y() +
+                     ff_map_height / ff_rmf.scale() * cos(ff_rmf.yaw())) *
+                    ff_rmf.scale();
 
   // FreeFleet does its translation first, so... we have to rotate this
   // translation vector and scale it into the FreeFleet robot's frame
 
   const double yaw = ff_rmf.yaw();
-  ff_rmf.setTranslation(
-    QPointF(
-      cos(-yaw) * tx + sin(-yaw) * ty,
-      -sin(-yaw) * tx + cos(-yaw) * ty));
+  ff_rmf.setTranslation(QPointF(cos(-yaw) * tx + sin(-yaw) * ty,
+                                -sin(-yaw) * tx + cos(-yaw) * ty));
 
   printf("tx = %.5f ty = %.5f mh = %.5f sy = %.5f cy = %.5f\n",
-    layer.transform.translation().x(),
-    layer.transform.translation().y(),
-    ff_map_height,
-    sin(ff_rmf.yaw()),
-    cos(ff_rmf.yaw()));
+         layer.transform.translation().x(), layer.transform.translation().y(),
+         ff_map_height, sin(ff_rmf.yaw()), cos(ff_rmf.yaw()));
 
-  layer.transform_strings.push_back(
-    std::make_pair(
-      "5cm FreeFleet -> RMF\ntranslate, rotate, scale",
-      ff_rmf.to_string()));
+  layer.transform_strings.push_back(std::make_pair(
+      "5cm FreeFleet -> RMF\ntranslate, rotate, scale", ff_rmf.to_string()));
 
   Transform gridcells_rmf;
   gridcells_rmf.setScale(layer.transform.scale());
   gridcells_rmf.setYaw(fmod(layer.transform.yaw() + M_PI, 2 * M_PI) - M_PI);
   const double gx =
-    (layer.transform.translation().x() +
-    layer.image.height() * gridcells_rmf.scale() * sin(gridcells_rmf.yaw()));
+      (layer.transform.translation().x() +
+       layer.image.height() * gridcells_rmf.scale() * sin(gridcells_rmf.yaw()));
   const double gy =
-    (layer.transform.translation().y() +
-    layer.image.height() * gridcells_rmf.scale() * cos(gridcells_rmf.yaw()));
+      (layer.transform.translation().y() +
+       layer.image.height() * gridcells_rmf.scale() * cos(gridcells_rmf.yaw()));
   gridcells_rmf.setTranslation(QPointF(gx, gy));
 
   layer.transform_strings.push_back(
-    std::make_pair(
-      "grid cells -> RMF\nscale, rotate, translate",
-      gridcells_rmf.to_string()));
+      std::make_pair("grid cells -> RMF\nscale, rotate, translate",
+                     gridcells_rmf.to_string()));
 
   layer.transform_strings.push_back(
-    std::make_pair(
-      "RMF -> grid cells\nscale, rotate, translate",
-      gridcells_rmf.inverse().to_string()));
+      std::make_pair("RMF -> grid cells\nscale, rotate, translate",
+                     gridcells_rmf.inverse().to_string()));
 }
 
-void Level::align_colinear()
-{
-  struct SelectedVertex
-  {
+void Level::align_colinear() {
+  struct SelectedVertex {
     size_t index;
     bool expanded;
     vector<size_t> connected_vertex_indices;
@@ -2331,16 +2115,13 @@ void Level::align_colinear()
 
   // build up a vector of selected vertex indices
   vector<SelectedVertex> selected_vertices;
-  for (size_t i = 0; i < vertices.size(); i++)
-  {
-    if (vertices[i].selected)
-    {
+  for (size_t i = 0; i < vertices.size(); i++) {
+    if (vertices[i].selected) {
       SelectedVertex sv;
       sv.index = i;
       sv.expanded = false;
 
-      for (size_t j = 0; j < edges.size(); j++)
-      {
+      for (size_t j = 0; j < edges.size(); j++) {
         const size_t start_idx = static_cast<size_t>(edges[j].start_idx);
         const size_t end_idx = static_cast<size_t>(edges[j].end_idx);
         if (start_idx == i && vertices[end_idx].selected)
@@ -2354,45 +2135,38 @@ void Level::align_colinear()
   }
 
   printf("align_colinear() vertices:\n");
-  for (const SelectedVertex& sv : selected_vertices)
-  {
+  for (const SelectedVertex &sv : selected_vertices) {
     printf("  %zu:", sv.index);
     for (const size_t i : sv.connected_vertex_indices)
       printf(" %zu", i);
     printf("\n");
   }
 
-  if (selected_vertices.size() < 3)
-  {
+  if (selected_vertices.size() < 3) {
     printf("%zu vertices were selected; >= 3 required for colinear align!\n",
-      selected_vertices.size());
+           selected_vertices.size());
     return;
   }
 
   // start at one endpoint and go down the chain
   vector<SelectedVertex> chain;
-  for (size_t i = 0; i < selected_vertices.size(); i++)
-  {
-    if (selected_vertices[i].connected_vertex_indices.size() == 1)
-    {
+  for (size_t i = 0; i < selected_vertices.size(); i++) {
+    if (selected_vertices[i].connected_vertex_indices.size() == 1) {
       chain.push_back(selected_vertices[i]);
       break;
     }
   }
 
-  if (chain.empty())
-  {
+  if (chain.empty()) {
     printf("could not find starting point of chain; I'll just make a guess\n");
     // for now, just use the element with the smallest horizontal coordinate
     // to be more fancy in the future, we could make a regression line and
     // choose the point closest to its end
     size_t min_idx = 0;
     double min_value = 1e42;
-    for (size_t i = 0; i < selected_vertices.size(); i++)
-    {
-      const Vertex& v = vertices[selected_vertices[i].index];
-      if (v.x < min_value)
-      {
+    for (size_t i = 0; i < selected_vertices.size(); i++) {
+      const Vertex &v = vertices[selected_vertices[i].index];
+      if (v.x < min_value) {
         min_value = v.x;
         min_idx = i;
       }
@@ -2401,28 +2175,22 @@ void Level::align_colinear()
   }
 
   // keep expanding the last endpoint
-  while (true)
-  {
+  while (true) {
     bool chain_complete = true;
-    for (size_t i = 0; i < chain.back().connected_vertex_indices.size(); i++)
-    {
+    for (size_t i = 0; i < chain.back().connected_vertex_indices.size(); i++) {
       const size_t test_vertex_idx = chain.back().connected_vertex_indices[i];
       // see if this is a new vertex to add to the chain
       bool found = false;
-      for (size_t j = 0; j < chain.size() - 1; j++)
-      {
-        if (chain[j].index == test_vertex_idx)
-        {
+      for (size_t j = 0; j < chain.size() - 1; j++) {
+        if (chain[j].index == test_vertex_idx) {
           found = true;
           break;
         }
       }
 
-      if (!found)
-      {
+      if (!found) {
         printf("  adding vertex %zu to chain\n", test_vertex_idx);
-        for (size_t j = 0; j < selected_vertices.size(); j++)
-        {
+        for (size_t j = 0; j < selected_vertices.size(); j++) {
           if (selected_vertices[j].index == test_vertex_idx)
             chain.push_back(selected_vertices[j]);
         }
@@ -2435,64 +2203,58 @@ void Level::align_colinear()
   }
 
   printf("  chain before sorting:");
-  for (const SelectedVertex& sv : chain)
+  for (const SelectedVertex &sv : chain)
     printf(" %zu", sv.index);
   printf("\n");
 
   // sort the chain vertices by distance from the starting vertex
   const SelectedVertex starting_vertex = chain[0];
-  std::sort(
-    chain.begin() + 1,
-    chain.end(),
-    [this, starting_vertex](SelectedVertex sv1, SelectedVertex sv2)
-    {
-      const Vertex& v = vertices[starting_vertex.index];
-      const Vertex& v1 = vertices[sv1.index];
-      const Vertex& v2 = vertices[sv2.index];
+  std::sort(chain.begin() + 1, chain.end(),
+            [this, starting_vertex](SelectedVertex sv1, SelectedVertex sv2) {
+              const Vertex &v = vertices[starting_vertex.index];
+              const Vertex &v1 = vertices[sv1.index];
+              const Vertex &v2 = vertices[sv2.index];
 
-      const double d1x = v.x - v1.x;
-      const double d1y = v.y - v1.y;
-      const double dist_v1 = sqrt(d1x * d1x + d1y * d1y);
+              const double d1x = v.x - v1.x;
+              const double d1y = v.y - v1.y;
+              const double dist_v1 = sqrt(d1x * d1x + d1y * d1y);
 
-      const double d2x = v.x - v2.x;
-      const double d2y = v.y - v2.y;
-      const double dist_v2 = sqrt(d2x * d2x + d2y * d2y);
-      return dist_v1 < dist_v2;
-    });
+              const double d2x = v.x - v2.x;
+              const double d2y = v.y - v2.y;
+              const double dist_v2 = sqrt(d2x * d2x + d2y * d2y);
+              return dist_v1 < dist_v2;
+            });
 
   printf("  chain:");
-  for (const SelectedVertex& sv : chain)
+  for (const SelectedVertex &sv : chain)
     printf(" %zu", sv.index);
   printf("\n");
 
-  if (chain.size() < 3)
-  {
+  if (chain.size() < 3) {
     printf("could not find a connected chain of >= 3 vertices!\n");
     return;
   }
 
   // compute line between first and last vertices
-  const Vertex& v1 = vertices[chain.front().index];
-  const Vertex& v2 = vertices[chain.back().index];
+  const Vertex &v1 = vertices[chain.front().index];
+  const Vertex &v2 = vertices[chain.back().index];
 
   // compute unit vector pointing from v1 to v2
   const double line_length =
-    sqrt((v2.x - v1.x) * (v2.x - v1.x) + (v2.y - v1.y) * (v2.y - v1.y));
-  if (line_length < 0.001)
-  {
+      sqrt((v2.x - v1.x) * (v2.x - v1.x) + (v2.y - v1.y) * (v2.y - v1.y));
+  if (line_length < 0.001) {
     printf("ill-defined line! bailing to avoid numerical blowups\n");
     return;
   }
   const double ux = (v2.x - v1.x) / line_length;
   const double uy = (v2.y - v1.y) / line_length;
 
-  printf("line: (%.3f, %.3f), (%.3f, %.3f)  u = (%.3f, %.3f)\n",
-    v1.x, v1.y, v2.x, v2.y, ux, uy);
+  printf("line: (%.3f, %.3f), (%.3f, %.3f)  u = (%.3f, %.3f)\n", v1.x, v1.y,
+         v2.x, v2.y, ux, uy);
 
   // project intermediate vertices onto this line
-  for (size_t i = 1; i < chain.size() - 1; i++)
-  {
-    Vertex& v = vertices[chain[i].index];
+  for (size_t i = 1; i < chain.size() - 1; i++) {
+    Vertex &v = vertices[chain[i].index];
     const double t = ((v1.x - v.x) * ux) + ((v1.y - v.y) * uy);
     v.x = v1.x - t * ux;
     v.y = v1.y - t * uy;
