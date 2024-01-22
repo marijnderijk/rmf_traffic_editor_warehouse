@@ -26,6 +26,7 @@
 #include <QGraphicsScene>
 #include <QImage>
 #include <QImageReader>
+#include <QTransform>
 
 #include "level.h"
 #include "yaml_utils.h"
@@ -942,7 +943,6 @@ void Level::draw_polygons(QGraphicsScene *scene) const {
   }
 
   // now draw the storage racks
-  // and make them a true rectangle with the make_rectangle_parallel function
   std::size_t rack_index = 0;
   for (const auto &polygon : polygons) {
     if (polygon.type == Polygon::STORAGE_RACK)
@@ -1556,7 +1556,6 @@ void Level::delete_rack_bays(std::string storage_rack_name) {
   }
 }
 
-// take a polygon index, and make sure the indices are a polygon
 void Level::make_rectangle_parallel(std::size_t polygon_index) {
   // get the polygon if it exists
   if (polygon_index >= polygons.size()) {
@@ -1581,79 +1580,84 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
   Vertex &v2 = vertices[polygon.vertices[2]];
   Vertex &v3 = vertices[polygon.vertices[3]];
 
-  // Calculate the centeoui of the rectangle
-  double center_x = (v0.x + v1.x + v2.x + v3.x) / 4.0;
-  double center_y = (v0.y + v1.y + v2.y + v3.y) / 4.0;
+  // Calculate the center of the rectangle
+  QPointF center((v0.x + v1.x + v2.x + v3.x) / 4.0,
+                 (v0.y + v1.y + v2.y + v3.y) / 4.0);
 
   // Function to calculate the angle of a vertex with respect to the center
   auto angle_with_center = [&](const Vertex &vertex) {
     return std::atan2(vertex.y - center_y, vertex.x - center_x);
   };
 
-  // Create a vector of vertices sorted by their angles
+  // sort the vertices by their angles with the midpoint
   std::vector<Vertex *> sorted_vertices = {&v0, &v1, &v2, &v3};
   std::sort(sorted_vertices.begin(), sorted_vertices.end(),
             [&](Vertex *a, Vertex *b) {
               return angle_with_center(*a) < angle_with_center(*b);
             });
-
-  // Reassign the sorted vertices to v0, v1, v2, v3
-  v0 = *sorted_vertices[0];
-  v1 = *sorted_vertices[1];
-  v2 = *sorted_vertices[2];
-  v3 = *sorted_vertices[3];
+  std::tie(v0, v1, v2, v3) = std::make_tuple(*sorted_vertices[0], *sorted_vertices[1], *sorted_vertices[2], *sorted_vertices[3]);
   // Now, v0 is the bottom-left, v1 is the bottom-right,
   // v2 is the top-right, and v3 is the top-left vertex
 
   // calculate the angle of the non-perfect rectangle
   double angle = std::atan2(v1.y - v0.y, v1.x - v0.x);
 
-  // see if the angle is close to 0, 90, 180, or 270 degrees
-  double angle_degrees = angle * 180.0 / M_PI;
-  double angle_0 = std::abs(angle_degrees - 0.0);
-  double angle_90 = std::abs(angle_degrees - 90.0);
-  double angle_180 = std::abs(angle_degrees - 180.0);
-  double angle_270 = std::abs(angle_degrees - 270.0);
-
-  // if the angle is close to 0, 90, 180, or 270 degrees, make it perfect
-  if (angle_0 < 5.0) {
-    // make the rectangle parallel to the x-axis
-    printf("Angle of rectangle is %.2f degrees, close to 0\n", angle_degrees);
-    v1.y = v0.y;
-    v2.x = v1.x;
-    v3.y = v2.y;
-    v3.x = v0.x;
-    return;
-  } else if (angle_90 < 5.0) {
-    // make the rectangle parallel to the y-axis
-    printf("Angle of rectangle is %.2f degrees, close to 90\n", angle_degrees);
-    v1.x = v0.x;
-    v2.y = v1.y;
-    v3.x = v2.x;
-    v3.y = v0.y;
-    return;
-  } else if (angle_180 < 5.0) {
-    // make the rectangle parallel to the x-axis
-    printf("Angle of rectangle is %.2f degrees, close to 180\n", angle_degrees);
-    v1.y = v0.y;
-    v2.x = v1.x;
-    v3.y = v2.y;
-    v3.x = v0.x;
-    return;
-  } else if (angle_270 < 5.0) {
-    // make the rectangle parallel to the y-axis
-    printf("Angle of rectangle is %.2f degrees, close to 270\n", angle_degrees);
-    v1.x = v0.x;
-    v2.y = v1.y;
-    v3.x = v2.x;
-    v3.y = v0.y;
-    return;
-  } else {
-    printf(
-        "Angle of rectangle is %.2f degrees, not close to 0, 90, 180, or 270\n",
-        angle_degrees);
-    return;
+  double nearest_multiple = std::round(angle / (M_PI / 2.0)) * (M_PI / 2.0);
+  const double epsilon = 1e-5;
+  if (std::abs(std::fmod(angle, M_PI / 2.0)) < epsilon) {
+    printf("Angle of rectangle is %.2f degrees, close to %.2f degrees\n",
+           angle * 180.0 / M_PI, nearest_multiple * 180.0 / M_PI);
+    angle = nearest_multiple;
   }
+
+  // Calculate the transformation matrix to align the rectangle
+  QTransform rotateTransform;
+  rotateTransform.rotateRadians(-angle);
+
+
+  // Copy the vertices to Qpoints
+  QPointF v0_qpoint(v0.x, v0.y);
+  QPointF v1_qpoint(v1.x, v1.y);
+  QPointF v2_qpoint(v2.x, v2.y);
+  QPointF v3_qpoint(v3.x, v3.y);
+
+  // Apply the translation to all vertices
+    
+  // Apply the transformation to all vertices
+  QPointF mappedV0 = rotateTransform.map(v0_qpoint);
+  QPointF mappedV1 = rotateTransform.map(v1_qpoint);
+  QPointF mappedV2 = rotateTransform.map(v2_qpoint);
+  QPointF mappedV3 = rotateTransform.map(v3_qpoint);
+
+  // Find the minimum and maximum x, y values to square up the rectangle
+  double minX = std::min({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
+  double maxX = std::max({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
+  double minY = std::min({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
+  double maxY = std::max({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
+
+  // Make the rectangle square
+  double sideLengthX = maxX - minX;
+  double sideLengthY = maxY - minY;
+
+  mappedV0 = {minX, minY};
+  mappedV1 = {minX + sideLengthX, minY};
+  mappedV2 = {minX + sideLengthX, minY + sideLengthY};
+  mappedV3 = {minX, minY + sideLengthY};
+
+  QTransform inverseRotateTransform;
+  inverseRotateTransform.rotateRadians(angle);
+
+  // Rotate back to the original angle
+  QPointF rotatedBackV0 = inverseRotateTransform.map(mappedV0);
+  QPointF rotatedBackV1 = inverseRotateTransform.map(mappedV1);
+  QPointF rotatedBackV2 = inverseRotateTransform.map(mappedV2);
+  QPointF rotatedBackV3 = inverseRotateTransform.map(mappedV3);
+
+  // Assign the rotated points back to the original vertices
+  v0 = {rotatedBackV0.x(), rotatedBackV0.y()};
+  v1 = {rotatedBackV1.x(), rotatedBackV1.y()};
+  v2 = {rotatedBackV2.x(), rotatedBackV2.y()};
+  v3 = {rotatedBackV3.x(), rotatedBackV3.y()};
 }
 
 class TransformResidual {
