@@ -86,7 +86,7 @@ void Polygon::set_param(const std::string &name, const std::string &value) {
     printf("tried to set unknown parameter [%s]\n", name.c_str());
     return; // unknown parameter
   }
-  it->second.set(value);
+   it->second.set(value);
 }
 
 void Polygon::create_required_parameters() {
@@ -106,27 +106,41 @@ void Polygon::create_required_parameters() {
     create_param_if_needed("name", Param::STRING, std::string("rack"));
     create_param_if_needed("num_bays", Param::INT,
                            4); // number of bays (lenghtwise)
-    create_param_if_needed("bay_rows", Param::INT, 2); // number of rows
+    create_param_if_needed("num_rows", Param::INT, 2); // number of rows
     create_param_if_needed("units_per_bay", Param::INT,
                            4); // number of units per bay
     // now we want to create a height parameter for each unit
     int units_per_bay = params["units_per_bay"].to_qstring().toInt();
     for (int i = 0; i < units_per_bay; i++) {
       char param_name[64];
-      sprintf(param_name, "bay_height_%d", i);
+      sprintf(param_name, "unit_height_%d", i);
       create_param_if_needed(param_name, Param::DOUBLE, 0.5);
+    }
+    // if there are extra unit heights, remove them
+    for (int i = units_per_bay; i < 10; i++) {
+      char param_name[64];
+      sprintf(param_name, "unit_height_%d", i);
+      params.erase(param_name);
     }
   }
 
   if (type == RACK_BAY) {
     create_param_if_needed("name", Param::STRING, std::string("bay"));
-    create_param_if_needed("parent_rack", Param::STRING, std::string(""));
-    create_param_if_needed("num_units", Param::INT, 4);
-    int units_per_bay = params["num_units"].to_qstring().toInt();
+    create_param_if_needed("parent_rack_name", Param::STRING, std::string(""));
+    create_param_if_needed("row", Param::INT, 0);
+    create_param_if_needed("number", Param::INT, 0);
+    create_param_if_needed("n_units", Param::INT, 4);
+    int units_per_bay = params["n_units"].to_qstring().toInt();
     for (int i = 0; i < units_per_bay; i++) {
       char param_name[64];
       sprintf(param_name, "unit_height_%d", i);
       create_param_if_needed(param_name, Param::DOUBLE, 0.5);
+    }
+    // if there are extra unit heights, remove them
+    for (int i = units_per_bay; i < 10; i++) {
+      char param_name[64];
+      sprintf(param_name, "unit_height_%d", i);
+      params.erase(param_name);
     }
   }
 }
@@ -138,4 +152,4 @@ void Polygon::create_param_if_needed(const std::string &name,
   auto it = params.find(name);
   if (it == params.end() || it->second.type != param_type)
     params[name] = param_value;
-}
+    }

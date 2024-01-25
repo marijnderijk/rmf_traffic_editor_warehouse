@@ -130,11 +130,13 @@ public:
     int constraint_idx = -1;
   };
 
-  void delete_rack_bays(std::string rack_name);
-  void make_rectangle_parallel(std::size_t polygon_idx);
+  void create_rack_bays(Polygon &polygon);
+  void delete_rack_bays();
+  void make_rectangle_parallel(Polygon &polygon);
   void update_storage_racks();
   bool can_delete_current_selection();
-  bool delete_vertex_if_unused(const int selected_vertex_idx);
+  bool delete_vertex_if_unused(std::size_t selected_vertex_idx);
+  void delete_vertices_if_unused(const std::vector<std::size_t> vertex_idxs);
   bool delete_selected();
   void calculate_scale(const CoordinateSystem &coordinate_system);
   void clear_selection();

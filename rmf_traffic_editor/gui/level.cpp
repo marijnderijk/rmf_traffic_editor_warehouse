@@ -347,12 +347,78 @@ bool Level::can_delete_current_selection() {
 
   return true;
 }
-/**
- * Delete a vertex if it is not used in any edges or polygons.
- * @param selected_vertex_idx
- * @return true if the vertex was deleted, false otherwise
- */
-bool Level::delete_vertex_if_unused(const int vertex_idx) {
+
+void Level::delete_vertices_if_unused(std::vector<std::size_t> vertex_indices) {
+  // sort the indices in descending order
+  std::sort(vertex_indices.rbegin(), vertex_indices.rend());
+  
+  // now erase the vertices
+  for (std::size_t index : vertex_indices) {
+    if (index < vertices.size()) {
+      // Check if the vertex is used
+      bool vertex_used = false;
+      for (const Edge &edge : edges) {
+        if (edge.start_idx == index || edge.end_idx == index) {
+          vertex_used = true;
+          break;
+        }
+      }
+      if (!vertex_used) {
+        for (const Polygon &polygon : polygons) {
+          if (std::find(polygon.vertices.begin(), polygon.vertices.end(), index) != polygon.vertices.end()) {
+            vertex_used = true;
+            break;
+          }
+        }
+      }
+      // If the vertex is not used, delete it
+      if (!vertex_used) {
+        vertices.erase(vertices.begin() + index);
+        // now go through all edges and polygons to decrement any larger indices
+        for (Edge &edge : edges) {
+          if (edge.start_idx > index)
+            edge.start_idx--;
+          if (edge.end_idx > index)
+            edge.end_idx--;
+        }
+
+        for (Polygon &polygon : polygons) {
+          for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++) {
+            if (polygon.vertices[i] > index)
+              polygon.vertices[i]--;
+            }
+          }
+        }
+      }
+    }
+  }
+/* void Level::delete_vertices_if_un/used(std::vector<std::size_t> vertex_indices) {
+  // sort the indices in descending order
+  std::sort(vertex_indices.rbegin(), vertex_indices.rend());
+  
+  // now erase the vertices
+  for (std::size_t index : vertex_indices) {
+    if (index < vertices.size()) {
+      vertices.erase(vertices.begin() + index);
+      // now go through all edges and polygons to decrement any larger indices
+      for (Edge &edge : edges) {
+        if (edge.start_idx > index)
+          edge.start_idx--;
+        if (edge.end_idx > index)
+          edge.end_idx--;
+      }
+
+      for (Polygon &polygon : polygons) {
+        for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++) {
+          if (polygon.vertices[i] > index)
+            polygon.vertices[i]--;
+          }
+        }
+    }
+  }
+} */
+
+bool Level::delete_vertex_if_unused(std::size_t vertex_idx) {
   // Vertices take a lot more care, because we have to check if a vertex
   // is used in an edge or a polygon before deleting it, and update all
   // higher-index vertex indices in the edges and polygon vertex lists.
@@ -405,7 +471,7 @@ bool Level::delete_selected() {
 
   fiducials.erase(std::remove_if(fiducials.begin(), fiducials.end(),
                                  [](const Fiducial &fiducial) {
-                                   return fiducial.selected;
+                                  return fiducial.selected;
                                  }),
                   fiducials.end());
 
@@ -1507,70 +1573,195 @@ void Level::draw_constraint(QGraphicsScene *scene, const Constraint &constraint,
   line->setData(1, constraint_idx);
 }
 
-// this function will squre up the rack bay vertices,
-// check if rack parameters have been changed, and update the rack bays
 void Level::update_storage_racks() {
-  // loop through all the polygons
-  for (std::size_t polygon_index = 0; polygon_index < polygons.size();
-       polygon_index++) {
-    // get the polygon
-    Polygon &polygon = polygons[polygon_index];
+  delete_rack_bays(); // delete the rack bays
 
+  for (auto &polygon : polygons) {
     // check if the polygon is a storage rack
-    if (polygon.type == Polygon::STORAGE_RACK) {
-      make_rectangle_parallel(polygon_index);
+    if (polygon.type != Polygon::STORAGE_RACK) {
+      continue;
     }
+    make_rectangle_parallel(polygon);
+    // update the rack parameters
+    polygon.create_required_parameters();
+    create_rack_bays(polygon);
   }
 }
 
-void Level::delete_rack_bays(std::string storage_rack_name) {
-  // this function will delete the rack bays belonging to a certain storage rack
 
-  // first, make a list of rack bays, and their vertices (except if the vertices
-  // belong to a storage rack)
-  std::vector<std::size_t> rack_bay_vertices; // to throw away
-
-  unsigned int polygon_index = 0;
-  for (const auto &polygon : polygons) {
-    if (polygon.type == Polygon::RACK_BAY) {
-      // get the parent rack name of the rack bay from the params
-      auto it = polygon.params.find(storage_rack_name);
-      if (it ==
-          polygon.params.end()) // iterator returns this if name is not found
-      {
-        continue;
-      }
-      for (const int &vertex_idx : polygon.vertices) {
-        rack_bay_vertices.push_back(vertex_idx);
-      }
-      polygons.erase(polygons.begin() +
-                     polygon_index); // delete the rack bay polygon
-      polygon_index++;
-    }
+void Level::create_rack_bays(Polygon &storage_rack_polygon) {
+  if (storage_rack_polygon.type != Polygon::STORAGE_RACK) {
+    printf("Polygon is not a storage rack\n");
+    return;
   }
-
-  // delete vertices belonging to rack bays (except if they belong to other
-  // geometry)
-  for (std::size_t i = 0; i < rack_bay_vertices.size(); i++) {
-    delete_vertex_if_unused(rack_bay_vertices[i]);
-  }
-}
-
-void Level::make_rectangle_parallel(std::size_t polygon_index) {
-  // get the polygon if it exists
-  if (polygon_index >= polygons.size()) {
-    printf("Polygon index %d is out of range\n",
-           static_cast<int>(polygon_index));
+  if (storage_rack_polygon.vertices.size() != 4) {
+    printf("Polygon has %d vertices, not 4\n",
+           static_cast<int>(storage_rack_polygon.vertices.size()));
     return;
   }
 
-  // get a reference to the polygon
-  Polygon &polygon = polygons[polygon_index];
+  // get the storage rack parameters
+  const std::string storage_rack_name = storage_rack_polygon.params["name"].to_qstring().toStdString();
+  const int bays = storage_rack_polygon.params["num_bays"].to_qstring().toInt();
+  const int rows = storage_rack_polygon.params["num_rows"].to_qstring().toInt();
 
+  // Get references to the vertices
+  Vertex &V0 = vertices[storage_rack_polygon.vertices[0]];
+  Vertex &V1 = vertices[storage_rack_polygon.vertices[1]];
+  Vertex &V2 = vertices[storage_rack_polygon.vertices[2]];
+  Vertex &V3 = vertices[storage_rack_polygon.vertices[3]];
+
+  // Calculate the center of the rectangle
+  double centerX = (V0.x + V1.x + V2.x + V3.x) / 4.0;
+  double centerY = (V0.y + V1.y + V2.y + V3.y) / 4.0;
+
+  // Function to calculate the angle of a vertex with respect to the center
+  auto angle_with_center = [&](Vertex &vertex) {
+      return std::atan2(vertex.y - centerY, vertex.x - centerX);
+  };
+
+  // Create a vector of pairs (index, vertex)
+  std::vector<std::pair<std::size_t, Vertex &>> indexedVertices = {
+      {storage_rack_polygon.vertices[0], V0},
+      {storage_rack_polygon.vertices[1], V1},
+      {storage_rack_polygon.vertices[2], V2},
+      {storage_rack_polygon.vertices[3], V3}
+  };
+
+  // Sort the vector of pairs by angles with the midpoint
+  std::sort(indexedVertices.begin(), indexedVertices.end(),
+            [&](auto &a, auto &b) {
+                return angle_with_center(a.second) < angle_with_center(b.second);
+            });
+
+  std::size_t index_v0 = indexedVertices[0].first;
+  std::size_t index_v1 = indexedVertices[1].first;
+  std::size_t index_v2 = indexedVertices[2].first;
+  std::size_t index_v3 = indexedVertices[3].first;
+  
+  // Access the sorted vertices and their indices
+  Vertex &v0 = vertices[index_v0];
+  Vertex &v1 = vertices[index_v1];
+  Vertex &v2 = vertices[index_v2];
+  Vertex &v3 = vertices[index_v3];
+
+  double angle = std::atan2(v1.y - v0.y, v1.x - v0.x);
+
+  double length_1 =
+      std::sqrt(std::pow(v1.x - v0.x, 2) + std::pow(v1.y - v0.y, 2));
+  double length_2 =
+      std::sqrt(std::pow(v3.x - v0.x, 2) + std::pow(v3.y - v0.y, 2));
+  
+ // Determine longer and shorter sides
+  std::size_t rack_bay_count_1, rack_bay_count_2;
+
+  if (length_1 > length_2) {
+      rack_bay_count_1 = bays;
+      rack_bay_count_2 = rows;
+  } else {
+      rack_bay_count_1 = rows;
+      rack_bay_count_2 = bays;
+  }
+  double stepSize1 = length_1 / rack_bay_count_1;
+  double stepSize2 = length_2 / rack_bay_count_2;
+
+  // Create a 2D array of indices
+  std::vector<std::vector<std::size_t>> indicesArray(
+      rack_bay_count_2 + 1,
+      std::vector<std::size_t>(rack_bay_count_1 + 1));
+
+  // fill in the outer vertices, that belong to the rectangle
+  indicesArray[0][0] = index_v0;
+  indicesArray[0][rack_bay_count_1] = index_v1;
+  indicesArray[rack_bay_count_2][rack_bay_count_1] = index_v2;
+  indicesArray[rack_bay_count_2][0] = index_v3;
+
+  // Fill the arrays
+  for (int i = 0; i <= rack_bay_count_2; ++i) {
+    for (int j = 0; j <= rack_bay_count_1; ++j) {
+      double x = v0.x + std::cos(angle) * j * stepSize1 -
+                 std::sin(angle) * i * stepSize2;
+      double y = v0.y + std::sin(angle) * j * stepSize1 +
+                 std::cos(angle) * i * stepSize2;
+      std::string vertex_name = storage_rack_name + "_vertex_" +
+                std::to_string(i) + "_" +
+                std::to_string(j);
+
+     // only create a new vertex if it doesn't exist yet
+    // as a corner vertex of the storage rack
+      if (indicesArray[i][j] == 0) {
+          Vertex new_vertex(x, y, vertex_name);
+          vertices.push_back(new_vertex);
+          indicesArray[i][j] = vertices.size() - 1;
+        }
+    }
+  }
+
+// create the rack bays
+for (int i = 0; i < rack_bay_count_2; ++i) {
+  for (int j = 0; j < rack_bay_count_1; ++j) {
+    // get the indices of the vertices
+    std::size_t v0_idx = indicesArray[i][j];
+    std::size_t v1_idx = indicesArray[i][j + 1];
+    std::size_t v2_idx = indicesArray[i + 1][j + 1];
+    std::size_t v3_idx = indicesArray[i + 1][j];
+
+    Polygon *rack_bay_polygon = nullptr;
+    Polygon new_rack_bay;
+    new_rack_bay.type = Polygon::RACK_BAY;
+    new_rack_bay.create_required_parameters();
+    new_rack_bay.set_param("n_units", storage_rack_polygon.params["units_per_bay"].to_qstring().toStdString());
+    new_rack_bay.set_param("row", std::to_string(i));
+    new_rack_bay.set_param("number", std::to_string(j));
+    new_rack_bay.set_param("parent_rack_name", storage_rack_name);
+    new_rack_bay.create_required_parameters();
+
+    polygons.push_back(new_rack_bay);
+    rack_bay_polygon = &polygons.back();
+    // small check if the rack bay polygon is valid
+    if (rack_bay_polygon == nullptr) {
+      printf("Rack bay polygon is null\n");
+      continue;
+    }
+    rack_bay_polygon->vertices = {v0_idx, v1_idx, v2_idx, v3_idx};
+    rack_bay_polygon->params["name"].set(storage_rack_name + "_bay_" + 
+                                        std::to_string(i) + "_" + std::to_string(j));
+    rack_bay_polygon->create_required_parameters();
+  }
+}
+
+}
+
+void Level::delete_rack_bays() {
+  // this function will delete the rack bays belonging to a certain storage rack
+
+  std::vector<std::size_t> rack_bay_vertices; // to throw away
+
+  for (auto &polygon : polygons) {
+    if (polygon.type == Polygon::RACK_BAY) {
+      for (const int &vertex_idx : polygon.vertices) {
+        rack_bay_vertices.push_back(vertex_idx);
+      }
+      polygon.selected = true;
+    }
+  }
+  // this should delete the rack bays
+  delete_selected();
+
+  // delete vertices belonging to rack bays (except if they belong to other
+  // geometry)
+  delete_vertices_if_unused(rack_bay_vertices);
+  
+}
+
+
+
+
+
+void Level::make_rectangle_parallel(Polygon &polygon) {
   // get the indices of the vertices
   if (polygon.vertices.size() != 4) {
-    printf("Polygon %d has %d vertices, not 4\n",
-           static_cast<int>(polygon_index),
+    printf("Polygon has %d vertices, not 4\n",
            static_cast<int>(polygon.vertices.size()));
     return;
   }
@@ -1586,7 +1777,7 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
 
   // Function to calculate the angle of a vertex with respect to the center
   auto angle_with_center = [&](const Vertex &vertex) {
-    return std::atan2(vertex.y - center_y, vertex.x - center_x);
+    return std::atan2(vertex.y - center.y(), vertex.x - center.x());
   };
 
   // sort the vertices by their angles with the midpoint
@@ -1595,16 +1786,18 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
             [&](Vertex *a, Vertex *b) {
               return angle_with_center(*a) < angle_with_center(*b);
             });
-  std::tie(v0, v1, v2, v3) = std::make_tuple(*sorted_vertices[0], *sorted_vertices[1], *sorted_vertices[2], *sorted_vertices[3]);
+  std::tie(v0, v1, v2, v3) =
+      std::make_tuple(*sorted_vertices[0], *sorted_vertices[1],
+                      *sorted_vertices[2], *sorted_vertices[3]);
   // Now, v0 is the bottom-left, v1 is the bottom-right,
   // v2 is the top-right, and v3 is the top-left vertex
 
-  // calculate the angle of the non-perfect rectangle
+  // Calculate the angle of the non-perfect rectangle
   double angle = std::atan2(v1.y - v0.y, v1.x - v0.x);
 
   double nearest_multiple = std::round(angle / (M_PI / 2.0)) * (M_PI / 2.0);
-  const double epsilon = 1e-5;
-  if (std::abs(std::fmod(angle, M_PI / 2.0)) < epsilon) {
+  // if angle is within 5 degrees of a multiple of 90 degrees, snap to that
+  if (std::abs(std::fmod(angle, M_PI / 2.0)) < 5.0 * M_PI / 180.0) {
     printf("Angle of rectangle is %.2f degrees, close to %.2f degrees\n",
            angle * 180.0 / M_PI, nearest_multiple * 180.0 / M_PI);
     angle = nearest_multiple;
@@ -1614,7 +1807,6 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
   QTransform rotateTransform;
   rotateTransform.rotateRadians(-angle);
 
-
   // Copy the vertices to Qpoints
   QPointF v0_qpoint(v0.x, v0.y);
   QPointF v1_qpoint(v1.x, v1.y);
@@ -1622,7 +1814,7 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
   QPointF v3_qpoint(v3.x, v3.y);
 
   // Apply the translation to all vertices
-    
+
   // Apply the transformation to all vertices
   QPointF mappedV0 = rotateTransform.map(v0_qpoint);
   QPointF mappedV1 = rotateTransform.map(v1_qpoint);
@@ -1630,10 +1822,14 @@ void Level::make_rectangle_parallel(std::size_t polygon_index) {
   QPointF mappedV3 = rotateTransform.map(v3_qpoint);
 
   // Find the minimum and maximum x, y values to square up the rectangle
-  double minX = std::min({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
-  double maxX = std::max({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
-  double minY = std::min({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
-  double maxY = std::max({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
+  double minX =
+      std::min({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
+  double maxX =
+      std::max({mappedV0.x(), mappedV1.x(), mappedV2.x(), mappedV3.x()});
+  double minY =
+      std::min({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
+  double maxY =
+      std::max({mappedV0.y(), mappedV1.y(), mappedV2.y(), mappedV3.y()});
 
   // Make the rectangle square
   double sideLengthX = maxX - minX;
