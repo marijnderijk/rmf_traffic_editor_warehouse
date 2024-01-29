@@ -134,6 +134,7 @@ public:
   void delete_rack_bays();
   void make_rectangle_parallel(Polygon &polygon);
   void update_storage_racks();
+  void create_rack_viewpoints();
   bool can_delete_current_selection();
   bool delete_vertex_if_unused(std::size_t selected_vertex_idx);
   void delete_vertices_if_unused(const std::vector<std::size_t> vertex_idxs);

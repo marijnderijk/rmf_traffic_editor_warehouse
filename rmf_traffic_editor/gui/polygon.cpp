@@ -107,6 +107,7 @@ void Polygon::create_required_parameters() {
     create_param_if_needed("num_bays", Param::INT,
                            4); // number of bays (lenghtwise)
     create_param_if_needed("num_rows", Param::INT, 2); // number of rows
+    create_param_if_needed("viewpoint_distance", Param::DOUBLE, 3.0);
     create_param_if_needed("units_per_bay", Param::INT,
                            4); // number of units per bay
     // now we want to create a height parameter for each unit
