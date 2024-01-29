@@ -19,6 +19,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include "ceres/ceres.h"
 #include <QGraphicsOpacityEffect>
@@ -165,6 +166,15 @@ bool Level::from_yaml(const std::string &_name, const YAML::Node &_data,
     }
   }
 
+  if (_data["aisles"] && _data["aisles"].IsSequence()) {
+    const YAML::Node &yf = _data["aisles"];
+    for (YAML::const_iterator it = yf.begin(); it != yf.end(); ++it) {
+      Polygon p;
+      p.from_yaml(*it, Polygon::AISLE);
+      polygons.push_back(p);
+    }
+  }
+
   if (_data["elevation"])
     elevation = _data["elevation"].as<double>();
 
@@ -274,6 +284,9 @@ YAML::Node Level::to_yaml(const CoordinateSystem &coordinate_system) const {
     case Polygon::RACK_BAY:
       y["rack_bays"].push_back(polygon.to_yaml());
       break;
+    case Polygon::AISLE:
+      y["aisles"].push_back(polygon.to_yaml());
+      break;
     default:
       printf("tried to save an unknown polygon type: %d\n",
              static_cast<int>(polygon.type));
@@ -351,7 +364,7 @@ bool Level::can_delete_current_selection() {
 void Level::delete_vertices_if_unused(std::vector<std::size_t> vertex_indices) {
   // sort the indices in descending order
   std::sort(vertex_indices.rbegin(), vertex_indices.rend());
-  
+
   // now erase the vertices
   for (std::size_t index : vertex_indices) {
     if (index < vertices.size()) {
@@ -365,7 +378,8 @@ void Level::delete_vertices_if_unused(std::vector<std::size_t> vertex_indices) {
       }
       if (!vertex_used) {
         for (const Polygon &polygon : polygons) {
-          if (std::find(polygon.vertices.begin(), polygon.vertices.end(), index) != polygon.vertices.end()) {
+          if (std::find(polygon.vertices.begin(), polygon.vertices.end(),
+                        index) != polygon.vertices.end()) {
             vertex_used = true;
             break;
           }
@@ -386,16 +400,17 @@ void Level::delete_vertices_if_unused(std::vector<std::size_t> vertex_indices) {
           for (int i = 0; i < static_cast<int>(polygon.vertices.size()); i++) {
             if (polygon.vertices[i] > index)
               polygon.vertices[i]--;
-            }
           }
         }
       }
     }
   }
-/* void Level::delete_vertices_if_un/used(std::vector<std::size_t> vertex_indices) {
+}
+/* void Level::delete_vertices_if_un/used(std::vector<std::size_t>
+vertex_indices) {
   // sort the indices in descending order
   std::sort(vertex_indices.rbegin(), vertex_indices.rend());
-  
+
   // now erase the vertices
   for (std::size_t index : vertex_indices) {
     if (index < vertices.size()) {
@@ -471,7 +486,7 @@ bool Level::delete_selected() {
 
   fiducials.erase(std::remove_if(fiducials.begin(), fiducials.end(),
                                  [](const Fiducial &fiducial) {
-                                  return fiducial.selected;
+                                   return fiducial.selected;
                                  }),
                   fiducials.end());
 
@@ -989,6 +1004,8 @@ void Level::draw_polygons(QGraphicsScene *scene) const {
   const QBrush roi_brush(QColor::fromRgbF(1.0, 0.0, 0.0, 0.5));
   const QBrush storage_rack_brush(QColor::fromRgbF(0.255, 0.42, 1.0, 0.5));
   const QBrush rack_bay_brush(QColor::fromRgbF(0.9, 0.9, 0.9, 0.8));
+  const QBrush normal_aisle_brush(QColor::fromRgbF(0.953, 0.671, 0.349, 0.5));
+  const QBrush main_aisle_brush(QColor::fromRgbF(0.631, 0.953, 0.349, 0.5));
 
   // first draw the floor polygons
   for (const auto &polygon : polygons) {
@@ -1021,6 +1038,26 @@ void Level::draw_polygons(QGraphicsScene *scene) const {
     if (polygon.type == Polygon::RACK_BAY)
       draw_polygon(scene, rack_bay_brush, polygon);
   }
+
+  // now draw the aisles
+  for (const auto &polygon : polygons) {
+    if (polygon.type == Polygon::AISLE) {
+      if (polygon.params.find("main_aisle") == polygon.params.end()) {
+        printf("Warning: is_main_aisle not set for aisle polygon\n");
+        draw_polygon(scene, normal_aisle_brush, polygon);
+        continue;
+      }
+      if (polygon.params.find("main_aisle")->second.value_bool !=
+          true) {
+        draw_polygon(scene, normal_aisle_brush, polygon);
+        continue;
+      }
+      draw_polygon(scene, main_aisle_brush, polygon);
+
+      }
+    }
+
+  // now draw the main aisles
 
 #if 0
   // ahhhhh only for debugging...
@@ -1586,8 +1623,8 @@ void Level::update_storage_racks() {
     polygon.create_required_parameters();
     create_rack_bays(polygon);
   }
+  create_rack_viewpoints();
 }
-
 
 void Level::create_rack_bays(Polygon &storage_rack_polygon) {
   if (storage_rack_polygon.type != Polygon::STORAGE_RACK) {
@@ -1601,7 +1638,8 @@ void Level::create_rack_bays(Polygon &storage_rack_polygon) {
   }
 
   // get the storage rack parameters
-  const std::string storage_rack_name = storage_rack_polygon.params["name"].to_qstring().toStdString();
+  const std::string storage_rack_name =
+      storage_rack_polygon.params["name"].to_qstring().toStdString();
   const int bays = storage_rack_polygon.params["num_bays"].to_qstring().toInt();
   const int rows = storage_rack_polygon.params["num_rows"].to_qstring().toInt();
 
@@ -1617,7 +1655,7 @@ void Level::create_rack_bays(Polygon &storage_rack_polygon) {
 
   // Function to calculate the angle of a vertex with respect to the center
   auto angle_with_center = [&](Vertex &vertex) {
-      return std::atan2(vertex.y - centerY, vertex.x - centerX);
+    return std::atan2(vertex.y - centerY, vertex.x - centerX);
   };
 
   // Create a vector of pairs (index, vertex)
@@ -1625,20 +1663,19 @@ void Level::create_rack_bays(Polygon &storage_rack_polygon) {
       {storage_rack_polygon.vertices[0], V0},
       {storage_rack_polygon.vertices[1], V1},
       {storage_rack_polygon.vertices[2], V2},
-      {storage_rack_polygon.vertices[3], V3}
-  };
+      {storage_rack_polygon.vertices[3], V3}};
 
   // Sort the vector of pairs by angles with the midpoint
   std::sort(indexedVertices.begin(), indexedVertices.end(),
             [&](auto &a, auto &b) {
-                return angle_with_center(a.second) < angle_with_center(b.second);
+              return angle_with_center(a.second) < angle_with_center(b.second);
             });
 
   std::size_t index_v0 = indexedVertices[0].first;
   std::size_t index_v1 = indexedVertices[1].first;
   std::size_t index_v2 = indexedVertices[2].first;
   std::size_t index_v3 = indexedVertices[3].first;
-  
+
   // Access the sorted vertices and their indices
   Vertex &v0 = vertices[index_v0];
   Vertex &v1 = vertices[index_v1];
@@ -1651,24 +1688,23 @@ void Level::create_rack_bays(Polygon &storage_rack_polygon) {
       std::sqrt(std::pow(v1.x - v0.x, 2) + std::pow(v1.y - v0.y, 2));
   double length_2 =
       std::sqrt(std::pow(v3.x - v0.x, 2) + std::pow(v3.y - v0.y, 2));
-  
- // Determine longer and shorter sides
+
+  // Determine longer and shorter sides
   std::size_t rack_bay_count_1, rack_bay_count_2;
 
   if (length_1 > length_2) {
-      rack_bay_count_1 = bays;
-      rack_bay_count_2 = rows;
+    rack_bay_count_1 = bays;
+    rack_bay_count_2 = rows;
   } else {
-      rack_bay_count_1 = rows;
-      rack_bay_count_2 = bays;
+    rack_bay_count_1 = rows;
+    rack_bay_count_2 = bays;
   }
   double stepSize1 = length_1 / rack_bay_count_1;
   double stepSize2 = length_2 / rack_bay_count_2;
 
   // Create a 2D array of indices
   std::vector<std::vector<std::size_t>> indicesArray(
-      rack_bay_count_2 + 1,
-      std::vector<std::size_t>(rack_bay_count_1 + 1));
+      rack_bay_count_2 + 1, std::vector<std::size_t>(rack_bay_count_1 + 1));
 
   // fill in the outer vertices, that belong to the rectangle
   indicesArray[0][0] = index_v0;
@@ -1684,59 +1720,60 @@ void Level::create_rack_bays(Polygon &storage_rack_polygon) {
       double y = v0.y + std::sin(angle) * j * stepSize1 +
                  std::cos(angle) * i * stepSize2;
       std::string vertex_name = storage_rack_name + "_vertex_" +
-                std::to_string(i) + "_" +
-                std::to_string(j);
+                                std::to_string(i) + "_" + std::to_string(j);
 
-     // only create a new vertex if it doesn't exist yet
-    // as a corner vertex of the storage rack
+      // only create a new vertex if it doesn't exist yet
+      // as a corner vertex of the storage rack
       if (indicesArray[i][j] == 0) {
-          Vertex new_vertex(x, y, vertex_name);
-          vertices.push_back(new_vertex);
-          indicesArray[i][j] = vertices.size() - 1;
-        }
+        Vertex new_vertex(x, y, vertex_name);
+        vertices.push_back(new_vertex);
+        indicesArray[i][j] = vertices.size() - 1;
+      }
     }
   }
 
-// create the rack bays
-for (int i = 0; i < rack_bay_count_2; ++i) {
-  for (int j = 0; j < rack_bay_count_1; ++j) {
-    // get the indices of the vertices
-    std::size_t v0_idx = indicesArray[i][j];
-    std::size_t v1_idx = indicesArray[i][j + 1];
-    std::size_t v2_idx = indicesArray[i + 1][j + 1];
-    std::size_t v3_idx = indicesArray[i + 1][j];
+  // create the rack bays
+  for (int i = 0; i < rack_bay_count_2; ++i) {
+    for (int j = 0; j < rack_bay_count_1; ++j) {
+      // get the indices of the vertices
+      std::size_t v0_idx = indicesArray[i][j];
+      std::size_t v1_idx = indicesArray[i][j + 1];
+      std::size_t v2_idx = indicesArray[i + 1][j + 1];
+      std::size_t v3_idx = indicesArray[i + 1][j];
 
-    Polygon *rack_bay_polygon = nullptr;
-    Polygon new_rack_bay;
-    new_rack_bay.type = Polygon::RACK_BAY;
-    new_rack_bay.create_required_parameters();
-    new_rack_bay.set_param("n_units", storage_rack_polygon.params["units_per_bay"].to_qstring().toStdString());
-    new_rack_bay.set_param("row", std::to_string(i));
-    new_rack_bay.set_param("number", std::to_string(j));
-    new_rack_bay.set_param("parent_rack_name", storage_rack_name);
-    new_rack_bay.create_required_parameters();
+      Polygon *rack_bay_polygon = nullptr;
+      Polygon new_rack_bay;
+      new_rack_bay.type = Polygon::RACK_BAY;
+      new_rack_bay.create_required_parameters();
+      new_rack_bay.set_param("n_units",
+                             storage_rack_polygon.params["units_per_bay"]
+                                 .to_qstring()
+                                 .toStdString());
+      new_rack_bay.set_param("row", std::to_string(i));
+      new_rack_bay.set_param("number", std::to_string(j));
+      new_rack_bay.set_param("parent_rack_name", storage_rack_name);
+      new_rack_bay.create_required_parameters();
 
-    polygons.push_back(new_rack_bay);
-    rack_bay_polygon = &polygons.back();
-    // small check if the rack bay polygon is valid
-    if (rack_bay_polygon == nullptr) {
-      printf("Rack bay polygon is null\n");
-      continue;
+      polygons.push_back(new_rack_bay);
+      rack_bay_polygon = &polygons.back();
+      // small check if the rack bay polygon is valid
+      if (rack_bay_polygon == nullptr) {
+        printf("Rack bay polygon is null\n");
+        continue;
+      }
+      rack_bay_polygon->vertices = {v0_idx, v1_idx, v2_idx, v3_idx};
+      rack_bay_polygon->params["name"].set(storage_rack_name + "_bay_" +
+                                           std::to_string(i) + "_" +
+                                           std::to_string(j));
+      rack_bay_polygon->create_required_parameters();
     }
-    rack_bay_polygon->vertices = {v0_idx, v1_idx, v2_idx, v3_idx};
-    rack_bay_polygon->params["name"].set(storage_rack_name + "_bay_" + 
-                                        std::to_string(i) + "_" + std::to_string(j));
-    rack_bay_polygon->create_required_parameters();
   }
-}
-
 }
 
 void Level::delete_rack_bays() {
   // this function will delete the rack bays belonging to a certain storage rack
 
   std::vector<std::size_t> rack_bay_vertices; // to throw away
-
   for (auto &polygon : polygons) {
     if (polygon.type == Polygon::RACK_BAY) {
       for (const int &vertex_idx : polygon.vertices) {
@@ -1751,12 +1788,7 @@ void Level::delete_rack_bays() {
   // delete vertices belonging to rack bays (except if they belong to other
   // geometry)
   delete_vertices_if_unused(rack_bay_vertices);
-  
 }
-
-
-
-
 
 void Level::make_rectangle_parallel(Polygon &polygon) {
   // get the indices of the vertices
@@ -1854,6 +1886,93 @@ void Level::make_rectangle_parallel(Polygon &polygon) {
   v1 = {rotatedBackV1.x(), rotatedBackV1.y()};
   v2 = {rotatedBackV2.x(), rotatedBackV2.y()};
   v3 = {rotatedBackV3.x(), rotatedBackV3.y()};
+}
+
+void Level::create_rack_viewpoints() {
+  for (auto &polygon : polygons) {
+    // check if the polygon is a storage rack
+    if (polygon.type != Polygon::STORAGE_RACK) {
+      continue;
+    }
+    // update the rack parameters
+    const int bays = polygon.params["num_bays"].to_qstring().toInt();
+    const int rows = polygon.params["num_rows"].to_qstring().toInt();
+
+    // Get references to the vertices
+    Vertex &V0 = vertices[polygon.vertices[0]];
+    Vertex &V1 = vertices[polygon.vertices[1]];
+    Vertex &V2 = vertices[polygon.vertices[2]];
+    Vertex &V3 = vertices[polygon.vertices[3]];
+
+    // sort the vertices by their angles with the midpoint
+    std::vector<Vertex *> sorted_vertices = {&V0, &V1, &V2, &V3};
+    auto angle_with_center = [&](const Vertex &vertex) {
+      return std::atan2(vertex.y - V0.y, vertex.x - V0.x);
+    };
+    std::sort(sorted_vertices.begin(), sorted_vertices.end(),
+              [&](Vertex *a, Vertex *b) {
+                return angle_with_center(*a) < angle_with_center(*b);
+              });
+    auto distance = [&](const Vertex &vertex1, const Vertex &vertex2) {
+      return std::sqrt(std::pow(vertex1.x - vertex2.x, 2) +
+                       std::pow(vertex1.y - vertex2.y, 2));
+    };
+
+    int first_edge_is_short =
+        distance(*sorted_vertices[0], *sorted_vertices[1]) <
+        distance(*sorted_vertices[1], *sorted_vertices[2]);
+
+    // hardcode the viewing distance for now
+    const double viewing_distance =
+        polygon.params["viewpoint_distance"].to_qstring().toDouble();
+
+    // loop over each edge in the sorted vertices
+    for (int i = 0; i < 4; ++i) {
+      Vertex &v0 = *sorted_vertices[i];
+      Vertex &v1 = *sorted_vertices[(i + 1) % 4];
+
+      // if the first edge is short and i is even the amount of viewpoints
+      // should be the amount of rows
+      int n_viewpoints = 0;
+
+      if ((first_edge_is_short && i % 2 == 0) ||
+          (!first_edge_is_short && i % 2 == 1)) {
+        n_viewpoints = rows;
+      } else {
+        n_viewpoints = bays;
+      }
+
+      if (n_viewpoints <= 2) {
+        printf("Not enough viewpoints\n");
+        continue;
+      }
+
+      // calculate the step size
+      double length = distance(v0, v1);
+      double angle = std::atan2(v1.y - v0.y, v1.x - v0.x);
+
+      double step_size = length / n_viewpoints;
+
+      // loop over the viewpoints
+      for (int j = 0; j < n_viewpoints; ++j) {
+        double step = (0.5 + j) * step_size;
+        // calculate the x and y coordinates of the viewpoint
+        double x = v0.x + std::cos(angle) * step;
+        double y = v0.y + std::sin(angle) * step;
+        // now offset the viewpoint by the viewing distance
+        x -= std::cos(angle + M_PI / 2.0) * viewing_distance;
+        y -= std::sin(angle + M_PI / 2.0) * viewing_distance;
+
+        // create a viewpoint
+        std::string viewpoint_name =
+            polygon.params["name"].to_qstring().toStdString() + "_viewpoint_" +
+            std::to_string(i) + "_" + std::to_string(j);
+        Vertex new_vertex(x, y, viewpoint_name);
+        new_vertex.params["is_inspection_point"] = "true";
+        vertices.push_back(new_vertex);
+      }
+    }
+  }
 }
 
 class TransformResidual {
@@ -2223,7 +2342,7 @@ void Level::set_selected_containing_polygon(const double x, const double y) {
   }
   // Define the order of polygon types in the Z-stack
   const std::vector<Polygon::Type> priority_order = {
-      Polygon::RACK_BAY, Polygon::STORAGE_RACK, Polygon::ROI, Polygon::HOLE};
+      Polygon::RACK_BAY, Polygon::STORAGE_RACK, Polygon::ROI, Polygon::AISLE, Polygon::HOLE};
 
   // Search for the highest priority polygon type
   for (const auto &priority_type : priority_order) {

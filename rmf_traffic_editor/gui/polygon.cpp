@@ -143,6 +143,11 @@ void Polygon::create_required_parameters() {
       params.erase(param_name);
     }
   }
+
+  if (type == AISLE) {
+    create_param_if_needed("name", Param::STRING, std::string("aisle"));
+    create_param_if_needed("main_aisle", Param::BOOL, false);
+  }
 }
 
 template <typename T>

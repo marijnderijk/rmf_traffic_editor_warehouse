@@ -42,6 +42,7 @@ public:
     HOLE,
     STORAGE_RACK,
     RACK_BAY,
+    AISLE,
   } type = UNDEFINED;
 
   Polygon();

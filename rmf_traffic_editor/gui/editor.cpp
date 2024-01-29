@@ -321,7 +321,8 @@ Editor::Editor() : QMainWindow() {
                      "Add floor polygon (F)");
   create_tool_button(TOOL_ADD_HOLE, ":icons/hole.svg", "Add hole polygon");
   create_tool_button(TOOL_ADD_ROI, ":icons/roi.svg", "Add region of interest");
-  create_tool_button(TOOL_ADD_STORAGE_RACK, ":icons/storage_rack.svg",
+  create_tool_button(TOOL_ADD_AISLE, ":icons/aisle.svg", "Add aisle");
+  create_tool_button(TOOL_ADD_STORAGE_RACK, ":icons/storagerack.svg",
                      "Add storage rack");
   create_tool_button(TOOL_EDIT_POLYGON, "", "Edit Polygon (E)");
   create_tool_button(TOOL_ADD_HUMAN_LANE, "", "Add Human Lane with width");
@@ -808,6 +809,9 @@ void Editor::mouse_event(const MouseType t, QMouseEvent *e) {
   case TOOL_ADD_ROI:
     mouse_add_roi(t, e, p);
     break;
+  case TOOL_ADD_AISLE:
+    mouse_add_aisle(t, e, p);
+    break;
   case TOOL_ADD_HUMAN_LANE:
     mouse_add_human_lane(t, e, p);
     break;
@@ -969,8 +973,6 @@ const QString Editor::tool_id_to_string(const int id) {
     return "add human lane";
   case TOOL_ADD_FEATURE:
     return "add &feature";
-  case TOOL_UPDATE_STORAGE_RACKS:
-    return "update storage racks";
   default:
     return "unknown tool ID";
   }
@@ -2092,6 +2094,11 @@ void Editor::mouse_add_hole(const MouseType t, QMouseEvent *e,
 void Editor::mouse_add_roi(const MouseType t, QMouseEvent *e,
                            const QPointF &p) {
   mouse_add_polygon(t, e, p, Polygon::ROI);
+}
+
+void Editor::mouse_add_aisle(const MouseType t, QMouseEvent *e,
+                             const QPointF &p) {
+  mouse_add_polygon(t, e, p, Polygon::AISLE);
 }
 
 void Editor::mouse_add_storage_rack(const MouseType t, QMouseEvent *e,
