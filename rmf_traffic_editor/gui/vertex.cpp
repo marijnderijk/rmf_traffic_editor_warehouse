@@ -41,6 +41,7 @@ const vector<pair<string, Param::Type>> Vertex::allowed_params
   { "human_goal_set_name", Param::Type::STRING },
   { "mutex", Param::Type::STRING },
   { "merge_radius", Param::Type::DOUBLE },
+  { "is_inspection_point", Param::Type::BOOL},
 };
 
 
@@ -259,6 +260,25 @@ void Vertex::draw(
     pixmap_item->setToolTip("This vertex is a charger");
   }
 
+  if (is_inspection_point())
+  {
+    const double icon_bearing = 135.0 * M_PI / 180.0;
+    QIcon icon(":icons/magnifying_glass.svg");
+    QPixmap pixmap(icon.pixmap(icon.actualSize(QSize(128, 128))));
+    QGraphicsPixmapItem* pixmap_item = scene->addPixmap(pixmap);
+    pixmap_item->setOffset(
+      -pixmap.width() / 2,
+      -pixmap.height() / 2);
+    pixmap_item->setScale(icon_scale);
+    pixmap_item->setZValue(20.0);
+    pixmap_item->setPos(
+      x + icon_ring_radius * cos(icon_bearing),
+      y - icon_ring_radius * sin(icon_bearing));
+    if (!coordinate_system.is_y_flipped())
+      pixmap_item->setTransform(pixmap_item->transform().scale(1, -1));
+    pixmap_item->setToolTip("This vertex is an inspection point");
+  }
+
   /// For now, we only show one of the icon below as there's limited
   /// space for the icon, also "pickup_dispenser, dropoff_ingestor,
   /// is_cleaning_zone" should be exclusive to one another
@@ -405,4 +425,13 @@ std::string Vertex::lift_cabin() const
     return "";
 
   return it->second.value_string;
+}
+
+bool Vertex::is_inspection_point() const
+{
+  const auto it = params.find("is_inspection_point");
+  if (it == params.end())
+    return false;
+
+  return it->second.value_bool;
 }

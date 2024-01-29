@@ -66,6 +66,7 @@ public:
   bool is_parking_point() const;
   bool is_holding_point() const;
   bool is_cleaning_zone() const;
+  bool is_inspection_point() const;
   bool is_charger() const;
   std::optional<double> merge_radius() const;
 
