@@ -1,0 +1,9 @@
+aisles:
+  - parameters: {main_aisle: [4, true], name: [1, aisle]}
+    vertices: [99, 111, 108, 28, 83, 82, 98]
+  - parameters: {main_aisle: [4, false], name: [1, conveyor_aisle]}
+    vertices: [110, 112, 113, 109]
+  - parameters: {main_aisle: [4, false], name: [1, conveyor_side_aisle]}
+    vertices: [108, 28, 31, 114]
+  - parameters: {main_aisle: [4, false], name: [1, conveyor_back_aisle]}
+    vertices: [115, 560, 31, 114]

@@ -1,0 +1,1087 @@
+coordinate_system: reference_image
+crowd_sim:
+  agent_groups:
+    - {agents_name: [], agents_number: 0, group_id: 0, profile_selector: external_agent, state_selector: external_static, x: 0, y: 0}
+  agent_profiles:
+    - {ORCA_tau: 1, ORCA_tauObst: 0.40000000000000002, class: 1, max_accel: 0, max_angle_vel: 0, max_neighbors: 10, max_speed: 0, name: external_agent, neighbor_dist: 5, obstacle_set: 1, pref_speed: 0, r: 0.25}
+  enable: 0
+  goal_sets: []
+  model_types: []
+  obstacle_set: {class: 1, file_name: warehouse_floor_navmesh.nav, type: nav_mesh}
+  states:
+    - {final: 1, goal_set: -1, name: external_static, navmesh_file_name: ""}
+  transitions: []
+  update_time_step: 0.10000000000000001
+graphs:
+  {}
+levels:
+  warehouse_floor:
+    aisles:
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [76, 71, 74, 78]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [75, 67, 70, 72]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [68, 69, 66, 63]
+      - parameters: {main_aisle: [4, true], name: [1, aisle]}
+        vertices: [10, 65, 66, 69, 70, 72, 74, 78, 79, 9]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [64, 65, 10, 54]
+      - parameters: {main_aisle: [4, true], name: [1, aisle]}
+        vertices: [80, 102, 101, 106, 105, 77, 76, 71, 75, 67, 68, 63, 64, 54, 53, 28, 83]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [91, 92, 93, 90]
+      - parameters: {main_aisle: [4, true], name: [1, aisle]}
+        vertices: [89, 81, 82, 98, 97, 94, 93, 90]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [95, 96, 97, 94]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [88, 89, 81, 80, 102, 103]
+      - parameters: {main_aisle: [4, false], name: [1, aisle]}
+        vertices: [101, 106, 107, 100]
+      - parameters: {main_aisle: [4, true], name: [1, aisle]}
+        vertices: [99, 111, 108, 28, 83, 82, 98]
+      - parameters: {main_aisle: [4, false], name: [1, conveyor_aisle]}
+        vertices: [110, 112, 113, 109]
+      - parameters: {main_aisle: [4, false], name: [1, conveyor_side_aisle]}
+        vertices: [108, 28, 31, 114]
+      - parameters: {main_aisle: [4, false], name: [1, conveyor_back_aisle]}
+        vertices: [115, 560, 31, 114]
+    doors:
+      - [27, 26, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, double_hinged]}]
+      - [30, 31, {motion_axis: [1, stop], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [28, 29, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, -1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [7, 4, {motion_axis: [1, stop], motion_degrees: [3, 90], motion_direction: [2, -1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [6, 32, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, -1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [41, 39, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [42, 43, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [50, 49, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, -1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [55, 56, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [62, 34, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [58, 60, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, 1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+      - [46, 45, {motion_axis: [1, start], motion_degrees: [3, 90], motion_direction: [2, -1], name: [1, "null"], plugin: [1, normal], right_left_ratio: [3, 1], type: [1, hinged]}]
+    drawing:
+      filename: ../Downloads/example_warehouse.png
+    elevation: 0
+    fiducials:
+      - [384.19999999999999, 1726.712, ""]
+    floors:
+      - parameters: {ceiling_scale: [3, 1], ceiling_texture: [1, blue_linoleum], indoor: [2, 0], texture_name: [1, blue_linoleum], texture_rotation: [3, 0], texture_scale: [3, 1]}
+        vertices: [63, 66, 65, 64]
+    layers:
+      {}
+    measurements:
+      - [0, 1, {distance: [3, 5]}]
+    rack_bays:
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [71, 116, 121, 120]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [116, 117, 122, 121]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [117, 118, 123, 122]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [118, 119, 124, 123]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [119, 74, 125, 124]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [120, 121, 126, 75]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [121, 122, 127, 126]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [122, 123, 128, 127]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [123, 124, 129, 128]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [124, 125, 72, 129]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [77, 130, 135, 134]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [130, 131, 136, 135]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [131, 132, 137, 136]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [132, 133, 138, 137]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [133, 79, 139, 138]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [134, 135, 140, 76]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [135, 136, 141, 140]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [136, 137, 142, 141]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [137, 138, 143, 142]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [138, 139, 78, 143]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_0_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [81, 80, 145, 144]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_1_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [144, 145, 147, 146]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_2_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [146, 147, 149, 148]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_3_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 3], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [148, 149, 151, 150]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_4_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 4], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [150, 151, 153, 152]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_5_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 5], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [152, 153, 155, 154]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_6_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 6], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [154, 155, 157, 156]
+      - parameters: {n_units: [2, 4], name: [1, rack_small_1_bay_7_0], number: [2, 0], parent_rack_name: [1, rack_small_1], row: [2, 7], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [156, 157, 83, 82]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [67, 158, 163, 162]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [158, 159, 164, 163]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [159, 160, 165, 164]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [160, 161, 166, 165]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [161, 70, 167, 166]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [162, 163, 168, 68]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [163, 164, 169, 168]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [164, 165, 170, 169]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [165, 166, 171, 170]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [166, 167, 69, 171]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [63, 172, 177, 176]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [172, 173, 178, 177]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [173, 174, 179, 178]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [174, 175, 180, 179]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [175, 66, 181, 180]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [176, 177, 182, 64]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [177, 178, 183, 182]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [178, 179, 184, 183]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [179, 180, 185, 184]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [180, 181, 65, 185]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_0], number: [2, 0], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [88, 186, 198, 197]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_1], number: [2, 1], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [186, 187, 199, 198]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_2], number: [2, 2], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [187, 188, 200, 199]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_3], number: [2, 3], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [188, 189, 201, 200]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_4], number: [2, 4], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [189, 190, 202, 201]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_5], number: [2, 5], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [190, 191, 203, 202]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_6], number: [2, 6], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [191, 192, 204, 203]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_7], number: [2, 7], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [192, 193, 205, 204]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_8], number: [2, 8], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [193, 194, 206, 205]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_9], number: [2, 9], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [194, 195, 207, 206]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_10], number: [2, 10], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [195, 196, 208, 207]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_0_11], number: [2, 11], parent_rack_name: [1, rack_mini_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [196, 89, 209, 208]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_0], number: [2, 0], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [197, 198, 211, 210]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_1], number: [2, 1], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [198, 199, 212, 211]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_2], number: [2, 2], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [199, 200, 213, 212]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_3], number: [2, 3], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [200, 201, 214, 213]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_4], number: [2, 4], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [201, 202, 215, 214]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_5], number: [2, 5], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [202, 203, 216, 215]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_6], number: [2, 6], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [203, 204, 217, 216]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_7], number: [2, 7], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [204, 205, 218, 217]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_8], number: [2, 8], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [205, 206, 219, 218]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_9], number: [2, 9], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [206, 207, 220, 219]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_10], number: [2, 10], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [207, 208, 221, 220]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_1_11], number: [2, 11], parent_rack_name: [1, rack_mini_1], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [208, 209, 222, 221]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_0], number: [2, 0], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [210, 211, 223, 91]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_1], number: [2, 1], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [211, 212, 224, 223]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_2], number: [2, 2], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [212, 213, 225, 224]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_3], number: [2, 3], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [213, 214, 226, 225]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_4], number: [2, 4], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [214, 215, 227, 226]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_5], number: [2, 5], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [215, 216, 228, 227]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_6], number: [2, 6], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [216, 217, 229, 228]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_7], number: [2, 7], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [217, 218, 230, 229]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_8], number: [2, 8], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [218, 219, 231, 230]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_9], number: [2, 9], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [219, 220, 232, 231]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_10], number: [2, 10], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [220, 221, 233, 232]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_1_bay_2_11], number: [2, 11], parent_rack_name: [1, rack_mini_1], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [221, 222, 90, 233]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_0], number: [2, 0], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [92, 234, 246, 245]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_1], number: [2, 1], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [234, 235, 247, 246]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_2], number: [2, 2], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [235, 236, 248, 247]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_3], number: [2, 3], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [236, 237, 249, 248]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_4], number: [2, 4], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [237, 238, 250, 249]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_5], number: [2, 5], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [238, 239, 251, 250]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_6], number: [2, 6], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [239, 240, 252, 251]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_7], number: [2, 7], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [240, 241, 253, 252]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_8], number: [2, 8], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [241, 242, 254, 253]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_9], number: [2, 9], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [242, 243, 255, 254]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_10], number: [2, 10], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [243, 244, 256, 255]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_0_11], number: [2, 11], parent_rack_name: [1, rack_mini_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [244, 93, 257, 256]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_0], number: [2, 0], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [245, 246, 259, 258]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_1], number: [2, 1], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [246, 247, 260, 259]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_2], number: [2, 2], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [247, 248, 261, 260]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_3], number: [2, 3], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [248, 249, 262, 261]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_4], number: [2, 4], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [249, 250, 263, 262]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_5], number: [2, 5], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [250, 251, 264, 263]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_6], number: [2, 6], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [251, 252, 265, 264]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_7], number: [2, 7], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [252, 253, 266, 265]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_8], number: [2, 8], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [253, 254, 267, 266]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_9], number: [2, 9], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [254, 255, 268, 267]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_10], number: [2, 10], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [255, 256, 269, 268]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_1_11], number: [2, 11], parent_rack_name: [1, rack_mini_2], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [256, 257, 270, 269]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_0], number: [2, 0], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [258, 259, 271, 95]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_1], number: [2, 1], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [259, 260, 272, 271]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_2], number: [2, 2], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [260, 261, 273, 272]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_3], number: [2, 3], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [261, 262, 274, 273]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_4], number: [2, 4], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [262, 263, 275, 274]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_5], number: [2, 5], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [263, 264, 276, 275]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_6], number: [2, 6], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [264, 265, 277, 276]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_7], number: [2, 7], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [265, 266, 278, 277]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_8], number: [2, 8], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [266, 267, 279, 278]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_9], number: [2, 9], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [267, 268, 280, 279]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_10], number: [2, 10], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [268, 269, 281, 280]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_2_bay_2_11], number: [2, 11], parent_rack_name: [1, rack_mini_2], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [269, 270, 94, 281]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_0], number: [2, 0], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [96, 282, 294, 293]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_1], number: [2, 1], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [282, 283, 295, 294]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_2], number: [2, 2], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [283, 284, 296, 295]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_3], number: [2, 3], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [284, 285, 297, 296]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_4], number: [2, 4], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [285, 286, 298, 297]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_5], number: [2, 5], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [286, 287, 299, 298]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_6], number: [2, 6], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [287, 288, 300, 299]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_7], number: [2, 7], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [288, 289, 301, 300]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_8], number: [2, 8], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [289, 290, 302, 301]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_9], number: [2, 9], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [290, 291, 303, 302]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_10], number: [2, 10], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [291, 292, 304, 303]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_0_11], number: [2, 11], parent_rack_name: [1, rack_mini_3], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [292, 97, 305, 304]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_0], number: [2, 0], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [293, 294, 307, 306]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_1], number: [2, 1], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [294, 295, 308, 307]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_2], number: [2, 2], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [295, 296, 309, 308]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_3], number: [2, 3], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [296, 297, 310, 309]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_4], number: [2, 4], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [297, 298, 311, 310]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_5], number: [2, 5], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [298, 299, 312, 311]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_6], number: [2, 6], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [299, 300, 313, 312]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_7], number: [2, 7], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [300, 301, 314, 313]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_8], number: [2, 8], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [301, 302, 315, 314]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_9], number: [2, 9], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [302, 303, 316, 315]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_10], number: [2, 10], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [303, 304, 317, 316]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_1_11], number: [2, 11], parent_rack_name: [1, rack_mini_3], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [304, 305, 318, 317]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_0], number: [2, 0], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [306, 307, 319, 99]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_1], number: [2, 1], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [307, 308, 320, 319]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_2], number: [2, 2], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [308, 309, 321, 320]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_3], number: [2, 3], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [309, 310, 322, 321]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_4], number: [2, 4], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [310, 311, 323, 322]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_5], number: [2, 5], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [311, 312, 324, 323]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_6], number: [2, 6], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [312, 313, 325, 324]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_7], number: [2, 7], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [313, 314, 326, 325]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_8], number: [2, 8], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [314, 315, 327, 326]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_9], number: [2, 9], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [315, 316, 328, 327]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_10], number: [2, 10], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [316, 317, 329, 328]
+      - parameters: {n_units: [2, 4], name: [1, rack_mini_3_bay_2_11], number: [2, 11], parent_rack_name: [1, rack_mini_3], row: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [317, 318, 98, 329]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [100, 330, 335, 334]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [330, 331, 336, 335]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [331, 332, 337, 336]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [332, 333, 338, 337]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_0_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [333, 101, 339, 338]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_0], number: [2, 0], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [334, 335, 340, 103]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_1], number: [2, 1], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [335, 336, 341, 340]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_2], number: [2, 2], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [336, 337, 342, 341]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_3], number: [2, 3], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [337, 338, 343, 342]
+      - parameters: {n_units: [2, 4], name: [1, rack_bay_1_4], number: [2, 4], parent_rack_name: [1, rack], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [338, 339, 102, 343]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_0_0], number: [2, 0], parent_rack_name: [1, loading_rack_something], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [104, 344, 349, 348]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_0_1], number: [2, 1], parent_rack_name: [1, loading_rack_something], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [344, 345, 350, 349]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_0_2], number: [2, 2], parent_rack_name: [1, loading_rack_something], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [345, 346, 351, 350]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_0_3], number: [2, 3], parent_rack_name: [1, loading_rack_something], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [346, 347, 352, 351]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_0_4], number: [2, 4], parent_rack_name: [1, loading_rack_something], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [347, 105, 353, 352]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_1_0], number: [2, 0], parent_rack_name: [1, loading_rack_something], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [348, 349, 354, 107]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_1_1], number: [2, 1], parent_rack_name: [1, loading_rack_something], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [349, 350, 355, 354]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_1_2], number: [2, 2], parent_rack_name: [1, loading_rack_something], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [350, 351, 356, 355]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_1_3], number: [2, 3], parent_rack_name: [1, loading_rack_something], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [351, 352, 357, 356]
+      - parameters: {n_units: [2, 4], name: [1, loading_rack_something_bay_1_4], number: [2, 4], parent_rack_name: [1, loading_rack_something], row: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [352, 353, 106, 357]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_1_bay_0_0], number: [2, 0], parent_rack_name: [1, conveyor_rack_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [111, 358, 362, 110]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_1_bay_0_1], number: [2, 1], parent_rack_name: [1, conveyor_rack_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [358, 359, 363, 362]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_1_bay_0_2], number: [2, 2], parent_rack_name: [1, conveyor_rack_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [359, 360, 364, 363]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_1_bay_0_3], number: [2, 3], parent_rack_name: [1, conveyor_rack_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [360, 361, 365, 364]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_1_bay_0_4], number: [2, 4], parent_rack_name: [1, conveyor_rack_1], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [361, 108, 109, 365]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_2_bay_0_0], number: [2, 0], parent_rack_name: [1, conveyor_rack_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [112, 366, 370, 115]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_2_bay_0_1], number: [2, 1], parent_rack_name: [1, conveyor_rack_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [366, 367, 371, 370]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_2_bay_0_2], number: [2, 2], parent_rack_name: [1, conveyor_rack_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [367, 368, 372, 371]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_2_bay_0_3], number: [2, 3], parent_rack_name: [1, conveyor_rack_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [368, 369, 373, 372]
+      - parameters: {n_units: [2, 4], name: [1, conveyor_rack_2_bay_0_4], number: [2, 4], parent_rack_name: [1, conveyor_rack_2], row: [2, 0], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5]}
+        vertices: [369, 113, 114, 373]
+    storage_racks:
+      - parameters: {name: [1, rack], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 10]}
+        vertices: [71, 74, 72, 75]
+      - parameters: {name: [1, rack], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [77, 79, 78, 76]
+      - parameters: {name: [1, rack_small_1], num_bays: [2, 8], num_rows: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [81, 80, 83, 82]
+      - parameters: {name: [1, rack], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [67, 70, 69, 68]
+      - parameters: {name: [1, rack], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 6]}
+        vertices: [63, 66, 65, 64]
+      - parameters: {name: [1, rack_mini_1], num_bays: [2, 12], num_rows: [2, 3], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [88, 89, 90, 91]
+      - parameters: {name: [1, rack_mini_2], num_bays: [2, 12], num_rows: [2, 3], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [92, 93, 94, 95]
+      - parameters: {name: [1, rack_mini_3], num_bays: [2, 12], num_rows: [2, 3], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [96, 97, 98, 99]
+      - parameters: {name: [1, rack], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [100, 101, 102, 103]
+      - parameters: {name: [1, loading_rack_something], num_bays: [2, 5], num_rows: [2, 2], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [104, 105, 106, 107]
+      - parameters: {name: [1, conveyor_rack_1], num_bays: [2, 5], num_rows: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 5]}
+        vertices: [111, 108, 109, 110]
+      - parameters: {name: [1, conveyor_rack_2], num_bays: [2, 5], num_rows: [2, 1], unit_height_0: [3, 0.5], unit_height_1: [3, 0.5], unit_height_2: [3, 0.5], unit_height_3: [3, 0.5], units_per_bay: [2, 4], viewpoint_distance: [3, 3]}
+        vertices: [112, 113, 114, 115]
+    vertices:
+      - [172.45400000000001, 44.154000000000003, 0, ""]
+      - [244.471, 44.363999999999997, 0, ""]
+      - [384.60399999999998, 1726.905, 0, ""]
+      - [384.85599999999999, 1127.8489999999999, 0, ""]
+      - [769.15999999999997, 1127.7940000000001, 0, ""]
+      - [385.423, 815.77800000000002, 0, ""]
+      - [768.12900000000002, 815.07100000000003, 0, ""]
+      - [767.97000000000003, 1054.4090000000001, 0, ""]
+      - [770.55499999999995, 193.41, 0, ""]
+      - [2780.3310000000001, 194.79300000000001, 0, ""]
+      - [2783.326, 1056.547, 0, ""]
+      - [2782.9169999999999, 1248.97, 0, ""]
+      - [2781.9369999999999, 1368.7539999999999, 0, ""]
+      - [2783.4400000000001, 1561.0619999999999, 0, ""]
+      - [2783.4110000000001, 1728.028, 0, ""]
+      - [2544.5219999999999, 1728.6559999999999, 0, ""]
+      - [2015.8389999999999, 1249.4770000000001, 0, ""]
+      - [2016.45, 1727.1099999999999, 0, ""]
+      - [2086.0790000000002, 1727.2149999999999, 0, ""]
+      - [2155.0410000000002, 1727.4200000000001, 0, ""]
+      - [2272.2530000000002, 1727.7560000000001, 0, ""]
+      - [2340.4899999999998, 1727.431, 0, ""]
+      - [2452.4659999999999, 1728.1900000000001, 0, ""]
+      - [2520.2190000000001, 1727.817, 0, ""]
+      - [2662.6019999999999, 1727.913, 0, ""]
+      - [2730.0520000000001, 1728.259, 0, ""]
+      - [2016.556, 1538.894, 0, ""]
+      - [2016.5719999999999, 1437.752, 0, ""]
+      - [1728.4290000000001, 1250.277, 0, ""]
+      - [1727.5640000000001, 1321.846, 0, ""]
+      - [1727.846, 1655.182, 0, ""]
+      - [1727.7349999999999, 1728.1420000000001, 0, ""]
+      - [767.50900000000001, 741.53800000000001, 0, ""]
+      - [2580.5450000000001, 1056.6410000000001, 0, ""]
+      - [2544.6439999999998, 1056.816, 0, ""]
+      - [2580.3739999999998, 1119.855, 0, ""]
+      - [2581.3789999999999, 1248.7139999999999, 0, ""]
+      - [2665.047, 1248.674, 0, ""]
+      - [2664.7570000000001, 1128.5630000000001, 0, ""]
+      - [2640.884, 1128.8399999999999, 0, ""]
+      - [2580.5, 1128.453, 0, ""]
+      - [2593.9720000000002, 1128.2850000000001, 0, ""]
+      - [2671.1309999999999, 1128.7149999999999, 0, ""]
+      - [2735.3020000000001, 1128.021, 0, ""]
+      - [2781.7829999999999, 1128.5409999999999, 0, ""]
+      - [2693.5450000000001, 1368.0229999999999, 0, ""]
+      - [2648.8519999999999, 1368.0229999999999, 0, ""]
+      - [2637.4859999999999, 1368.9860000000001, 0, ""]
+      - [2637.172, 1249.8240000000001, 0, ""]
+      - [2550.2339999999999, 1368.376, 0, ""]
+      - [2504.7800000000002, 1368.6690000000001, 0, ""]
+      - [2494.4520000000002, 1368.4110000000001, 0, ""]
+      - [2494.3119999999999, 1250.095, 0, ""]
+      - [1824.5319999999999, 1249.9369999999999, 0, ""]
+      - [1824.537, 1056.664, 0, ""]
+      - [1831.884, 1056.749, 0, ""]
+      - [1899.527, 1056.905, 0, ""]
+      - [1968.421, 1056.827, 0, ""]
+      - [1976.2080000000001, 1056.895, 0, ""]
+      - [1969.4590000000001, 1249.3589999999999, 0, ""]
+      - [2042.1690000000001, 1056.741, 0, ""]
+      - [2470.886, 1056.828, 0, ""]
+      - [2478.4259999999999, 1056.556, 0, ""]
+      - [1729, 817.71500000000003, 0, ""]
+      - [1729, 911.53300000000002, 0, ""]
+      - [2688.48, 911.53300000000002, 0, ""]
+      - [2688.48, 817.71500000000003, 0, ""]
+      - [1728.268, 625.48000000000002, 0, ""]
+      - [1728.268, 719.87800000000004, 0, ""]
+      - [2688.5230000000001, 719.87800000000004, 0, ""]
+      - [2688.5230000000001, 625.48000000000002, 0, ""]
+      - [1729.3140000000001, 455.57900000000001, 0, ""]
+      - [2689.4200000000001, 550.04100000000005, 0, ""]
+      - [1672.751, 1052.5650000000001, 0, ""]
+      - [2689.4200000000001, 455.57900000000001, 0, ""]
+      - [1729.3140000000001, 550.04100000000005, 0, ""]
+      - [1731.491, 385.75999999999999, 0, ""]
+      - [1731.491, 291.25700000000001, 0, ""]
+      - [2691.4380000000001, 385.75999999999999, 0, ""]
+      - [2691.4380000000001, 291.25700000000001, 0, ""]
+      - [1572.8230000000001, 768.851, 0, ""]
+      - [1505.8820000000001, 768.851, 0, ""]
+      - [1505.8820000000001, 1174.549, 0, ""]
+      - [1572.8230000000001, 1174.549, 0, ""]
+      - [1247.826, 647.21799999999996, 0, ""]
+      - [1482.4880000000001, 648.78200000000004, 0, ""]
+      - [1483.27, 577.601, 0, ""]
+      - [1248.6079999999999, 573.69000000000005, 0, ""]
+      - [1006.5309999999999, 768.06899999999996, 0, ""]
+      - [1353.8869999999999, 768.06899999999996, 0, ""]
+      - [1353.8869999999999, 832.00699999999995, 0, ""]
+      - [1006.5309999999999, 832.00699999999995, 0, ""]
+      - [1006.188, 936.46199999999999, 0, ""]
+      - [1352.9580000000001, 936.46199999999999, 0, ""]
+      - [1352.9580000000001, 999.03999999999996, 0, ""]
+      - [1006.188, 999.03999999999996, 0, ""]
+      - [1011.388, 1112.472, 0, ""]
+      - [1360.682, 1112.472, 0, ""]
+      - [1360.682, 1174.0630000000001, 0, ""]
+      - [1011.388, 1174.0630000000001, 0, ""]
+      - [1361.722, 410.51799999999997, 0, ""]
+      - [1491.0329999999999, 410.51799999999997, 0, ""]
+      - [1491.0329999999999, 465.24099999999999, 0, ""]
+      - [1361.722, 465.24099999999999, 0, ""]
+      - [1360.058, 288.41899999999998, 0, ""]
+      - [1488.5909999999999, 288.41899999999998, 0, ""]
+      - [1488.5909999999999, 343.25400000000002, 0, ""]
+      - [1360.058, 343.25400000000002, 0, ""]
+      - [1617.6179999999999, 1326.4829999999999, 0, ""]
+      - [1617.6179999999999, 1411.146, 0, ""]
+      - [1195.0630000000001, 1411.146, 0, ""]
+      - [1195.0630000000001, 1326.4829999999999, 0, ""]
+      - [1195.326, 1533.5830000000001, 0, ""]
+      - [1615.4000000000001, 1533.5830000000001, 0, ""]
+      - [1615.4000000000001, 1617.4380000000001, 0, ""]
+      - [1195.326, 1617.4380000000001, 0, ""]
+      - [1921.335, 455.57900000000001, 0, rack_vertex_0_1]
+      - [2113.3560000000002, 455.57900000000001, 0, rack_vertex_0_2]
+      - [2305.3780000000002, 455.57900000000001, 0, rack_vertex_0_3]
+      - [2497.3989999999999, 455.57900000000001, 0, rack_vertex_0_4]
+      - [1729.3140000000001, 502.81, 0, rack_vertex_1_0]
+      - [1921.335, 502.81, 0, rack_vertex_1_1]
+      - [2113.3560000000002, 502.81, 0, rack_vertex_1_2]
+      - [2305.3780000000002, 502.81, 0, rack_vertex_1_3]
+      - [2497.3989999999999, 502.81, 0, rack_vertex_1_4]
+      - [2689.4200000000001, 502.81, 0, rack_vertex_1_5]
+      - [1921.335, 550.04100000000005, 0, rack_vertex_2_1]
+      - [2113.3560000000002, 550.04100000000005, 0, rack_vertex_2_2]
+      - [2305.3780000000002, 550.04100000000005, 0, rack_vertex_2_3]
+      - [2497.3989999999999, 550.04100000000005, 0, rack_vertex_2_4]
+      - [1923.48, 291.25700000000001, 0, rack_vertex_0_1]
+      - [2115.4699999999998, 291.25700000000001, 0, rack_vertex_0_2]
+      - [2307.4589999999998, 291.25700000000001, 0, rack_vertex_0_3]
+      - [2499.4490000000001, 291.25700000000001, 0, rack_vertex_0_4]
+      - [1731.491, 338.50900000000001, 0, rack_vertex_1_0]
+      - [1923.48, 338.50900000000001, 0, rack_vertex_1_1]
+      - [2115.4699999999998, 338.50900000000001, 0, rack_vertex_1_2]
+      - [2307.4589999999998, 338.50900000000001, 0, rack_vertex_1_3]
+      - [2499.4490000000001, 338.50900000000001, 0, rack_vertex_1_4]
+      - [2691.4380000000001, 338.50900000000001, 0, rack_vertex_1_5]
+      - [1923.48, 385.75999999999999, 0, rack_vertex_2_1]
+      - [2115.4699999999998, 385.75999999999999, 0, rack_vertex_2_2]
+      - [2307.4589999999998, 385.75999999999999, 0, rack_vertex_2_3]
+      - [2499.4490000000001, 385.75999999999999, 0, rack_vertex_2_4]
+      - [1505.8820000000001, 819.56299999999999, 0, rack_small_1_vertex_1_0]
+      - [1572.8230000000001, 819.56299999999999, 0, rack_small_1_vertex_1_1]
+      - [1505.8820000000001, 870.27599999999995, 0, rack_small_1_vertex_2_0]
+      - [1572.8230000000001, 870.27599999999995, 0, rack_small_1_vertex_2_1]
+      - [1505.8820000000001, 920.98800000000006, 0, rack_small_1_vertex_3_0]
+      - [1572.8230000000001, 920.98800000000006, 0, rack_small_1_vertex_3_1]
+      - [1505.8820000000001, 971.70000000000005, 0, rack_small_1_vertex_4_0]
+      - [1572.8230000000001, 971.70000000000005, 0, rack_small_1_vertex_4_1]
+      - [1505.8820000000001, 1022.412, 0, rack_small_1_vertex_5_0]
+      - [1572.8230000000001, 1022.412, 0, rack_small_1_vertex_5_1]
+      - [1505.8820000000001, 1073.125, 0, rack_small_1_vertex_6_0]
+      - [1572.8230000000001, 1073.125, 0, rack_small_1_vertex_6_1]
+      - [1505.8820000000001, 1123.837, 0, rack_small_1_vertex_7_0]
+      - [1572.8230000000001, 1123.837, 0, rack_small_1_vertex_7_1]
+      - [1920.319, 625.48000000000002, 0, rack_vertex_0_1]
+      - [2112.3699999999999, 625.48000000000002, 0, rack_vertex_0_2]
+      - [2304.4209999999998, 625.48000000000002, 0, rack_vertex_0_3]
+      - [2496.4720000000002, 625.48000000000002, 0, rack_vertex_0_4]
+      - [1728.268, 672.67899999999997, 0, rack_vertex_1_0]
+      - [1920.319, 672.67899999999997, 0, rack_vertex_1_1]
+      - [2112.3699999999999, 672.67899999999997, 0, rack_vertex_1_2]
+      - [2304.4209999999998, 672.67899999999997, 0, rack_vertex_1_3]
+      - [2496.4720000000002, 672.67899999999997, 0, rack_vertex_1_4]
+      - [2688.5230000000001, 672.67899999999997, 0, rack_vertex_1_5]
+      - [1920.319, 719.87800000000004, 0, rack_vertex_2_1]
+      - [2112.3699999999999, 719.87800000000004, 0, rack_vertex_2_2]
+      - [2304.4209999999998, 719.87800000000004, 0, rack_vertex_2_3]
+      - [2496.4720000000002, 719.87800000000004, 0, rack_vertex_2_4]
+      - [1920.896, 817.71500000000003, 0, rack_vertex_0_1]
+      - [2112.7919999999999, 817.71500000000003, 0, rack_vertex_0_2]
+      - [2304.6880000000001, 817.71500000000003, 0, rack_vertex_0_3]
+      - [2496.5839999999998, 817.71500000000003, 0, rack_vertex_0_4]
+      - [1729, 864.62400000000002, 0, rack_vertex_1_0]
+      - [1920.896, 864.62400000000002, 0, rack_vertex_1_1]
+      - [2112.7919999999999, 864.62400000000002, 0, rack_vertex_1_2]
+      - [2304.6880000000001, 864.62400000000002, 0, rack_vertex_1_3]
+      - [2496.5839999999998, 864.62400000000002, 0, rack_vertex_1_4]
+      - [2688.48, 864.62400000000002, 0, rack_vertex_1_5]
+      - [1920.896, 911.53300000000002, 0, rack_vertex_2_1]
+      - [2112.7919999999999, 911.53300000000002, 0, rack_vertex_2_2]
+      - [2304.6880000000001, 911.53300000000002, 0, rack_vertex_2_3]
+      - [2496.5839999999998, 911.53300000000002, 0, rack_vertex_2_4]
+      - [1035.4770000000001, 768.06899999999996, 0, rack_mini_1_vertex_0_1]
+      - [1064.424, 768.06899999999996, 0, rack_mini_1_vertex_0_2]
+      - [1093.3699999999999, 768.06899999999996, 0, rack_mini_1_vertex_0_3]
+      - [1122.316, 768.06899999999996, 0, rack_mini_1_vertex_0_4]
+      - [1151.2629999999999, 768.06899999999996, 0, rack_mini_1_vertex_0_5]
+      - [1180.2090000000001, 768.06899999999996, 0, rack_mini_1_vertex_0_6]
+      - [1209.155, 768.06899999999996, 0, rack_mini_1_vertex_0_7]
+      - [1238.1020000000001, 768.06899999999996, 0, rack_mini_1_vertex_0_8]
+      - [1267.048, 768.06899999999996, 0, rack_mini_1_vertex_0_9]
+      - [1295.9939999999999, 768.06899999999996, 0, rack_mini_1_vertex_0_10]
+      - [1324.941, 768.06899999999996, 0, rack_mini_1_vertex_0_11]
+      - [1006.5309999999999, 789.38199999999995, 0, rack_mini_1_vertex_1_0]
+      - [1035.4770000000001, 789.38199999999995, 0, rack_mini_1_vertex_1_1]
+      - [1064.424, 789.38199999999995, 0, rack_mini_1_vertex_1_2]
+      - [1093.3699999999999, 789.38199999999995, 0, rack_mini_1_vertex_1_3]
+      - [1122.316, 789.38199999999995, 0, rack_mini_1_vertex_1_4]
+      - [1151.2629999999999, 789.38199999999995, 0, rack_mini_1_vertex_1_5]
+      - [1180.2090000000001, 789.38199999999995, 0, rack_mini_1_vertex_1_6]
+      - [1209.155, 789.38199999999995, 0, rack_mini_1_vertex_1_7]
+      - [1238.1020000000001, 789.38199999999995, 0, rack_mini_1_vertex_1_8]
+      - [1267.048, 789.38199999999995, 0, rack_mini_1_vertex_1_9]
+      - [1295.9939999999999, 789.38199999999995, 0, rack_mini_1_vertex_1_10]
+      - [1324.941, 789.38199999999995, 0, rack_mini_1_vertex_1_11]
+      - [1353.8869999999999, 789.38199999999995, 0, rack_mini_1_vertex_1_12]
+      - [1006.5309999999999, 810.69399999999996, 0, rack_mini_1_vertex_2_0]
+      - [1035.4770000000001, 810.69399999999996, 0, rack_mini_1_vertex_2_1]
+      - [1064.424, 810.69399999999996, 0, rack_mini_1_vertex_2_2]
+      - [1093.3699999999999, 810.69399999999996, 0, rack_mini_1_vertex_2_3]
+      - [1122.316, 810.69399999999996, 0, rack_mini_1_vertex_2_4]
+      - [1151.2629999999999, 810.69399999999996, 0, rack_mini_1_vertex_2_5]
+      - [1180.2090000000001, 810.69399999999996, 0, rack_mini_1_vertex_2_6]
+      - [1209.155, 810.69399999999996, 0, rack_mini_1_vertex_2_7]
+      - [1238.1020000000001, 810.69399999999996, 0, rack_mini_1_vertex_2_8]
+      - [1267.048, 810.69399999999996, 0, rack_mini_1_vertex_2_9]
+      - [1295.9939999999999, 810.69399999999996, 0, rack_mini_1_vertex_2_10]
+      - [1324.941, 810.69399999999996, 0, rack_mini_1_vertex_2_11]
+      - [1353.8869999999999, 810.69399999999996, 0, rack_mini_1_vertex_2_12]
+      - [1035.4770000000001, 832.00699999999995, 0, rack_mini_1_vertex_3_1]
+      - [1064.424, 832.00699999999995, 0, rack_mini_1_vertex_3_2]
+      - [1093.3699999999999, 832.00699999999995, 0, rack_mini_1_vertex_3_3]
+      - [1122.316, 832.00699999999995, 0, rack_mini_1_vertex_3_4]
+      - [1151.2629999999999, 832.00699999999995, 0, rack_mini_1_vertex_3_5]
+      - [1180.2090000000001, 832.00699999999995, 0, rack_mini_1_vertex_3_6]
+      - [1209.155, 832.00699999999995, 0, rack_mini_1_vertex_3_7]
+      - [1238.1020000000001, 832.00699999999995, 0, rack_mini_1_vertex_3_8]
+      - [1267.048, 832.00699999999995, 0, rack_mini_1_vertex_3_9]
+      - [1295.9939999999999, 832.00699999999995, 0, rack_mini_1_vertex_3_10]
+      - [1324.941, 832.00699999999995, 0, rack_mini_1_vertex_3_11]
+      - [1035.085, 936.46199999999999, 0, rack_mini_2_vertex_0_1]
+      - [1063.9829999999999, 936.46199999999999, 0, rack_mini_2_vertex_0_2]
+      - [1092.8810000000001, 936.46199999999999, 0, rack_mini_2_vertex_0_3]
+      - [1121.778, 936.46199999999999, 0, rack_mini_2_vertex_0_4]
+      - [1150.6759999999999, 936.46199999999999, 0, rack_mini_2_vertex_0_5]
+      - [1179.5730000000001, 936.46199999999999, 0, rack_mini_2_vertex_0_6]
+      - [1208.471, 936.46199999999999, 0, rack_mini_2_vertex_0_7]
+      - [1237.3679999999999, 936.46199999999999, 0, rack_mini_2_vertex_0_8]
+      - [1266.2660000000001, 936.46199999999999, 0, rack_mini_2_vertex_0_9]
+      - [1295.163, 936.46199999999999, 0, rack_mini_2_vertex_0_10]
+      - [1324.0609999999999, 936.46199999999999, 0, rack_mini_2_vertex_0_11]
+      - [1006.188, 957.32100000000003, 0, rack_mini_2_vertex_1_0]
+      - [1035.085, 957.32100000000003, 0, rack_mini_2_vertex_1_1]
+      - [1063.9829999999999, 957.32100000000003, 0, rack_mini_2_vertex_1_2]
+      - [1092.8810000000001, 957.32100000000003, 0, rack_mini_2_vertex_1_3]
+      - [1121.778, 957.32100000000003, 0, rack_mini_2_vertex_1_4]
+      - [1150.6759999999999, 957.32100000000003, 0, rack_mini_2_vertex_1_5]
+      - [1179.5730000000001, 957.32100000000003, 0, rack_mini_2_vertex_1_6]
+      - [1208.471, 957.32100000000003, 0, rack_mini_2_vertex_1_7]
+      - [1237.3679999999999, 957.32100000000003, 0, rack_mini_2_vertex_1_8]
+      - [1266.2660000000001, 957.32100000000003, 0, rack_mini_2_vertex_1_9]
+      - [1295.163, 957.32100000000003, 0, rack_mini_2_vertex_1_10]
+      - [1324.0609999999999, 957.32100000000003, 0, rack_mini_2_vertex_1_11]
+      - [1352.9580000000001, 957.32100000000003, 0, rack_mini_2_vertex_1_12]
+      - [1006.188, 978.18100000000004, 0, rack_mini_2_vertex_2_0]
+      - [1035.085, 978.18100000000004, 0, rack_mini_2_vertex_2_1]
+      - [1063.9829999999999, 978.18100000000004, 0, rack_mini_2_vertex_2_2]
+      - [1092.8810000000001, 978.18100000000004, 0, rack_mini_2_vertex_2_3]
+      - [1121.778, 978.18100000000004, 0, rack_mini_2_vertex_2_4]
+      - [1150.6759999999999, 978.18100000000004, 0, rack_mini_2_vertex_2_5]
+      - [1179.5730000000001, 978.18100000000004, 0, rack_mini_2_vertex_2_6]
+      - [1208.471, 978.18100000000004, 0, rack_mini_2_vertex_2_7]
+      - [1237.3679999999999, 978.18100000000004, 0, rack_mini_2_vertex_2_8]
+      - [1266.2660000000001, 978.18100000000004, 0, rack_mini_2_vertex_2_9]
+      - [1295.163, 978.18100000000004, 0, rack_mini_2_vertex_2_10]
+      - [1324.0609999999999, 978.18100000000004, 0, rack_mini_2_vertex_2_11]
+      - [1352.9580000000001, 978.18100000000004, 0, rack_mini_2_vertex_2_12]
+      - [1035.085, 999.03999999999996, 0, rack_mini_2_vertex_3_1]
+      - [1063.9829999999999, 999.03999999999996, 0, rack_mini_2_vertex_3_2]
+      - [1092.8810000000001, 999.03999999999996, 0, rack_mini_2_vertex_3_3]
+      - [1121.778, 999.03999999999996, 0, rack_mini_2_vertex_3_4]
+      - [1150.6759999999999, 999.03999999999996, 0, rack_mini_2_vertex_3_5]
+      - [1179.5730000000001, 999.03999999999996, 0, rack_mini_2_vertex_3_6]
+      - [1208.471, 999.03999999999996, 0, rack_mini_2_vertex_3_7]
+      - [1237.3679999999999, 999.03999999999996, 0, rack_mini_2_vertex_3_8]
+      - [1266.2660000000001, 999.03999999999996, 0, rack_mini_2_vertex_3_9]
+      - [1295.163, 999.03999999999996, 0, rack_mini_2_vertex_3_10]
+      - [1324.0609999999999, 999.03999999999996, 0, rack_mini_2_vertex_3_11]
+      - [1040.4960000000001, 1112.472, 0, rack_mini_3_vertex_0_1]
+      - [1069.604, 1112.472, 0, rack_mini_3_vertex_0_2]
+      - [1098.712, 1112.472, 0, rack_mini_3_vertex_0_3]
+      - [1127.819, 1112.472, 0, rack_mini_3_vertex_0_4]
+      - [1156.9269999999999, 1112.472, 0, rack_mini_3_vertex_0_5]
+      - [1186.0350000000001, 1112.472, 0, rack_mini_3_vertex_0_6]
+      - [1215.143, 1112.472, 0, rack_mini_3_vertex_0_7]
+      - [1244.251, 1112.472, 0, rack_mini_3_vertex_0_8]
+      - [1273.3589999999999, 1112.472, 0, rack_mini_3_vertex_0_9]
+      - [1302.4659999999999, 1112.472, 0, rack_mini_3_vertex_0_10]
+      - [1331.5740000000001, 1112.472, 0, rack_mini_3_vertex_0_11]
+      - [1011.388, 1133.002, 0, rack_mini_3_vertex_1_0]
+      - [1040.4960000000001, 1133.002, 0, rack_mini_3_vertex_1_1]
+      - [1069.604, 1133.002, 0, rack_mini_3_vertex_1_2]
+      - [1098.712, 1133.002, 0, rack_mini_3_vertex_1_3]
+      - [1127.819, 1133.002, 0, rack_mini_3_vertex_1_4]
+      - [1156.9269999999999, 1133.002, 0, rack_mini_3_vertex_1_5]
+      - [1186.0350000000001, 1133.002, 0, rack_mini_3_vertex_1_6]
+      - [1215.143, 1133.002, 0, rack_mini_3_vertex_1_7]
+      - [1244.251, 1133.002, 0, rack_mini_3_vertex_1_8]
+      - [1273.3589999999999, 1133.002, 0, rack_mini_3_vertex_1_9]
+      - [1302.4659999999999, 1133.002, 0, rack_mini_3_vertex_1_10]
+      - [1331.5740000000001, 1133.002, 0, rack_mini_3_vertex_1_11]
+      - [1360.682, 1133.002, 0, rack_mini_3_vertex_1_12]
+      - [1011.388, 1153.5329999999999, 0, rack_mini_3_vertex_2_0]
+      - [1040.4960000000001, 1153.5329999999999, 0, rack_mini_3_vertex_2_1]
+      - [1069.604, 1153.5329999999999, 0, rack_mini_3_vertex_2_2]
+      - [1098.712, 1153.5329999999999, 0, rack_mini_3_vertex_2_3]
+      - [1127.819, 1153.5329999999999, 0, rack_mini_3_vertex_2_4]
+      - [1156.9269999999999, 1153.5329999999999, 0, rack_mini_3_vertex_2_5]
+      - [1186.0350000000001, 1153.5329999999999, 0, rack_mini_3_vertex_2_6]
+      - [1215.143, 1153.5329999999999, 0, rack_mini_3_vertex_2_7]
+      - [1244.251, 1153.5329999999999, 0, rack_mini_3_vertex_2_8]
+      - [1273.3589999999999, 1153.5329999999999, 0, rack_mini_3_vertex_2_9]
+      - [1302.4659999999999, 1153.5329999999999, 0, rack_mini_3_vertex_2_10]
+      - [1331.5740000000001, 1153.5329999999999, 0, rack_mini_3_vertex_2_11]
+      - [1360.682, 1153.5329999999999, 0, rack_mini_3_vertex_2_12]
+      - [1040.4960000000001, 1174.0630000000001, 0, rack_mini_3_vertex_3_1]
+      - [1069.604, 1174.0630000000001, 0, rack_mini_3_vertex_3_2]
+      - [1098.712, 1174.0630000000001, 0, rack_mini_3_vertex_3_3]
+      - [1127.819, 1174.0630000000001, 0, rack_mini_3_vertex_3_4]
+      - [1156.9269999999999, 1174.0630000000001, 0, rack_mini_3_vertex_3_5]
+      - [1186.0350000000001, 1174.0630000000001, 0, rack_mini_3_vertex_3_6]
+      - [1215.143, 1174.0630000000001, 0, rack_mini_3_vertex_3_7]
+      - [1244.251, 1174.0630000000001, 0, rack_mini_3_vertex_3_8]
+      - [1273.3589999999999, 1174.0630000000001, 0, rack_mini_3_vertex_3_9]
+      - [1302.4659999999999, 1174.0630000000001, 0, rack_mini_3_vertex_3_10]
+      - [1331.5740000000001, 1174.0630000000001, 0, rack_mini_3_vertex_3_11]
+      - [1387.5840000000001, 410.51799999999997, 0, rack_vertex_0_1]
+      - [1413.4459999999999, 410.51799999999997, 0, rack_vertex_0_2]
+      - [1439.309, 410.51799999999997, 0, rack_vertex_0_3]
+      - [1465.171, 410.51799999999997, 0, rack_vertex_0_4]
+      - [1361.722, 437.88, 0, rack_vertex_1_0]
+      - [1387.5840000000001, 437.88, 0, rack_vertex_1_1]
+      - [1413.4459999999999, 437.88, 0, rack_vertex_1_2]
+      - [1439.309, 437.88, 0, rack_vertex_1_3]
+      - [1465.171, 437.88, 0, rack_vertex_1_4]
+      - [1491.0329999999999, 437.88, 0, rack_vertex_1_5]
+      - [1387.5840000000001, 465.24099999999999, 0, rack_vertex_2_1]
+      - [1413.4459999999999, 465.24099999999999, 0, rack_vertex_2_2]
+      - [1439.309, 465.24099999999999, 0, rack_vertex_2_3]
+      - [1465.171, 465.24099999999999, 0, rack_vertex_2_4]
+      - [1385.7650000000001, 288.41899999999998, 0, loading_rack_something_vertex_0_1]
+      - [1411.471, 288.41899999999998, 0, loading_rack_something_vertex_0_2]
+      - [1437.1780000000001, 288.41899999999998, 0, loading_rack_something_vertex_0_3]
+      - [1462.884, 288.41899999999998, 0, loading_rack_something_vertex_0_4]
+      - [1360.058, 315.83699999999999, 0, loading_rack_something_vertex_1_0]
+      - [1385.7650000000001, 315.83699999999999, 0, loading_rack_something_vertex_1_1]
+      - [1411.471, 315.83699999999999, 0, loading_rack_something_vertex_1_2]
+      - [1437.1780000000001, 315.83699999999999, 0, loading_rack_something_vertex_1_3]
+      - [1462.884, 315.83699999999999, 0, loading_rack_something_vertex_1_4]
+      - [1488.5909999999999, 315.83699999999999, 0, loading_rack_something_vertex_1_5]
+      - [1385.7650000000001, 343.25400000000002, 0, loading_rack_something_vertex_2_1]
+      - [1411.471, 343.25400000000002, 0, loading_rack_something_vertex_2_2]
+      - [1437.1780000000001, 343.25400000000002, 0, loading_rack_something_vertex_2_3]
+      - [1462.884, 343.25400000000002, 0, loading_rack_something_vertex_2_4]
+      - [1279.5740000000001, 1326.4829999999999, 0, conveyor_rack_1_vertex_0_1]
+      - [1364.085, 1326.4829999999999, 0, conveyor_rack_1_vertex_0_2]
+      - [1448.596, 1326.4829999999999, 0, conveyor_rack_1_vertex_0_3]
+      - [1533.107, 1326.4829999999999, 0, conveyor_rack_1_vertex_0_4]
+      - [1279.5740000000001, 1411.146, 0, conveyor_rack_1_vertex_1_1]
+      - [1364.085, 1411.146, 0, conveyor_rack_1_vertex_1_2]
+      - [1448.596, 1411.146, 0, conveyor_rack_1_vertex_1_3]
+      - [1533.107, 1411.146, 0, conveyor_rack_1_vertex_1_4]
+      - [1279.3409999999999, 1533.5830000000001, 0, conveyor_rack_2_vertex_0_1]
+      - [1363.355, 1533.5830000000001, 0, conveyor_rack_2_vertex_0_2]
+      - [1447.3699999999999, 1533.5830000000001, 0, conveyor_rack_2_vertex_0_3]
+      - [1531.385, 1533.5830000000001, 0, conveyor_rack_2_vertex_0_4]
+      - [1279.3409999999999, 1617.4380000000001, 0, conveyor_rack_2_vertex_1_1]
+      - [1363.355, 1617.4380000000001, 0, conveyor_rack_2_vertex_1_2]
+      - [1447.3699999999999, 1617.4380000000001, 0, conveyor_rack_2_vertex_1_3]
+      - [1531.385, 1617.4380000000001, 0, conveyor_rack_2_vertex_1_4]
+      - [1825.325, 445.57900000000001, 0, rack_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [2017.346, 445.57900000000001, 0, rack_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [2209.3670000000002, 445.57900000000001, 0, rack_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [2401.3879999999999, 445.57900000000001, 0, rack_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [2593.4090000000001, 445.57900000000001, 0, rack_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [2593.4090000000001, 560.04100000000005, 0, rack_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [2401.3879999999999, 560.04100000000005, 0, rack_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [2209.3670000000002, 560.04100000000005, 0, rack_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [2017.346, 560.04100000000005, 0, rack_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1825.325, 560.04100000000005, 0, rack_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1827.4860000000001, 288.25700000000001, 0, rack_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [2019.4749999999999, 288.25700000000001, 0, rack_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [2211.4650000000001, 288.25700000000001, 0, rack_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [2403.4540000000002, 288.25700000000001, 0, rack_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [2595.4430000000002, 288.25700000000001, 0, rack_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [2595.4430000000002, 388.75999999999999, 0, rack_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [2403.4540000000002, 388.75999999999999, 0, rack_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [2211.4650000000001, 388.75999999999999, 0, rack_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [2019.4749999999999, 388.75999999999999, 0, rack_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1827.4860000000001, 388.75999999999999, 0, rack_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 794.20699999999999, 0, rack_small_1_viewpoint_1_0, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 844.91899999999998, 0, rack_small_1_viewpoint_1_1, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 895.63199999999995, 0, rack_small_1_viewpoint_1_2, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 946.34400000000005, 0, rack_small_1_viewpoint_1_3, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 997.05600000000004, 0, rack_small_1_viewpoint_1_4, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 1047.768, 0, rack_small_1_viewpoint_1_5, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 1098.481, 0, rack_small_1_viewpoint_1_6, {is_inspection_point: [4, true]}]
+      - [1575.8230000000001, 1149.193, 0, rack_small_1_viewpoint_1_7, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 1149.193, 0, rack_small_1_viewpoint_3_0, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 1098.481, 0, rack_small_1_viewpoint_3_1, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 1047.768, 0, rack_small_1_viewpoint_3_2, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 997.05600000000004, 0, rack_small_1_viewpoint_3_3, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 946.34400000000005, 0, rack_small_1_viewpoint_3_4, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 895.63199999999995, 0, rack_small_1_viewpoint_3_5, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 844.91899999999998, 0, rack_small_1_viewpoint_3_6, {is_inspection_point: [4, true]}]
+      - [1502.8820000000001, 794.20699999999999, 0, rack_small_1_viewpoint_3_7, {is_inspection_point: [4, true]}]
+      - [1824.2940000000001, 622.48000000000002, 0, rack_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [2016.345, 622.48000000000002, 0, rack_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [2208.3960000000002, 622.48000000000002, 0, rack_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [2400.4470000000001, 622.48000000000002, 0, rack_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [2592.498, 622.48000000000002, 0, rack_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [2592.498, 722.87800000000004, 0, rack_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [2400.4470000000001, 722.87800000000004, 0, rack_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [2208.3960000000002, 722.87800000000004, 0, rack_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [2016.345, 722.87800000000004, 0, rack_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1824.2940000000001, 722.87800000000004, 0, rack_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1824.9480000000001, 811.71500000000003, 0, rack_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [2016.8440000000001, 811.71500000000003, 0, rack_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [2208.7399999999998, 811.71500000000003, 0, rack_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [2400.636, 811.71500000000003, 0, rack_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [2592.5320000000002, 811.71500000000003, 0, rack_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [2592.5320000000002, 917.53300000000002, 0, rack_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [2400.636, 917.53300000000002, 0, rack_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [2208.7399999999998, 917.53300000000002, 0, rack_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [2016.8440000000001, 917.53300000000002, 0, rack_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1824.9480000000001, 917.53300000000002, 0, rack_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1021.004, 765.06899999999996, 0, rack_mini_1_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1049.951, 765.06899999999996, 0, rack_mini_1_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1078.8969999999999, 765.06899999999996, 0, rack_mini_1_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1107.8430000000001, 765.06899999999996, 0, rack_mini_1_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1136.789, 765.06899999999996, 0, rack_mini_1_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1165.7360000000001, 765.06899999999996, 0, rack_mini_1_viewpoint_0_5, {is_inspection_point: [4, true]}]
+      - [1194.682, 765.06899999999996, 0, rack_mini_1_viewpoint_0_6, {is_inspection_point: [4, true]}]
+      - [1223.6289999999999, 765.06899999999996, 0, rack_mini_1_viewpoint_0_7, {is_inspection_point: [4, true]}]
+      - [1252.575, 765.06899999999996, 0, rack_mini_1_viewpoint_0_8, {is_inspection_point: [4, true]}]
+      - [1281.521, 765.06899999999996, 0, rack_mini_1_viewpoint_0_9, {is_inspection_point: [4, true]}]
+      - [1310.4680000000001, 765.06899999999996, 0, rack_mini_1_viewpoint_0_10, {is_inspection_point: [4, true]}]
+      - [1339.414, 765.06899999999996, 0, rack_mini_1_viewpoint_0_11, {is_inspection_point: [4, true]}]
+      - [1356.8869999999999, 778.72500000000002, 0, rack_mini_1_viewpoint_1_0, {is_inspection_point: [4, true]}]
+      - [1356.8869999999999, 800.03800000000001, 0, rack_mini_1_viewpoint_1_1, {is_inspection_point: [4, true]}]
+      - [1356.8869999999999, 821.351, 0, rack_mini_1_viewpoint_1_2, {is_inspection_point: [4, true]}]
+      - [1339.414, 835.00699999999995, 0, rack_mini_1_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1310.4680000000001, 835.00699999999995, 0, rack_mini_1_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1281.521, 835.00699999999995, 0, rack_mini_1_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1252.575, 835.00699999999995, 0, rack_mini_1_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1223.6289999999999, 835.00699999999995, 0, rack_mini_1_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1194.682, 835.00699999999995, 0, rack_mini_1_viewpoint_2_5, {is_inspection_point: [4, true]}]
+      - [1165.7360000000001, 835.00699999999995, 0, rack_mini_1_viewpoint_2_6, {is_inspection_point: [4, true]}]
+      - [1136.789, 835.00699999999995, 0, rack_mini_1_viewpoint_2_7, {is_inspection_point: [4, true]}]
+      - [1107.8430000000001, 835.00699999999995, 0, rack_mini_1_viewpoint_2_8, {is_inspection_point: [4, true]}]
+      - [1078.8969999999999, 835.00699999999995, 0, rack_mini_1_viewpoint_2_9, {is_inspection_point: [4, true]}]
+      - [1049.951, 835.00699999999995, 0, rack_mini_1_viewpoint_2_10, {is_inspection_point: [4, true]}]
+      - [1021.004, 835.00699999999995, 0, rack_mini_1_viewpoint_2_11, {is_inspection_point: [4, true]}]
+      - [1003.5309999999999, 821.351, 0, rack_mini_1_viewpoint_3_0, {is_inspection_point: [4, true]}]
+      - [1003.5309999999999, 800.03800000000001, 0, rack_mini_1_viewpoint_3_1, {is_inspection_point: [4, true]}]
+      - [1003.5309999999999, 778.72500000000002, 0, rack_mini_1_viewpoint_3_2, {is_inspection_point: [4, true]}]
+      - [1020.6369999999999, 933.46199999999999, 0, rack_mini_2_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1049.5340000000001, 933.46199999999999, 0, rack_mini_2_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1078.432, 933.46199999999999, 0, rack_mini_2_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1107.329, 933.46199999999999, 0, rack_mini_2_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1136.2270000000001, 933.46199999999999, 0, rack_mini_2_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1165.124, 933.46199999999999, 0, rack_mini_2_viewpoint_0_5, {is_inspection_point: [4, true]}]
+      - [1194.0219999999999, 933.46199999999999, 0, rack_mini_2_viewpoint_0_6, {is_inspection_point: [4, true]}]
+      - [1222.9190000000001, 933.46199999999999, 0, rack_mini_2_viewpoint_0_7, {is_inspection_point: [4, true]}]
+      - [1251.817, 933.46199999999999, 0, rack_mini_2_viewpoint_0_8, {is_inspection_point: [4, true]}]
+      - [1280.7139999999999, 933.46199999999999, 0, rack_mini_2_viewpoint_0_9, {is_inspection_point: [4, true]}]
+      - [1309.6120000000001, 933.46199999999999, 0, rack_mini_2_viewpoint_0_10, {is_inspection_point: [4, true]}]
+      - [1338.509, 933.46199999999999, 0, rack_mini_2_viewpoint_0_11, {is_inspection_point: [4, true]}]
+      - [1355.9580000000001, 946.89200000000005, 0, rack_mini_2_viewpoint_1_0, {is_inspection_point: [4, true]}]
+      - [1355.9580000000001, 967.75099999999998, 0, rack_mini_2_viewpoint_1_1, {is_inspection_point: [4, true]}]
+      - [1355.9580000000001, 988.61000000000001, 0, rack_mini_2_viewpoint_1_2, {is_inspection_point: [4, true]}]
+      - [1338.509, 1002.04, 0, rack_mini_2_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1309.6120000000001, 1002.04, 0, rack_mini_2_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1280.7139999999999, 1002.04, 0, rack_mini_2_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1251.817, 1002.04, 0, rack_mini_2_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1222.9190000000001, 1002.04, 0, rack_mini_2_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1194.0219999999999, 1002.04, 0, rack_mini_2_viewpoint_2_5, {is_inspection_point: [4, true]}]
+      - [1165.124, 1002.04, 0, rack_mini_2_viewpoint_2_6, {is_inspection_point: [4, true]}]
+      - [1136.2270000000001, 1002.04, 0, rack_mini_2_viewpoint_2_7, {is_inspection_point: [4, true]}]
+      - [1107.329, 1002.04, 0, rack_mini_2_viewpoint_2_8, {is_inspection_point: [4, true]}]
+      - [1078.432, 1002.04, 0, rack_mini_2_viewpoint_2_9, {is_inspection_point: [4, true]}]
+      - [1049.5340000000001, 1002.04, 0, rack_mini_2_viewpoint_2_10, {is_inspection_point: [4, true]}]
+      - [1020.6369999999999, 1002.04, 0, rack_mini_2_viewpoint_2_11, {is_inspection_point: [4, true]}]
+      - [1003.188, 988.61000000000001, 0, rack_mini_2_viewpoint_3_0, {is_inspection_point: [4, true]}]
+      - [1003.188, 967.75099999999998, 0, rack_mini_2_viewpoint_3_1, {is_inspection_point: [4, true]}]
+      - [1003.188, 946.89200000000005, 0, rack_mini_2_viewpoint_3_2, {is_inspection_point: [4, true]}]
+      - [1025.942, 1109.472, 0, rack_mini_3_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1055.05, 1109.472, 0, rack_mini_3_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1084.1579999999999, 1109.472, 0, rack_mini_3_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1113.2650000000001, 1109.472, 0, rack_mini_3_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1142.373, 1109.472, 0, rack_mini_3_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1171.481, 1109.472, 0, rack_mini_3_viewpoint_0_5, {is_inspection_point: [4, true]}]
+      - [1200.5889999999999, 1109.472, 0, rack_mini_3_viewpoint_0_6, {is_inspection_point: [4, true]}]
+      - [1229.6969999999999, 1109.472, 0, rack_mini_3_viewpoint_0_7, {is_inspection_point: [4, true]}]
+      - [1258.8050000000001, 1109.472, 0, rack_mini_3_viewpoint_0_8, {is_inspection_point: [4, true]}]
+      - [1287.912, 1109.472, 0, rack_mini_3_viewpoint_0_9, {is_inspection_point: [4, true]}]
+      - [1317.02, 1109.472, 0, rack_mini_3_viewpoint_0_10, {is_inspection_point: [4, true]}]
+      - [1346.1279999999999, 1109.472, 0, rack_mini_3_viewpoint_0_11, {is_inspection_point: [4, true]}]
+      - [1363.682, 1122.7370000000001, 0, rack_mini_3_viewpoint_1_0, {is_inspection_point: [4, true]}]
+      - [1363.682, 1143.268, 0, rack_mini_3_viewpoint_1_1, {is_inspection_point: [4, true]}]
+      - [1363.682, 1163.798, 0, rack_mini_3_viewpoint_1_2, {is_inspection_point: [4, true]}]
+      - [1346.1279999999999, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1317.02, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1287.912, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1258.8050000000001, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1229.6969999999999, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1200.5889999999999, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_5, {is_inspection_point: [4, true]}]
+      - [1171.481, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_6, {is_inspection_point: [4, true]}]
+      - [1142.373, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_7, {is_inspection_point: [4, true]}]
+      - [1113.2650000000001, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_8, {is_inspection_point: [4, true]}]
+      - [1084.1579999999999, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_9, {is_inspection_point: [4, true]}]
+      - [1055.05, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_10, {is_inspection_point: [4, true]}]
+      - [1025.942, 1177.0630000000001, 0, rack_mini_3_viewpoint_2_11, {is_inspection_point: [4, true]}]
+      - [1008.388, 1163.798, 0, rack_mini_3_viewpoint_3_0, {is_inspection_point: [4, true]}]
+      - [1008.388, 1143.268, 0, rack_mini_3_viewpoint_3_1, {is_inspection_point: [4, true]}]
+      - [1008.388, 1122.7370000000001, 0, rack_mini_3_viewpoint_3_2, {is_inspection_point: [4, true]}]
+      - [1374.653, 407.51799999999997, 0, rack_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1400.5150000000001, 407.51799999999997, 0, rack_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1426.3779999999999, 407.51799999999997, 0, rack_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1452.24, 407.51799999999997, 0, rack_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1478.1020000000001, 407.51799999999997, 0, rack_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1478.1020000000001, 468.24099999999999, 0, rack_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1452.24, 468.24099999999999, 0, rack_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1426.3779999999999, 468.24099999999999, 0, rack_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1400.5150000000001, 468.24099999999999, 0, rack_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1374.653, 468.24099999999999, 0, rack_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1372.9110000000001, 285.41899999999998, 0, loading_rack_something_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1398.6179999999999, 285.41899999999998, 0, loading_rack_something_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1424.325, 285.41899999999998, 0, loading_rack_something_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1450.0309999999999, 285.41899999999998, 0, loading_rack_something_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1475.7380000000001, 285.41899999999998, 0, loading_rack_something_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1475.7380000000001, 346.25400000000002, 0, loading_rack_something_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1450.0309999999999, 346.25400000000002, 0, loading_rack_something_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1424.325, 346.25400000000002, 0, loading_rack_something_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1398.6179999999999, 346.25400000000002, 0, loading_rack_something_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1372.9110000000001, 346.25400000000002, 0, loading_rack_something_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1237.319, 1321.4829999999999, 0, conveyor_rack_1_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1321.8299999999999, 1321.4829999999999, 0, conveyor_rack_1_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1406.3409999999999, 1321.4829999999999, 0, conveyor_rack_1_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1490.8520000000001, 1321.4829999999999, 0, conveyor_rack_1_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1575.3630000000001, 1321.4829999999999, 0, conveyor_rack_1_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1575.3630000000001, 1416.146, 0, conveyor_rack_1_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1490.8520000000001, 1416.146, 0, conveyor_rack_1_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1406.3409999999999, 1416.146, 0, conveyor_rack_1_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1321.8299999999999, 1416.146, 0, conveyor_rack_1_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1237.319, 1416.146, 0, conveyor_rack_1_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1237.3330000000001, 1530.5830000000001, 0, conveyor_rack_2_viewpoint_0_0, {is_inspection_point: [4, true]}]
+      - [1321.348, 1530.5830000000001, 0, conveyor_rack_2_viewpoint_0_1, {is_inspection_point: [4, true]}]
+      - [1405.3630000000001, 1530.5830000000001, 0, conveyor_rack_2_viewpoint_0_2, {is_inspection_point: [4, true]}]
+      - [1489.3779999999999, 1530.5830000000001, 0, conveyor_rack_2_viewpoint_0_3, {is_inspection_point: [4, true]}]
+      - [1573.393, 1530.5830000000001, 0, conveyor_rack_2_viewpoint_0_4, {is_inspection_point: [4, true]}]
+      - [1573.393, 1620.4380000000001, 0, conveyor_rack_2_viewpoint_2_0, {is_inspection_point: [4, true]}]
+      - [1489.3779999999999, 1620.4380000000001, 0, conveyor_rack_2_viewpoint_2_1, {is_inspection_point: [4, true]}]
+      - [1405.3630000000001, 1620.4380000000001, 0, conveyor_rack_2_viewpoint_2_2, {is_inspection_point: [4, true]}]
+      - [1321.348, 1620.4380000000001, 0, conveyor_rack_2_viewpoint_2_3, {is_inspection_point: [4, true]}]
+      - [1237.3330000000001, 1620.4380000000001, 0, conveyor_rack_2_viewpoint_2_4, {is_inspection_point: [4, true]}]
+      - [1186.134, 1727.3050000000001, 0, ""]
+    walls:
+      - [17, 18, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [19, 20, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [21, 22, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [23, 15, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [15, 24, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [25, 14, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [17, 26, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [16, 27, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [16, 28, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [29, 30, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [31, 17, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [2, 5, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [6, 5, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [7, 6, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [3, 4, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [32, 8, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [8, 9, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [9, 11, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [10, 33, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [33, 34, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [35, 36, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [36, 37, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [37, 38, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [38, 39, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [40, 41, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [38, 42, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [43, 44, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [37, 11, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [11, 12, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [12, 45, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [46, 47, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [47, 48, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [47, 49, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [50, 51, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [51, 52, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [53, 54, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [54, 55, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [56, 57, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [57, 58, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [59, 57, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [60, 61, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [61, 62, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [16, 52, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [52, 36, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [86, 85, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [85, 84, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [84, 87, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [87, 86, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [560, 31, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+      - [560, 2, {alpha: [3, 1], texture_height: [3, 2.5], texture_name: [1, default], texture_scale: [3, 1], texture_width: [3, 1]}]
+lifts: {}
+name: warehouse_building
