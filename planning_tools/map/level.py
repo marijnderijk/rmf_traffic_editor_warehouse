@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from .polygons import Aisle, StorageRack, RackBay
 from .vertex import Vertex
+from .param_value import ParamValue
 
 class Level(BaseModel):
     name: str
@@ -40,6 +41,10 @@ class Level(BaseModel):
                 for param_name, param_value in self.params.items()
             }
         }
+
+    def set_polygon_vertices(self):
+        for polygon in self.aisles + self.storage_racks + self.rack_bays:
+            polygon.set_vertices([self.vertices[i] for i in polygon.vertex_indices])
 
     def __str__(self):
         return f'level ({len(self.aisles)} aisles, {len(self.storage_racks)} storage racks, {len(self.rack_bays)} rack bays, {len(self.vertices)} vertices)'
