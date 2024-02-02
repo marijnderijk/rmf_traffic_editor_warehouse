@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from shapely.geometry import Point
 from .param_value import ParamValue
 
 
@@ -44,3 +45,6 @@ class Vertex(BaseModel):
                 for param_name, param_value in self.params.items()
             }
         ]
+
+    def to_shapely_point(self):
+        return Point(self.x, self.y)

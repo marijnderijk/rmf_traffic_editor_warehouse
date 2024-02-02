@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from shapely.geometry import Point, LineString, Polygon as ShapelyPolygon
 from .param_value import ParamValue
 from .vertex import Vertex
 
@@ -32,6 +33,31 @@ class Polygon(BaseModel):
     def set_vertices(self, vertices: list[Vertex]):
         for vertex in vertices:
             self.vertices.append(vertex)
+
+    def contains_vertex(self, vertex: Vertex):
+        # Assuming vertex has 'x' and 'y' attributes
+        point = vertex.to_shapely_point()
+        return self.to_shapely_polygon().contains(point)
+
+    def to_shapely_polygon(self):
+        return ShapelyPolygon([(vert.x, vert.y) for vert in self.vertices])
+
+    def get_edges(self):
+        """Generates the edges of the polygon as LineString objects."""
+        exterior_coords = self.to_shapely_polygon().exterior.coords
+        return [LineString([exterior_coords[i], exterior_coords[(i + 1) % len(exterior_coords) - 1]])
+                for i in range(len(exterior_coords) - 1)]
+
+    def get_shared_edge(self, other: 'Polygon') -> LineString | None:
+        """Returns the shared edge with another polygon as a LineString, or None if no shared edge is found."""
+        for edge in self.get_edges():
+            for other_edge in other.get_edges():
+                if edge.intersects(other_edge):
+                    intersection = edge.intersection(other_edge)
+                    # Check if the intersection is a line segment (not just a point)
+                    if isinstance(intersection, LineString) and not intersection.is_empty:
+                        return intersection
+        return None
 
     def __str__(self):
         return f'polygon ({len(self.vertex_indices)} vertices)'

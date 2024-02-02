@@ -3,6 +3,7 @@
 import argparse
 import yaml
 from map.level import Level
+from .draw_graph import draw_graph
 
 
 def parse_level(level_yaml_path: str, level_name: str):
@@ -23,9 +24,9 @@ def main():
     level = parse_level(args.level_yaml_path, args.level_name)
     level.set_polygon_vertices()
 
-    for aisle in level.aisles:
-        print(aisle.vertices)
-    print(level)
+    network = level.create_network()
+    draw_graph(network)
+
 
 if __name__ == '__main__':
     main()
