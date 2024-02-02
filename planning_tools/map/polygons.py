@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
-from .param_value import ParamValue 
+from .param_value import ParamValue
 from .vertex import Vertex
 
 class Polygon(BaseModel):
     vertex_indices: list
     params: dict = Field(default_factory=dict)
+    vertices: list[Vertex] = Field(default_factory=list)
 
     class Config:
         validate_assignment = True
@@ -27,7 +28,11 @@ class Polygon(BaseModel):
                 for param_name, param_value in self.params.items()
             }
         }
-    
+
+    def set_vertices(self, vertices: list[Vertex]):
+        for vertex in vertices:
+            self.vertices.append(vertex)
+
     def __str__(self):
         return f'polygon ({len(self.vertex_indices)} vertices)'
 
@@ -83,25 +88,20 @@ class StorageRack(Polygon):
     @classmethod
     def from_yaml(cls, yaml_node):
         instance = super().from_yaml(yaml_node)
-        # check if the name is in the parameters
-        if 'name' in instance.params:
-            instance.name = instance.params['name'].value
 
-        if 'num_bays' in instance.params:
-            instance.num_bays = instance.params['num_bays'].value
+        required_params = ['name', 'num_bays', 'num_rows', 'units_per_bay']
+        for param in required_params:
+            if param not in instance.params:
+                raise ValueError(f"The required parameter '{param}' is missing.")
+            setattr(instance, param, instance.params[param].value)
 
-        if 'num_rows' in instance.params:
-            instance.num_rows = instance.params['num_rows'].value
-
-        if 'units_per_bay' in instance.params:
-            instance.units_per_bay = instance.params['units_per_bay'].value
-
-        # check all the "unit_height_x" parameters
+        # Now that we have validated the existence of 'units_per_bay', we can process 'unit_height_x'
         instance.default_unit_heights = []
         for i in range(instance.units_per_bay):
             param_name = f'unit_height_{i}'
-            if param_name in instance.params:
-                instance.default_unit_heights.append(instance.params[param_name].value)
+            if param_name not in instance.params:
+                raise ValueError(f"The required parameter '{param_name}' is missing.")
+            instance.default_unit_heights.append(instance.params[param_name].value)
 
         return instance
 
@@ -113,7 +113,7 @@ class StorageRack(Polygon):
 
 class RackBay(Polygon):
     name: str = Field(default='')
-    num_units: int = 0
+    n_units: int = 0
     number: int = 0
     row: int = 0
     unit_heights: list[int] = Field(default_factory=list)
@@ -124,24 +124,16 @@ class RackBay(Polygon):
     @classmethod
     def from_yaml(cls, yaml_node):
         instance = super().from_yaml(yaml_node)
-        # check if the name is in the parameters
-        if 'name' in instance.params:
-            instance.name = instance.params['name'].value
 
-        if 'n_units' in instance.params:
-            instance.num_units = instance.params['n_units'].value
+        required_params = ['name', 'n_units', 'number', 'row', 'parent_rack_name']
+        for param in required_params:
+            if param not in instance.params:
+                raise ValueError(f"The required parameter '{param}' is missing.")
+            setattr(instance, param, instance.params[param].value)
 
-        if 'number' in instance.params:
-            instance.number = instance.params['number'].value
 
-        if 'row' in instance.params:
-            instance.row = instance.params['row'].value
-
-        if 'parent_rack_name' in instance.params:
-            instance.parent_rack_name = instance.params['parent_rack_name'].value
-    
         instance.unit_heights = []
-        for i in range(instance.num_units):
+        for i in range(instance.n_units):
             param_name = f'unit_height_{i}'
             if param_name in instance.params:
                 instance.unit_heights.append(instance.params[param_name].value)
@@ -159,8 +151,3 @@ class RackBay(Polygon):
 
     def __repr__(self):
         return self.__str__()
-
-
-
-
-
