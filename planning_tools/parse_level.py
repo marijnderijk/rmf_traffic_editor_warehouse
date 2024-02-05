@@ -3,7 +3,9 @@
 import argparse
 import yaml
 from map.level import Level
-from .draw_graph import draw_graph
+from utils.draw_graph import draw_graph
+from utils.draw_graph_geometry import draw_graph_geometry
+from utils.compute_shortest_path import compute_shortest_path
 
 
 def parse_level(level_yaml_path: str, level_name: str):
@@ -25,8 +27,20 @@ def main():
     level.set_polygon_vertices()
 
     network = level.create_network()
-    draw_graph(network)
 
+    # ask for the source and target names
+    available_nodes = [node.name for node in network.nodes]
+    print(f"Available nodes: {available_nodes}")
+    # source_name = input("Enter the source node name: ")
+    # target_name = input("Enter the target node name: ")
+    source_name = "rack_mini_1_viewpoint_0_9"
+    target_name = "conveyor_rack_2_viewpoint_2_0"
+
+    shortest_path = compute_shortest_path(network, source_name, target_name)
+
+    draw_graph(network, shortest_path)
+
+    draw_graph_geometry(network, shortest_path=shortest_path)
 
 if __name__ == '__main__':
     main()
