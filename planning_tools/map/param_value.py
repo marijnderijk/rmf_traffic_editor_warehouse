@@ -39,3 +39,6 @@ class ParamValue():
 
     def __eq__(self, other):
         return self.type == other.type and self.value == other.value
+
+    def __hash__(self):
+        return hash(self.value)

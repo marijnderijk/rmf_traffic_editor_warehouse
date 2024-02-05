@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from shapely.geometry import Point, LineString, Polygon as ShapelyPolygon
+from shapely.geometry import LineString, Polygon as ShapelyPolygon
 from .param_value import ParamValue
 from .vertex import Vertex
 
@@ -45,7 +45,7 @@ class Polygon(BaseModel):
     def get_edges(self):
         """Generates the edges of the polygon as LineString objects."""
         exterior_coords = self.to_shapely_polygon().exterior.coords
-        return [LineString([exterior_coords[i], exterior_coords[(i + 1) % len(exterior_coords) - 1]])
+        return [LineString([exterior_coords[i], exterior_coords[(i + 1) % len(exterior_coords)]])
                 for i in range(len(exterior_coords) - 1)]
 
     def get_shared_edge(self, other: 'Polygon') -> LineString | None:
@@ -59,11 +59,17 @@ class Polygon(BaseModel):
                         return intersection
         return None
 
+    def shapely(self):
+        return self.to_shapely_polygon()
+
     def __str__(self):
         return f'polygon ({len(self.vertex_indices)} vertices)'
 
     def __repr__(self):
         return self.__str__()
+
+    def __hash__(self):
+        return hash((tuple(self.vertex_indices), frozenset(self.params.items())))
 
 class Aisle(Polygon):
     name: str = Field(default='')

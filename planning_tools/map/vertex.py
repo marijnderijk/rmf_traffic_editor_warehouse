@@ -48,3 +48,11 @@ class Vertex(BaseModel):
 
     def to_shapely_point(self):
         return Point(self.x, self.y)
+
+    def shapely(self):
+        return self.to_shapely_point()
+
+    def __hash__(self):
+        return hash((self.x, self.y, self.z, self.name, self.shapely()))
+
+
