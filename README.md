@@ -1,20 +1,30 @@
 [![](https://github.com/osrf/traffic_editor/workflows/ci/badge.svg)](https://github.com/osrf/traffic_editor/actions/workflows/ci.yaml)
 [![](https://github.com/osrf/traffic_editor/workflows/pycodestyle/badge.svg)](https://github.com/osrf/traffic_editor/actions/workflows/pycodestyle.yaml)
 
-# rmf_traffic\_editor
+# rmf_traffic\_editor: warehouse edition
 
-Welcome!
+Hi there. This is my fork of the rmf_traffic_editor, a gui tool for creating floorplans and traffic patterns for the [RMF Project](https://github.com/open-rmf).
+This fork extends the original traffic editor to support warehouse specific features such as:
+- storage racks
+- aisles
+- rack inspection waypoints
 
-![](docs/rmf_traffic_editor_gui.png)
+![](docs/rmf_traffic_editor_warehouse_gui.png)
 
-This repository has the following directories:
- * `rmf_traffic_editor`: GUI for annotating floorplans to create traffic patterns
+My work was done in the following directories:
+ * `rmf_traffic_editor`: C++-based GUI for creating floorplans. I extended the original traffic editor with warehouse-specific features.
+ * `planning_tools`: Python based tools for creating routes within the generated warehouse floorplans.
+
+
+The original repository also contains useful tools which have not yet been extended with the warehouse-specific features, but this could be done at a later stage:
  * `rmf_building_map_tools`: Python-based tools to use and manipulate the map files created by `rmf_traffic_editor`, such as:
    * `building_map_server`:  a ROS 2 node to serve maps using `rmf_building_map_msgs`
    * translators to simulators such as Gazebo
    * translators to navigation packages such as `rmf_core` (e.g. `rmf_ros2`)
    * scripts that handle downloading of gazebo models. `pit_crew`, `building_map_model_downloader`...
  * `rmf_traffic_editor_assets`: Gazebo model thumbnails, in used by `traffic_editor` GUI
+
+---
 
 ## Installation
 
@@ -29,14 +39,9 @@ sudo apt install python3-shapely python3-yaml python3-requests
 
 ## Usage
 
-`rmf_traffic_editor` consists of a interface and tools to create a simulation `.world` file from a sketched building floor plan.
-These simulation  `.world` file can be used by other applications, not just limited to RMF.
-
-![](docs/building_map_generation.png)
-
 ### Traffic Editor GUI
 
-Instructions of `traffic_editor` is located [here](https://osrf.github.io/ros2multirobotbook/traffic-editor.html)
+Instructions for using the `traffic_editor` are located [here](https://osrf.github.io/ros2multirobotbook/traffic-editor.html)
 
 To run traffic_editor GUI, run:
 ```bash
@@ -44,24 +49,7 @@ source install/setup.bash
 traffic-editor
 ```
 
-### Building Map Tools
-Once done with the editing of the building map with `traffic_editor`, user can now generate the simulated world file from the saved  `.building.yaml` file (`${building_map_path}`).
 
-**Generate a world file from building map**
-```bash
-ros2 run rmf_building_map_tools building_map_generator gazebo \
-  ${building_map_path} ${output_world_path} ${output_model_dir}
-```
-_switch arg `gazebo` to `ignition` for generating a world file for ignition_
 
-**Download models used in newly created traffic editor building map.**
-```bash
-ros2 run rmf_building_map_tools building_map_model_downloader \
-  ${building_map_path} -f -e ~/.gazebo/models
-```
 
-**Generate Traffic Navigation Path File**
-```bash
-ros2 run rmf_building_map_tools building_map_generator nav \
-  ${building_map_path} ${output_nav_graphs_dir}
-```
+
