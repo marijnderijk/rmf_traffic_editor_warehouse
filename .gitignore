@@ -36,3 +36,7 @@ build
 
 # Test results
 *.eggs
+rmf_traffic_editor/resources/icons/storage_rack_bk.svg
+install
+log
+rmf_traffic_editor/.vscode

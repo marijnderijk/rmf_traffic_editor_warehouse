@@ -4,14 +4,50 @@ theme: uncover
 class: invert
 ---
 
-# **Avular Warehouse Project**
+# **Stock Counting Drone**
+_warehouse representation for automated invertory inspection_
+
+![bg right:40%](racks.jpg)
 
 ---
 
-# Usage
+# Case
 
-Im gonna write some slides on what i did this project
+![width:1100px](warehouse_data_representation.drawio.png)
 
+---
+
+# Warehouse-Specific Features
+
+---
+
+![bg right:50%](rack_definitions.png)
+
+## _Assumptions_
+- rack consists of uniform **bays**
+- **bay** consists of **units**
+- **units** not necessarily uniform
+- Aisles
+  - main
+  - non-main
+
+---
+
+![bg right above width:400px](TypeDB.png)
+
+- Strongly Typed database
+- Data integrity
+- Inference
+
+---
+
+![bg left width:500px](openrmf.png)
+
+- Fleet management
+- OSRF (Apache 2.0)
+- GUI for floorplans
+- .building.yaml file
+- (gazebo world export)
 
 ---
 
