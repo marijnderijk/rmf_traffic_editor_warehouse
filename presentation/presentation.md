@@ -5,9 +5,19 @@ class: invert
 ---
 
 # **Stock Counting Drone**
-_warehouse representation for automated invertory inspection_
+_warehouse representation for automated inventory inspection_
 
 ![bg right:40%](racks.jpg)
+
+---
+
+## About me
+
+![bg left:40%](marijn.jpg)
+
+* TU Delft Robotics
+* Knowledge Representation course
+* Joris Sijs lecture ![width:400px](joris_lecture.png)
 
 ---
 

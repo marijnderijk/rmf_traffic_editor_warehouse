@@ -16,6 +16,7 @@
 */
 
 #include "param.h"
+#include <iostream>
 using std::string;
 
 
@@ -97,16 +98,30 @@ YAML::Node Param::to_yaml() const
 
 void Param::set(const std::string& value)
 {
-  if (type == INT)
-    value_int = stoi(value);
-  else if (type == DOUBLE)
-    value_double = stod(value);
-  else if (type == STRING)
-    value_string = value;
-  else if (type == BOOL)
-    value_bool = (value == "true") || (value == "True");
-  else
-    throw std::runtime_error("Param::set() found an unknown type");
+  try {
+    if (type == INT)
+      value_int = stoi(value);
+    else if (type == DOUBLE)
+      value_double = stod(value);
+    else if (type == STRING)
+      value_string = value;
+    else if (type == BOOL)
+      value_bool = (value == "true") || (value == "True");
+    else
+      throw std::runtime_error("Param::set() found an unknown type");
+  } catch (const std::invalid_argument& e) {
+    // Handle invalid argument (e.g., non-integer string for INT type)
+    std::cerr << "Invalid argument: " << e.what() << std::endl;
+    // You can choose to set a default value or take other appropriate actions
+  } catch (const std::out_of_range& e) {
+    // Handle out-of-range (e.g., integer out of the valid range for INT type)
+    std::cerr << "Out of range: " << e.what() << std::endl;
+    // You can choose to set a default value or take other appropriate actions
+  } catch (const std::exception& e) {
+    // Handle other exceptions
+    std::cerr << "Exception: " << e.what() << std::endl;
+    // You can choose to set a default value or take other appropriate actions
+  }
 }
 
 QString Param::to_qstring() const
