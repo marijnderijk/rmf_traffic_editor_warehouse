@@ -8,19 +8,24 @@ from utils.draw_graph_geometry import draw_graph_geometry
 from utils.compute_shortest_path import compute_shortest_path
 
 
-def parse_level(level_yaml_path: str, level_name: str):
+def parse_level(level_yaml_path: str, level_name: str = ""):
     with open(level_yaml_path, 'r') as file:
         yaml_content = yaml.safe_load(file)
     levels = yaml_content.get('levels', {})
-    if level_name not in levels:
+    if level_name != "" and level_name not in levels:
         raise ValueError(f"Level '{level_name}' not found in {level_yaml_path}.")
+
+    # if no level name is provided, return the first level
+    if level_name == "":
+        level_name = list(levels.keys())[0]
+
     yaml_data = levels[level_name]
     return Level.from_yaml(yaml_data, level_yaml_path)
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('level_yaml_path', type=str, help='Path to the level YAML file')
-    parser.add_argument('level_name', type=str, help='Name of the level')
+    parser.add_argument('--level_name', type=str, help='Name of the level', default="")
     args = parser.parse_args()
 
     level = parse_level(args.level_yaml_path, args.level_name)

@@ -55,4 +55,9 @@ def draw_graph_geometry(
         sp_point_gdf.plot(ax=plt.gca(), color="red", alpha=highlight_alpha, markersize=5)
         sp_line_gdf.plot(ax=plt.gca(), color="red", alpha=highlight_alpha)
 
+    plt.gca().invert_yaxis()
+
     plt.show()
+
+
+
