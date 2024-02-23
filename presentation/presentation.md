@@ -2,6 +2,7 @@
 marp: true
 theme: uncover
 class: invert
+
 ---
 
 # **Stock Counting Drone**
@@ -13,7 +14,7 @@ _warehouse representation for automated inventory inspection_
 
 ## About me
 
-![bg left:40%](marijn.jpg)
+![bg left:30%](marijn.jpg)
 
 * TU Delft Robotics
 * Knowledge Representation course
@@ -43,21 +44,52 @@ _warehouse representation for automated inventory inspection_
 
 ---
 
+# **TypeDB**
+
 ![bg right above width:400px](TypeDB.png)
 
-- Strongly Typed database
-- Data integrity
-- Inference
+* Strongly Typed database
+* Data integrity
+* Inference
+* Modelling complex relations
+
+---
+# **Open-RMF**
+
+![bg left:40% width:500px](openrmf.png)
+
+* Fleet management
+* OSRF (Apache 2.0)
+* `traffic_editor` repo
+  - GUI for floorplans
+  - .building.yaml file
+  - (gazebo world export)
 
 ---
 
-![bg left width:500px](openrmf.png)
+# Why Switch?
 
-- Fleet management
-- OSRF (Apache 2.0)
-- GUI for floorplans
-- .building.yaml file
-- (gazebo world export)
+![width:1100px](warehouse_data_representation.drawio.png)
+
+
+---
+
+# User Input
+
+---
+
+### RMF Traffic Editor
+![width:1000px](traffic_editor_warehouse_gui.png)
+
+---
+
+# Workflow
+
+1. upload floorplan png
+2. create vertices
+3. create rack bays
+4. define aisles
+5. parse `.building.yaml` file for path planning
 
 ---
 
@@ -112,13 +144,49 @@ _warehouse representation for automated inventory inspection_
       - [210.31899999999999, 164.37299999999999, 0, rack_viewpoint_3_3, {is_inspection_point: [4, true]}]
 ```
 
----
-
-## User Input
-
-![width:900px](traffic_editor_warehouse_gui.png)
+`warehouse.building.yaml`
 
 ---
 
+# Path Planning
 
+![width:700px](warehouse_planning.drawio.png)
 
+---
+
+# Graph Structure
+
+[![](https://mermaid.ink/img/pako:eNplkE8LgkAQxb_KMCeFOtTRQ5DZLS8FnfYyuGMu6K6sIxLVd29TiAXnNLz3e8yfF1ZOM2ZYt26qGvICl6uyEOqYJHfDU--MFdilKWy3B8iToxlaThck_2nvkISJzaORN5ySkoyFGDrNUBP8P5XHThwv1vFiPSMy4BxvuU_nEG6wY9-R0eGw109RKA13rDALreaaxlYUKvsJKI3ibk9bYSZ-5A2OvSbhwtDDU4dZTe0QVNZGnC-XZ80_-3wBe4tiiw?type=png)](https://mermaid.live/edit#pako:eNplkE8LgkAQxb_KMCeFOtTRQ5DZLS8FnfYyuGMu6K6sIxLVd29TiAXnNLz3e8yfF1ZOM2ZYt26qGvICl6uyEOqYJHfDU--MFdilKWy3B8iToxlaThck_2nvkISJzaORN5ySkoyFGDrNUBP8P5XHThwv1vFiPSMy4BxvuU_nEG6wY9-R0eGw109RKA13rDALreaaxlYUKvsJKI3ibk9bYSZ-5A2OvSbhwtDDU4dZTe0QVNZGnC-XZ80_-3wBe4tiiw)
+
+---
+
+# Planning Example
+
+---
+
+![width:1000px](traffic_editor_warehouse_gui.png)
+
+---
+
+### _Networkx representation_
+
+![width:700px](nx_graph_example.png)
+
+---
+
+### _Occupancy map_
+![width:700px](geom_example.png)
+
+---
+
+# What remains to be done?
+
+* Planning dashboard
+* Linking client warehouse-management
+* Other import methods
+
+---
+
+# **Thanks for your attention**
+
+![](repo.png)
