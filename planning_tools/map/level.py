@@ -95,12 +95,12 @@ class Level(BaseModel):
         #     G.add_edge(viewpoint, closest_rack_bay)
         #     G.add_edge(closest_rack_bay, viewpoint)
 
-        # Add edges between the viewpoints and the aisles that the are in
+        # Add edges between the viewpoints and the aisles that the are in (weight of 1)
         for viewpoint in viewpoints:
             for aisle in self.aisles:
                 if aisle.contains_vertex(viewpoint):
-                    G.add_edge(viewpoint, aisle)
-                    G.add_edge(aisle, viewpoint)
+                    G.add_edge(viewpoint, aisle, weight=1)
+                    G.add_edge(aisle, viewpoint, weight=1)
 
         for i, aisle1 in enumerate(self.aisles):
             for aisle2 in self.aisles[i + 1:]:
