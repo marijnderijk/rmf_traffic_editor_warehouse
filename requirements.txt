@@ -1,0 +1,210 @@
+action-msgs==1.6.0
+action-tutorials-interfaces==0.27.1
+action-tutorials-py==0.27.1
+actionlib-msgs==5.0.0
+ament-cmake-test==2.0.3
+ament-copyright==0.14.2
+ament-cppcheck==0.14.2
+ament-cpplint==0.14.2
+ament-flake8==0.14.2
+ament-index-python==1.5.2
+ament-lint==0.14.2
+ament-lint-cmake==0.14.2
+ament-package==0.15.3
+ament-pep257==0.14.2
+ament-uncrustify==0.14.2
+ament-xmllint==0.14.2
+angles==1.16.0
+annotated-types==0.6.0
+attrs @ file:///work/perseverance-python-buildout/croot/attrs_1698845858439/work
+Brotli @ file:///work/perseverance-python-buildout/croot/brotli-split_1698805593785/work
+builtin-interfaces==1.6.0
+certifi @ file:///work/perseverance-python-buildout/croot/certifi_1701736090360/work/certifi
+cffi @ file:///croot/cffi_1700254295673/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+click @ file:///work/perseverance-python-buildout/croot/click_1698845879718/work
+click-plugins @ file:///Users/ktietz/demo/mc3/conda-bld/click-plugins_1630665883852/work
+cligj==0.7.2
+composition-interfaces==1.6.0
+contourpy==1.2.0
+cryptography @ file:///croot/cryptography_1702070282333/work
+cv-bridge==3.4.0
+cycler==0.12.1
+demo-nodes-py==0.27.1
+diagnostic-msgs==5.0.0
+domain-coordinator==0.11.2
+example-interfaces==0.10.2
+examples-rclpy-executors==0.18.0
+examples-rclpy-minimal-action-client==0.18.0
+examples-rclpy-minimal-action-server==0.18.0
+examples-rclpy-minimal-client==0.18.0
+examples-rclpy-minimal-publisher==0.18.0
+examples-rclpy-minimal-service==0.18.0
+examples-rclpy-minimal-subscriber==0.18.0
+fiona @ file:///croot/fiona_1704920717380/work
+fonttools==4.47.2
+gazebo-msgs==3.7.0
+GDAL @ file:///croot/gdal-split_1704913248646/work/build/swig/python
+geometry-msgs==5.0.0
+geopandas==0.14.3
+idna @ file:///work/perseverance-python-buildout/croot/idna_1698845632828/work
+image-geometry==3.4.0
+iniconfig==2.0.0
+interactive-markers==2.4.0
+kiwisolver==1.4.5
+laser-geometry==2.5.0
+launch==2.0.2
+launch-ros==0.24.0
+launch-testing==2.0.2
+launch-testing-ros==0.24.0
+launch-xml==2.0.2
+launch-yaml==2.0.2
+lifecycle-msgs==1.6.0
+logging-demo==0.27.1
+map-msgs==2.2.0
+matplotlib==3.8.2
+message-filters==4.7.0
+mkl-fft @ file:///work/perseverance-python-buildout/croot/mkl_fft_1698845673361/work
+mkl-random @ file:///work/perseverance-python-buildout/croot/mkl_random_1698845720894/work
+mkl-service==2.4.0
+nav-msgs==5.0.0
+networkx==3.2.1
+numpy @ file:///croot/numpy_and_numpy_base_1704311704800/work/dist/numpy-1.26.3-cp312-cp312-linux_x86_64.whl#sha256=71892d12f82a9c47262bffc99a1edd8ebc0b3d1e033366094bd45a8b4c7c2d43
+osrf-pycommon==2.1.2
+packaging==23.2
+pandas==2.2.0
+pcl-msgs==1.0.0
+pendulum-msgs==0.27.1
+pillow==10.2.0
+pluggy==1.4.0
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.6.0
+pydantic_core==2.16.1
+pyOpenSSL @ file:///work/perseverance-python-buildout/croot/pyopenssl_1698863523157/work
+pyparsing==3.1.1
+pyproj==3.6.1
+PySocks @ file:///work/perseverance-python-buildout/croot/pysocks_1698845478203/work
+pytest==8.0.0
+python-dateutil==2.8.2
+python-qt-binding==1.2.3
+pytz==2024.1
+PyYAML==6.0.1
+qt-dotgraph==2.4.2
+qt-gui==2.4.2
+qt-gui-cpp==2.4.2
+qt-gui-py-common==2.4.2
+quality-of-service-demo-py==0.27.1
+rcl-interfaces==1.6.0
+rclpy==4.1.4
+rcutils==6.2.2
+requests @ file:///work/perseverance-python-buildout/croot/requests_1698846321763/work
+resource-retriever==3.2.2
+rmf-api-msgs==0.1.1
+rmf-building-map-msgs==1.3.1
+rmf-building-map-tools==1.7.1
+rmf-charger-msgs==3.1.1
+rmf-dispenser-msgs==3.1.1
+rmf-door-msgs==3.1.1
+rmf-fleet-adapter-python==2.2.5
+rmf-fleet-msgs==3.1.1
+rmf-ingestor-msgs==3.1.1
+rmf-lift-msgs==3.1.1
+rmf-obstacle-msgs==3.1.1
+rmf-scheduler-msgs==3.1.1
+rmf-site-map-msgs==3.1.1
+rmf-task-msgs==3.1.1
+rmf-traffic-editor-assets==1.7.1
+rmf-traffic-msgs==3.1.1
+rmf-visualization-building-systems==2.1.1
+rmf-visualization-msgs==1.3.1
+rmf-workcell-msgs==3.1.1
+rmw-dds-common==2.0.1
+ros2action==0.25.4
+ros2bag==0.22.5
+ros2bag-mcap-cli==0.22.5
+ros2bag-sqlite3-cli==0.22.5
+ros2cli==0.25.4
+ros2component==0.25.4
+ros2doctor==0.25.4
+ros2interface==0.25.4
+ros2launch==0.24.0
+ros2lifecycle==0.25.4
+ros2multicast==0.25.4
+ros2node==0.25.4
+ros2param==0.25.4
+ros2pkg==0.25.4
+ros2run==0.25.4
+ros2service==0.25.4
+ros2topic==0.25.4
+rosbag2-interfaces==0.22.5
+rosbag2-py==0.22.5
+rosgraph-msgs==1.6.0
+rosidl-adapter==4.0.1
+rosidl-cli==4.0.1
+rosidl-cmake==4.0.1
+rosidl-generator-c==4.0.1
+rosidl-generator-cpp==4.0.1
+rosidl-generator-py==0.18.0
+rosidl-generator-type-description==4.0.1
+rosidl-parser==4.0.1
+rosidl-pycommon==4.0.1
+rosidl-runtime-py==0.12.0
+rosidl-typesupport-c==3.0.1
+rosidl-typesupport-cpp==3.0.1
+rosidl-typesupport-fastrtps-c==3.0.2
+rosidl-typesupport-fastrtps-cpp==3.0.2
+rosidl-typesupport-introspection-c==4.0.1
+rosidl-typesupport-introspection-cpp==4.0.1
+rpyutils==0.3.2
+rqt-action==2.1.2
+rqt-bag==1.3.4
+rqt-bag-plugins==1.3.4
+rqt-console==2.1.1
+rqt-graph==1.4.2
+rqt-gui==1.3.3
+rqt-gui-py==1.3.3
+rqt-msg==1.3.1
+rqt-plot==1.2.3
+rqt-publisher==1.6.3
+rqt-py-common==1.3.3
+rqt-py-console==1.1.1
+rqt-reconfigure==1.3.4
+rqt-service-caller==1.1.1
+rqt-shell==1.1.1
+rqt-srv==1.1.1
+rqt-topic==1.6.1
+Rtree @ file:///work/perseverance-python-buildout/croot/rtree_1698900851071/work
+ruamel.yaml==0.18.5
+ruamel.yaml.clib==0.2.8
+scripts==3.7.0
+sensor-msgs==5.0.0
+sensor-msgs-py==5.0.0
+service-msgs==1.6.0
+setuptools==68.2.2
+shape-msgs==5.0.0
+shapely @ file:///work/perseverance-python-buildout/croot/shapely_1698874452235/work
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sros2==0.11.3
+statistics-msgs==1.6.0
+std-msgs==5.0.0
+std-srvs==5.0.0
+stereo-msgs==5.0.0
+teleop-twist-keyboard==2.3.2
+tf2-geometry-msgs==0.31.5
+tf2-kdl==0.31.5
+tf2-msgs==0.31.5
+tf2-py==0.31.5
+tf2-ros-py==0.31.5
+tf2-sensor-msgs==0.31.5
+tf2-tools==0.31.5
+topic-monitor==0.27.1
+trajectory-msgs==5.0.0
+turtlesim==1.6.1
+type-description-interfaces==1.6.0
+typing_extensions==4.9.0
+tzdata==2023.4
+unique-identifier-msgs==2.3.2
+urllib3 @ file:///work/perseverance-python-buildout/croot/urllib3_1698845837793/work
+vision-msgs==4.1.0
+visualization-msgs==5.0.0
+wheel==0.41.2
