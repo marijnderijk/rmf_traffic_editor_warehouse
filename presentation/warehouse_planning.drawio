@@ -1,0 +1,45 @@
+<mxfile host="app.diagrams.net" modified="2024-02-21T12:10:10.714Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0" etag="rFNMu1BjX7FTnm2n7Q0D" version="23.1.5" type="github">
+  <diagram name="Page-1" id="K3ah_5ArO4XWgYB42OPz">
+    <mxGraphModel dx="1434" dy="795" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NalmlH9FkWJFp80hXb75-1" value=".building.yaml" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.document2;whiteSpace=wrap;size=0.25;" vertex="1" parent="1">
+          <mxGeometry x="100" y="226" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NalmlH9FkWJFp80hXb75-6" target="NalmlH9FkWJFp80hXb75-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NalmlH9FkWJFp80hXb75-6" target="NalmlH9FkWJFp80hXb75-28">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="315" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-6" value="Networkx Directed Graph" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/management_governance/Resource_Graph_Explorer.svg;" vertex="1" parent="1">
+          <mxGeometry x="275" y="226" width="67" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-11" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="NalmlH9FkWJFp80hXb75-1" target="NalmlH9FkWJFp80hXb75-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="300" as="sourcePoint" />
+            <mxPoint x="300" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-21" value="Path" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="130" width="80" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-22" value="Node 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="NalmlH9FkWJFp80hXb75-21">
+          <mxGeometry y="30" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-23" value="Edge 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="NalmlH9FkWJFp80hXb75-21">
+          <mxGeometry y="60" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-24" value="Node 2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="NalmlH9FkWJFp80hXb75-21">
+          <mxGeometry y="90" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NalmlH9FkWJFp80hXb75-28" value="Occupancy Map" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://www.mathworks.com/help/examples/ros/win64/CreateOccupancyGridFrom2DMapExample_01.png;clipPath=inset(2.89% 15% 6.44% 17%);" vertex="1" parent="1">
+          <mxGeometry x="460" y="280" width="89.99669129811404" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
